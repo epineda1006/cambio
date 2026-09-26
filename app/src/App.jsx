@@ -1,5 +1,5 @@
 // App.jsx: the app "shell", the parts that stay on screen everywhere:
-//   header   (app name, language toggle, theme toggle)
+//   header   (logo, app name, language toggle, theme toggle)
 //   main     (whichever screen is selected)
 //   tab bar  (switches screens, fixed to the bottom of the phone)
 //
@@ -12,6 +12,7 @@
 
 import { useState } from 'react'
 import LanguageToggle from './components/LanguageToggle.jsx'
+import LogoMark from './components/LogoMark.jsx'
 import TabBar from './components/TabBar.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import { useLanguage } from './i18n/languageContext.js'
@@ -59,7 +60,13 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <span className="app-name">{t('app.name')}</span>
+        <div className="brand">
+          {/* Logo slot: 32px, left of the wordmark. The mark is provisional. */}
+          <span className="logo-slot">
+            <LogoMark />
+          </span>
+          <span className="app-name">{t('app.name')}</span>
+        </div>
         <div className="app-header-controls">
           <LanguageToggle />
           <ThemeToggle />

@@ -47,7 +47,8 @@ export default function ThemeToggle() {
       aria-label={t(next === 'dark' ? 'theme.switchToDark' : 'theme.switchToLight')}
     >
       {next === 'dark' ? <MoonIcon /> : <SunIcon />}
-      <span>{t(`theme.${next}`)}</span>
+      {/* Hidden on the narrowest phones (see .theme-toggle-label in styles.css). */}
+      <span className="theme-toggle-label">{t(`theme.${next}`)}</span>
     </button>
   )
 }
