@@ -20,7 +20,43 @@
     "map": "Mapa"
   },
   "owner": {
-    "title": "¿Qué cambios le ahorran dinero?"
+    "title": "¿Qué cambios le ahorran dinero?",
+    "intro": "Escriba lo que compra cada semana. Le mostramos qué cambios a reutilizables le ahorran dinero.",
+    "daysOpen": "Días abiertos por semana",
+    "daysOpenHelp": "Sirve para calcular cuántos artículos reutilizables necesita tener.",
+    "weeklyQty": "¿Cuántos usa por semana?",
+    "dineInShare": "Para comer aquí",
+    "dineInHelp": "Los reutilizables solo reemplazan pedidos para comer aquí. Los pedidos para llevar siguen necesitando desechables.",
+    "currentSpend": "Hoy gasta unos {amount} al año en estos.",
+    "noDineIn": "Si 0% de los pedidos son para comer aquí, no hay nada que cambiar. Los reutilizables solo sirven para esos pedidos."
+  },
+  "summary": {
+    "title": "Sus ahorros al año",
+    "empty": "Escriba cuántos artículos usa por semana para ver sus ahorros.",
+    "perYear": "al año",
+    "plastic": "{count} artículos desechables evitados al año",
+    "upfront": "Costo inicial de los reutilizables: {amount}",
+    "basis": "Usando el mejor cambio para cada artículo.",
+    "noSavingSwap_one": "{count} artículo no tiene un cambio que ahorre dinero con estos precios.",
+    "noSavingSwap_other": "{count} artículos no tienen un cambio que ahorre dinero con estos precios."
+  },
+  "swap": {
+    "best": "Mejor opción",
+    "saves": "Ahorra {amount} al año",
+    "costsMore": "Le cuesta {amount} más al año",
+    "breakEven": "No ahorra nada al año (queda igual)",
+    "payback": "Se paga solo en {weeks} semanas",
+    "neverPaysBack": "Nunca se paga solo con estos precios",
+    "upfront_one": "Costo inicial: {amount} ({count} reutilizable)",
+    "upfront_other": "Costo inicial: {amount} ({count} reutilizables)",
+    "plastic": "{count} desechables menos al año",
+    "details": "Cómo lo calculamos",
+    "replacedPerWeek": "Artículos reemplazados por semana",
+    "itemsNeeded": "Reutilizables que debe tener",
+    "disposablesAvoided": "Desechables que deja de comprar (al año)",
+    "washCost": "Lavado (al año)",
+    "replacementCost": "Reponer artículos perdidos o rotos (al año)",
+    "savings": "Ahorro al año"
   },
   "map": {
     "title": "Dónde empezar"

@@ -75,12 +75,24 @@ export function translate(language, key, vars = {}) {
   return text.replace(/\{(\w+)\}/g, (match, name) => (name in vars ? String(vars[name]) : match))
 }
 
+/**
+ * Plurals: "1 item has" vs "2 items have". The JSON stores both forms as
+ * key_one and key_other, and Intl.PluralRules (built into the browser) tells
+ * us which form a number needs in each language. (Some languages have more
+ * than two forms; English and Spanish only need these two.)
+ */
+export function translatePlural(language, key, count, vars = {}) {
+  const form = new Intl.PluralRules(LOCALES[language]).select(count) // 'one' or 'other'
+  const fullKey = form === 'one' ? `${key}_one` : `${key}_other`
+  return translate(language, fullKey, { count, ...vars })
+}
+
 // The Context object itself. Its value is filled in by LanguageProvider.
 export const LanguageContext = createContext(null)
 
 /**
  * The hook components use:
- *   const { t, language, setLanguage, formatMoney, formatNumber } = useLanguage()
+ *   const { t, tPlural, language, setLanguage, formatMoney, formatNumber } = useLanguage()
  *
  * A "hook" is a function starting with "use" that lets a component tap into
  * React features (here: reading the Context).

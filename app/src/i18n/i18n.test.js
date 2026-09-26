@@ -4,7 +4,7 @@
 import { describe, it, expect } from 'vitest'
 import en from './en.json'
 import es from './es.json'
-import { detectInitialLanguage, translate } from './languageContext.js'
+import { detectInitialLanguage, translate, translatePlural } from './languageContext.js'
 import { swapItems } from '../lib/loadSwaps.js'
 
 // Turn { a: { b: 'x' } } into ['a.b'] so two files can be compared.
@@ -39,6 +39,15 @@ describe('translate', () => {
 
   it('shows the key itself when a translation is missing', () => {
     expect(translate('es', 'does.not.exist')).toBe('does.not.exist')
+  })
+})
+
+describe('translatePlural', () => {
+  it('picks singular or plural in each language', () => {
+    expect(translatePlural('en', 'summary.noSavingSwap', 1)).toMatch(/^1 item has/)
+    expect(translatePlural('en', 'summary.noSavingSwap', 2)).toMatch(/^2 items have/)
+    expect(translatePlural('es', 'summary.noSavingSwap', 1)).toMatch(/^1 artículo no tiene/)
+    expect(translatePlural('es', 'summary.noSavingSwap', 2)).toMatch(/^2 artículos no tienen/)
   })
 })
 

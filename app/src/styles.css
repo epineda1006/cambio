@@ -272,3 +272,223 @@ select {
     justify-content: center;
   }
 }
+
+/* ---------- Savings screen: cards, inputs, results ---------- */
+
+.muted {
+  color: var(--text-muted);
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+.card {
+  margin: 0 0 1rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card h2,
+.card h3 {
+  margin: 0 0 0.75rem;
+}
+
+.card p {
+  margin: 0.5rem 0;
+}
+
+/* The summary card is the headline: accent border and a big number. */
+.summary-card {
+  border: 2px solid var(--accent);
+}
+
+.summary-total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.summary-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  /* tabular-nums: every digit is the same width, so numbers don't jiggle
+     while the owner types. */
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-plastic {
+  font-weight: 600;
+}
+
+/* Small rounded labels ("Best swap", "Placeholder prices"). */
+.badge {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-placeholder {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.badge-best {
+  margin: 0;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  white-space: nowrap;
+}
+
+/* ----- Form fields ----- */
+
+.field {
+  margin: 0 0 1rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.field-row output {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.field input[type='number'],
+.field select {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0.5rem 0.75rem;
+  /* 16px or larger stops iPhones from zooming in when you tap the box. */
+  font-size: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.field input[type='range'] {
+  width: 100%;
+  min-height: var(--tap);
+  /* accent-color recolors the browser's built-in slider to our green. */
+  accent-color: var(--accent);
+}
+
+.help {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.note-negative {
+  color: var(--negative);
+  font-weight: 600;
+}
+
+/* ----- Swap result cards ----- */
+
+.swap-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.swap-card {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.swap-card.is-best {
+  border: 2px solid var(--accent);
+}
+
+.swap-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.swap-card h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.swap-headline {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.positive {
+  color: var(--positive);
+}
+
+.negative {
+  color: var(--negative);
+}
+
+.facts {
+  margin: 0.25rem 0 0.5rem;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+}
+
+details summary {
+  min-height: var(--tap);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Two-column table of the math: label on the left, number on the right. */
+.breakdown {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.breakdown dt {
+  color: var(--text-muted);
+}
+
+.breakdown dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The last row (yearly savings) is the result, so make it stand out. */
+.breakdown dt:last-of-type,
+.breakdown dd:last-of-type {
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--border);
+  font-weight: 700;
+}
