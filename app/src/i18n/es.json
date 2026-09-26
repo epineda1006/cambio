@@ -63,7 +63,29 @@
     "continue": "Ver mis ahorros"
   },
   "results": {
-    "title": "Sus ahorros"
+    "title": "Sus ahorros",
+    "couldSave": "Podría ahorrar",
+    "perYear": "{amount} al año",
+    "perMonth": "({amount} al mes)",
+    "pounds": "y usar {pounds} libras menos de plástico al año",
+    "noSavings": "Ninguno de estos cambios ahorra dinero con estos precios.",
+    "best": "MEJOR",
+    "saves": "Ahorra {amount} al año",
+    "costsMore": "Cuesta {amount} más al año",
+    "breakEven": "No ahorra nada al año",
+    "poundsAvoided": "{pounds} lb de plástico menos al año",
+    "payback": "Se paga solo en {weeks} semanas",
+    "neverPaysBack": "Nunca se paga solo con estos precios",
+    "noSavingSwap": "Por ahora ningún cambio ahorra dinero en este artículo.",
+    "nothingToSwap": "Escribió 0 a la semana, así que no hay nada que cambiar.",
+    "compare_one": "Comparar {count} opción más",
+    "compare_other": "Comparar {count} opciones más",
+    "hideCompare": "Ocultar otras opciones",
+    "placeholder": "Los precios son ejemplos, no cotizaciones reales.",
+    "takeout": "Para llevar ({pct}): opciones compostables próximamente.",
+    "howTitle": "Cómo lo calculamos",
+    "howBasis": "Con {weekly} a la semana, {pct} para comer aquí y {days} días abiertos a la semana.",
+    "startOver": "Empezar de nuevo"
   },
   "errors": {
     "summaryTitle": "Hay un problema",
@@ -111,6 +133,7 @@
     "details": "Cómo lo calculamos",
     "replacedPerWeek": "Artículos reemplazados por semana",
     "itemsNeeded": "Reutilizables que debe tener",
+    "pounds": "Plástico evitado (libras al año)",
     "disposablesAvoided": "Desechables que deja de comprar (al año)",
     "washCost": "Lavado (al año)",
     "replacementCost": "Reponer artículos perdidos o rotos (al año)",

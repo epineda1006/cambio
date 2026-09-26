@@ -10,6 +10,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useLanguage } from '../../i18n/languageContext.js'
+import { INITIAL_FLOW } from '../../lib/flow.js'
 import StepBusiness from './StepBusiness.jsx'
 import StepResults from './StepResults.jsx'
 import StepUsage from './StepUsage.jsx'
@@ -19,7 +20,8 @@ const TOTAL_STEPS = 3
 /**
  * Props:
  *   flow      the flow state (see lib/flow.js)
- *   onChange  call with the fields that changed, e.g. { step: 2 }
+ *   onChange  call with the fields that changed, e.g. { step: 2 }.
+ *             "Start over" passes INITIAL_FLOW, which resets every field.
  */
 export default function SavingsFlow({ flow, onChange }) {
   const { t, formatNumber } = useLanguage()
@@ -59,7 +61,9 @@ export default function SavingsFlow({ flow, onChange }) {
           onContinue={() => goTo(3)}
         />
       )}
-      {flow.step === 3 && <StepResults onBack={() => goTo(2)} />}
+      {flow.step === 3 && (
+        <StepResults flow={flow} onBack={() => goTo(2)} onReset={() => onChange(INITIAL_FLOW)} />
+      )}
     </section>
   )
 }

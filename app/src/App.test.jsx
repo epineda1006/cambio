@@ -161,3 +161,53 @@ describe('Savings flow, step 2', () => {
     expect(row('Plastic cups').textContent).toContain('250 a week')
   })
 })
+
+describe('Savings flow, step 3', () => {
+  function goToResults() {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(continueButton())
+    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
+  }
+
+  it('shows the yearly and monthly savings in the headline panel', () => {
+    goToResults()
+    expect(screen.getByText('Step 3 of 3')).toBeTruthy()
+    expect(screen.getByText('You could save')).toBeTruthy()
+    expect(screen.getByText(/^\$[\d,.]+ a year$/)).toBeTruthy()
+    expect(screen.getByText(/^\(\$[\d,.]+ a month\)$/)).toBeTruthy()
+  })
+
+  it('labels each money-saving best swap BEST and shows pounds and payback', () => {
+    goToResults()
+    expect(screen.getAllByText('BEST').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/lb of plastic avoided a year/).length).toBe(3)
+    expect(screen.getAllByText(/Pays for itself in|Never pays for itself/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/Takeout \(50%\): compostable options coming soon/)).toBeTruthy()
+  })
+
+  it('opens and closes the other options', () => {
+    goToResults()
+    const toggle = screen.getAllByRole('button', { name: /Compare 1 other option/ })[0]
+    expect(toggle.getAttribute('aria-expanded')).toBe('false')
+    fireEvent.click(toggle)
+    expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    expect(document.getElementById(toggle.getAttribute('aria-controls'))).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Hide other options' }))
+    expect(toggle.getAttribute('aria-expanded')).toBe('false')
+  })
+
+  it('shows every swap in "How we calculated this"', () => {
+    goToResults()
+    expect(screen.getByText('How we calculated this')).toBeTruthy()
+    expect(screen.getAllByText('Yearly savings').length).toBe(5) // one per swap in swaps.csv
+  })
+
+  it('starts over with every answer cleared', () => {
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'Start over' }))
+    expect(screen.getByText('Step 1 of 3')).toBeTruthy()
+    expect(screen.getByLabelText('How many customers a day?').value).toBe('')
+    for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
+  })
+})

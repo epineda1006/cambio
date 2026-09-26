@@ -63,7 +63,29 @@
     "continue": "See my savings"
   },
   "results": {
-    "title": "Your savings"
+    "title": "Your savings",
+    "couldSave": "You could save",
+    "perYear": "{amount} a year",
+    "perMonth": "({amount} a month)",
+    "pounds": "and use {pounds} pounds less plastic a year",
+    "noSavings": "None of these swaps save money at these prices.",
+    "best": "BEST",
+    "saves": "Saves {amount} a year",
+    "costsMore": "Costs {amount} more a year",
+    "breakEven": "Saves nothing a year",
+    "poundsAvoided": "{pounds} lb of plastic avoided a year",
+    "payback": "Pays for itself in {weeks} weeks",
+    "neverPaysBack": "Never pays for itself at these prices",
+    "noSavingSwap": "No swap saves money on this item yet.",
+    "nothingToSwap": "You entered 0 a week, so there's nothing to swap.",
+    "compare_one": "Compare {count} other option",
+    "compare_other": "Compare {count} other options",
+    "hideCompare": "Hide other options",
+    "placeholder": "Prices are examples, not real quotes.",
+    "takeout": "Takeout ({pct}): compostable options coming soon.",
+    "howTitle": "How we calculated this",
+    "howBasis": "Based on {weekly} a week, {pct} eaten here, open {days} days a week.",
+    "startOver": "Start over"
   },
   "errors": {
     "summaryTitle": "There is a problem",
@@ -111,6 +133,7 @@
     "details": "How we calculated this",
     "replacedPerWeek": "Items replaced per week",
     "itemsNeeded": "Reusables to keep on hand",
+    "pounds": "Plastic avoided (pounds per year)",
     "disposablesAvoided": "Disposables you stop buying (per year)",
     "washCost": "Washing (per year)",
     "replacementCost": "Replacing lost or broken items (per year)",

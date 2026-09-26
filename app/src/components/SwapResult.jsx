@@ -5,6 +5,7 @@
 // still show it and say so plainly, in red, instead of hiding it.
 
 import { useLanguage } from '../i18n/languageContext.js'
+import SwapBreakdown from './SwapBreakdown.jsx'
 
 /**
  * Props:
@@ -62,21 +63,7 @@ export default function SwapResult({ swapId, result, isBest }) {
           (or a judge) can check where the number came from. */}
       <details>
         <summary>{t('swap.details')}</summary>
-        <dl className="breakdown">
-          <dt>{t('swap.replacedPerWeek')}</dt>
-          {/* One decimal, so a small number like 0.05 isn't shown as 0. */}
-          <dd>{formatDecimal(r.replacedPerWeek)}</dd>
-          <dt>{t('swap.itemsNeeded')}</dt>
-          <dd>{formatNumber(r.itemsNeeded)}</dd>
-          <dt>{t('swap.disposablesAvoided')}</dt>
-          <dd>+{formatMoney(r.annualDisposablesAvoided)}</dd>
-          <dt>{t('swap.washCost')}</dt>
-          <dd>−{formatMoney(r.annualWashCost)}</dd>
-          <dt>{t('swap.replacementCost')}</dt>
-          <dd>−{formatMoney(r.annualReplacementCost)}</dd>
-          <dt>{t('swap.savings')}</dt>
-          <dd className={tone}>{formatMoney(r.annualSavings)}</dd>
-        </dl>
+        <SwapBreakdown result={r} />
       </details>
     </article>
   )

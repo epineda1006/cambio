@@ -594,6 +594,11 @@ fieldset.field {
   font-weight: 500;
 }
 
+/* Browsers indent every <dd> by 40px by default; summary lists don't want that. */
+.summary-list dd {
+  margin-left: 0;
+}
+
 .summary-value,
 .summary-actions,
 .summary-edit {
@@ -672,6 +677,118 @@ fieldset.field {
 
 .inset-text p {
   margin: 0.5rem 0;
+}
+
+/* ----- Results (Step 3) ----- */
+
+/* The green headline panel: money saved = green. */
+.result-panel {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  text-align: center;
+}
+
+.result-panel p {
+  margin: 0.25rem 0;
+}
+
+.result-panel-lead {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.result-panel-amount {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No savings: a plain panel, so $0 never looks like good news. */
+.result-panel-neutral {
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.result-panel-neutral .result-panel-lead {
+  font-size: 1.25rem;
+}
+
+.result-detail p {
+  margin: 0.15rem 0;
+}
+
+.result-swap {
+  font-weight: 500;
+}
+
+.tag-best {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.result-facts {
+  margin: 0.25rem 0;
+  padding-left: 1.2rem;
+  font-size: 1rem;
+}
+
+/* The other swaps, opened by "Compare N other options". */
+.compare-list {
+  margin: 0.25rem 0 0.5rem;
+  padding: 0 0 0 0.9rem;
+  border-left: 4px solid var(--divider);
+  list-style: none;
+  font-size: 1rem;
+}
+
+.compare-list li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem 0;
+}
+
+.compare-list li + li {
+  border-top: 1px solid var(--divider);
+}
+
+@media (min-width: 40rem) {
+  /* Results rows have two parts (item, details), not three. */
+  .summary-row.result-row {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* "How we calculated this" */
+.how {
+  margin: 0 0 1.5rem;
+}
+
+.how-item h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.375rem;
+}
+
+.how-item > p {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.how-swap {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  background: var(--surface);
+}
+
+.how-swap h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1875rem;
 }
 
 /* ----- Errors ----- */
@@ -855,12 +972,13 @@ fieldset.field {
   font-size: 1rem;
 }
 
+/* display: list-item keeps the browser's ▸ / ▾ marker, which shows that
+   this opens and closes. (display: flex would hide it.) */
 details summary {
-  min-height: var(--tap);
-  display: flex;
-  align-items: center;
+  display: list-item;
+  padding: 0.6rem 0; /* keeps the tap area at least 44px tall */
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.1875rem;
   font-weight: 500;
   color: var(--accent);
   text-decoration: underline;
