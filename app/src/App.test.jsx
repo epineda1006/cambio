@@ -24,10 +24,23 @@ function renderApp() {
   )
 }
 
+// Answer Step 1: 120 customers a day, open 6 days, half and half.
+function answerStepOne() {
+  fireEvent.change(screen.getByLabelText('How many customers a day?'), {
+    target: { value: '120' },
+  })
+  fireEvent.click(screen.getByLabelText('6'))
+  fireEvent.click(screen.getByLabelText(/Half and half/))
+}
+
+const continueButton = () => screen.getByRole('button', { name: 'Continue' })
+
 beforeEach(() => {
   window.localStorage.clear() // start every test in English, nothing saved
   // jsdom doesn't implement scrolling; replace it with a do-nothing function.
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
+  // Same for scrollIntoView (used by the error summary links).
+  Element.prototype.scrollIntoView = () => {}
 })
 
 afterEach(() => {
@@ -35,27 +48,51 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('switching tabs', () => {
-  it('keeps what the owner typed on the Savings screen', () => {
-    const { container } = renderApp()
-    const cupsQty = () => container.querySelector('#qty-plastic_cups')
-    const cupsDineIn = () => container.querySelector('#dinein-plastic_cups')
-    const daysOpen = () => container.querySelector('#days-open')
+describe('Savings flow, step 1', () => {
+  it('starts on step 1 with nothing preselected', () => {
+    renderApp()
+    expect(screen.getByText('Step 1 of 3')).toBeTruthy()
+    expect(screen.getByLabelText('How many customers a day?').value).toBe('')
+    for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
+  })
 
-    fireEvent.change(cupsQty(), { target: { value: '700' } })
-    fireEvent.change(cupsDineIn(), { target: { value: '80' } })
-    fireEvent.change(daysOpen(), { target: { value: '5' } })
+  it('lists every missing answer when Continue is pressed too early', () => {
+    renderApp()
+    fireEvent.click(continueButton())
 
-    // Go to the Map tab and back.
+    const summary = screen.getByRole('alert')
+    expect(summary.textContent).toContain('There is a problem')
+    expect(summary.textContent).toContain('Enter how many customers you have a day')
+    expect(summary.textContent).toContain('Select how many days a week you are open')
+    expect(summary.textContent).toContain('Select whether most orders are for here or to go')
+    expect(screen.getByText('Step 1 of 3')).toBeTruthy() // didn't move on
+  })
+
+  it('moves to step 2 once every answer is valid', () => {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(continueButton())
+    expect(screen.getByText('Step 2 of 3')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('What you use each week')
+  })
+})
+
+describe('switching tabs and steps', () => {
+  it('keeps the step and every answer', () => {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(continueButton())
+
+    // Go to the Map tab and back: still on step 2.
     fireEvent.click(screen.getByRole('button', { name: 'Map' }))
-    expect(cupsQty()).toBeNull() // the Savings screen really is gone
+    expect(screen.queryByText('Step 2 of 3')).toBeNull() // the flow really is gone
     fireEvent.click(screen.getByRole('button', { name: 'Savings' }))
+    expect(screen.getByText('Step 2 of 3')).toBeTruthy()
 
-    // Everything typed is still there...
-    expect(cupsQty().value).toBe('700')
-    expect(cupsDineIn().value).toBe('80')
-    expect(daysOpen().value).toBe('5')
-    // ...and so are the results computed from it.
-    expect(screen.getAllByText(/Saves \$[\d,.]+ per year/).length).toBeGreaterThan(0)
+    // Back to step 1: the answers are still there.
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    expect(screen.getByLabelText('How many customers a day?').value).toBe('120')
+    expect(screen.getByLabelText('6').checked).toBe(true)
+    expect(screen.getByLabelText(/Half and half/).checked).toBe(true)
   })
 })

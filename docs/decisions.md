@@ -5,6 +5,29 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 — OPEN QUESTION: orders per day or people served per day?
+
+**Status:** open. To be decided after interviews.
+
+**The mismatch:** Step 1 of the Savings flow asks "How many customers a day?", and its help text
+says to count each order as one customer. But the per-customer ratios in
+`app/src/data/items.csv` (for example 0.8 cups per customer) assume one *person*. A family
+order for four people counts as 1 customer but probably uses about 4 forks, so the current
+wording could undercount.
+
+**Options:**
+
+- **Orders per day:** easier for owners, who often know it from their register or POS. The
+  ratios would then need to be per order (for example forks per order).
+- **People served per day:** matches the current per-person ratios, but it's harder for an
+  owner to know.
+
+**To ask in interviews:** "Do you know roughly how many orders you do a day? How many
+people is a typical order?" Then update the question, the help text (EN/ES), and the
+`per_customer` ratios together.
+
+---
+
 ## 2026-09-26 — Calculator: how many reusables, and what they cost to run
 
 **Context:** The README defines `upfront_cost = reusable items needed x reusable unit price` and

@@ -19,6 +19,46 @@
     "owner": "Savings",
     "map": "Map"
   },
+  "flow": {
+    "stepOf": "Step {n} of {total}",
+    "continue": "Continue",
+    "back": "Back"
+  },
+  "business": {
+    "title": "Your business",
+    "customersLabel": "How many customers a day?",
+    "customersHint": "A rough average is fine. Count each order as one customer.",
+    "daysLegend": "Days open per week",
+    "dineInLegend": "For here or to go?",
+    "dineInHint": "Think about a normal week.",
+    "choices": {
+      "mostlyToGo": {
+        "label": "Mostly to go",
+        "hint": "About {pct} eaten here"
+      },
+      "halfAndHalf": {
+        "label": "Half and half",
+        "hint": "About {pct} eaten here"
+      },
+      "mostlyHere": {
+        "label": "Mostly here",
+        "hint": "About {pct} eaten here"
+      }
+    }
+  },
+  "usage": {
+    "title": "What you use each week"
+  },
+  "errors": {
+    "summaryTitle": "There is a problem",
+    "prefix": "Error:",
+    "customersRequired": "Enter how many customers you have a day",
+    "customersInvalid": "Enter a whole number, like 80",
+    "customersTooLow": "Enter at least 1 customer a day",
+    "customersTooHigh": "Enter {max} customers a day or fewer",
+    "daysRequired": "Select how many days a week you are open",
+    "dineInRequired": "Select whether most orders are for here or to go"
+  },
   "owner": {
     "title": "Which swaps save you money?",
     "intro": "Enter what you buy each week. We'll show which reusable swaps save you money.",

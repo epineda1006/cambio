@@ -19,6 +19,46 @@
     "owner": "Ahorros",
     "map": "Mapa"
   },
+  "flow": {
+    "stepOf": "Paso {n} de {total}",
+    "continue": "Continuar",
+    "back": "Atrás"
+  },
+  "business": {
+    "title": "Su negocio",
+    "customersLabel": "¿Cuántos clientes al día?",
+    "customersHint": "Con un número aproximado está bien. Cuente cada pedido como un cliente.",
+    "daysLegend": "Días abiertos por semana",
+    "dineInLegend": "¿Para aquí o para llevar?",
+    "dineInHint": "Piense en una semana normal.",
+    "choices": {
+      "mostlyToGo": {
+        "label": "Casi todo para llevar",
+        "hint": "Cerca del {pct} se come aquí"
+      },
+      "halfAndHalf": {
+        "label": "Mitad y mitad",
+        "hint": "Cerca del {pct} se come aquí"
+      },
+      "mostlyHere": {
+        "label": "Casi todo para aquí",
+        "hint": "Cerca del {pct} se come aquí"
+      }
+    }
+  },
+  "usage": {
+    "title": "Lo que usa cada semana"
+  },
+  "errors": {
+    "summaryTitle": "Hay un problema",
+    "prefix": "Error:",
+    "customersRequired": "Escriba cuántos clientes tiene al día",
+    "customersInvalid": "Escriba un número entero, por ejemplo 80",
+    "customersTooLow": "Escriba por lo menos 1 cliente al día",
+    "customersTooHigh": "Escriba {max} clientes al día o menos",
+    "daysRequired": "Elija cuántos días a la semana abre",
+    "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar"
+  },
   "owner": {
     "title": "¿Qué cambios le ahorran dinero?",
     "intro": "Escriba lo que compra cada semana. Le mostramos qué cambios a reutilizables le ahorran dinero.",
