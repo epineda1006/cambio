@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "Cambio",
+    "tagline": "Find the plastic swaps that save your business money."
+  },
+  "language": {
+    "label": "Language",
+    "en": "EN",
+    "es": "ES"
+  },
+  "placeholder": {
+    "badge": "Placeholder prices, not real quotes",
+    "explain": "These numbers are examples for testing. Real prices will come from local suppliers and restaurant interviews."
+  },
+  "items": {
+    "plastic_cups": "Plastic cups",
+    "takeout_clamshells": "Takeout clamshells",
+    "plastic_forks": "Plastic forks"
+  },
+  "swaps": {
+    "reusable_tumbler": "Reusable tumbler",
+    "glass_cup": "Glass cup",
+    "reusable_basket": "Reusable basket",
+    "reusable_plate": "Reusable plate",
+    "metal_fork": "Metal fork"
+  }
+}

@@ -5,11 +5,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import LanguageProvider from './i18n/LanguageProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   // StrictMode is a development-only helper. It runs some code twice on
   // purpose to surface bugs early. It has no effect in the production build.
   <StrictMode>
-    <App />
+    {/* LanguageProvider wraps App so every component can call useLanguage(). */}
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
   </StrictMode>,
 )

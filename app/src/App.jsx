@@ -5,12 +5,20 @@
 // Components are named with a capital letter (App, not app) so React can tell
 // them apart from plain HTML tags like <main> or <h1>.
 //
-// TEMPORARY: the text below is hardcoded only until step 5, when every
-// user-facing string moves into i18n/en.json and i18n/es.json.
+// All visible text comes from t('some.key'), which looks it up in
+// i18n/en.json or i18n/es.json. Never type user-facing words directly here.
+
+import LanguageToggle from './components/LanguageToggle.jsx'
+import { useLanguage } from './i18n/languageContext.js'
+
 function App() {
+  const { t } = useLanguage()
+
   return (
     <main>
-      <h1>Cambio</h1>
+      <LanguageToggle />
+      <h1>{t('app.name')}</h1>
+      <p>{t('app.tagline')}</p>
     </main>
   )
 }

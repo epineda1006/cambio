@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "Cambio",
+    "tagline": "Encuentre los cambios de plástico que le ahorran dinero a su negocio."
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "EN",
+    "es": "ES"
+  },
+  "placeholder": {
+    "badge": "Precios de ejemplo, no cotizaciones reales",
+    "explain": "Estos números son ejemplos de prueba. Los precios reales vendrán de proveedores locales y entrevistas con restaurantes."
+  },
+  "items": {
+    "plastic_cups": "Vasos de plástico",
+    "takeout_clamshells": "Contenedores para llevar",
+    "plastic_forks": "Tenedores de plástico"
+  },
+  "swaps": {
+    "reusable_tumbler": "Vaso reutilizable",
+    "glass_cup": "Vaso de vidrio",
+    "reusable_basket": "Canasta reutilizable",
+    "reusable_plate": "Plato reutilizable",
+    "metal_fork": "Tenedor de metal"
+  }
+}
