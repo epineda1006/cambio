@@ -5,6 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cambio</title>
+    <script>
+      // Runs before the app loads: apply a saved light/dark choice right away
+      // so a dark-theme user doesn't see a white flash. (See src/lib/theme.js.)
+      try {
+        var saved = localStorage.getItem('cambio.theme')
+        if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

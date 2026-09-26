@@ -8,6 +8,12 @@
     "en": "EN",
     "es": "ES"
   },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
+  },
   "placeholder": {
     "badge": "Placeholder prices, not real quotes",
     "explain": "These numbers are examples for testing. Real prices will come from local suppliers and restaurant interviews."

@@ -1,0 +1,156 @@
+/* styles.css: every color and base style for the app.
+ *
+ * CSS CUSTOM PROPERTIES ("CSS variables")
+ * A name starting with -- holds a value, e.g. --bg: #f7f6f2. Anywhere else
+ * we write var(--bg) instead of the color itself. To make a dark theme we
+ * don't restyle anything; we only change what the variables hold.
+ *
+ * HOW THE THEME IS CHOSEN (three layers, the last matching one wins)
+ *   1. :root                        light colors (the default)
+ *   2. @media (prefers-color-scheme: dark)
+ *                                   the phone is in dark mode AND the owner
+ *                                   hasn't picked "light" with the toggle
+ *   3. :root[data-theme="dark"]     the owner picked "dark" with the toggle
+ * The toggle sets data-theme="light" or "dark" on the <html> tag (see
+ * lib/theme.js), which overrides the phone setting in either direction.
+ */
+
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --text: #1c1f1d;
+  --text-muted: #56605a;
+  --border: #d5d9d2;
+  --accent: #1d7248; /* Cambio green; white text on it passes contrast checks */
+  --accent-contrast: #ffffff;
+  --positive: #1d7248;
+  --negative: #b3261e;
+  --warning-bg: #fff3d1;
+  --warning-text: #6b4200;
+  --focus: #1d63c8;
+
+  --radius: 12px;
+  --tap: 44px; /* minimum size for anything you tap (Apple/Google guideline) */
+
+  /* Tells the browser to draw built-in controls (scrollbars, sliders)
+     to match the current theme. */
+  color-scheme: light;
+}
+
+/* Layer 2: follow the phone, unless the owner chose "light". */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #111412;
+    --surface: #1b201d;
+    --text: #edf1ee;
+    --text-muted: #a4aea8;
+    --border: #2e3631;
+    --accent: #5fd39a;
+    --accent-contrast: #0b1f14;
+    --positive: #5fd39a;
+    --negative: #ff8a80;
+    --warning-bg: #3a2e10;
+    --warning-text: #ffd479;
+    --focus: #8ab4ff;
+    color-scheme: dark;
+  }
+}
+
+/* Layer 3: the owner chose "dark" with the toggle. (Same values as above;
+   CSS can't share one block between a media query and a selector.) */
+:root[data-theme='dark'] {
+  --bg: #111412;
+  --surface: #1b201d;
+  --text: #edf1ee;
+  --text-muted: #a4aea8;
+  --border: #2e3631;
+  --accent: #5fd39a;
+  --accent-contrast: #0b1f14;
+  --positive: #5fd39a;
+  --negative: #ff8a80;
+  --warning-bg: #3a2e10;
+  --warning-text: #ffd479;
+  --focus: #8ab4ff;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+
+/* box-sizing: border-box makes width include padding and border, which is
+   what most people expect ("this box is 100px wide, period"). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  /* System fonts: already on the phone, so nothing extra to download. */
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* A clear outline when moving through the page with a keyboard. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Header toggles (language + theme) ---------- */
+
+.toggle-group {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.toggle-group button,
+.theme-toggle {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 0.9rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* The selected option in a group is filled with the accent color. */
+.toggle-group button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.theme-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}

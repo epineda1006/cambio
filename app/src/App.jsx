@@ -9,6 +9,7 @@
 // i18n/en.json or i18n/es.json. Never type user-facing words directly here.
 
 import LanguageToggle from './components/LanguageToggle.jsx'
+import ThemeToggle from './components/ThemeToggle.jsx'
 import { useLanguage } from './i18n/languageContext.js'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   return (
     <main>
       <LanguageToggle />
+      <ThemeToggle />
       <h1>{t('app.name')}</h1>
       <p>{t('app.tagline')}</p>
     </main>

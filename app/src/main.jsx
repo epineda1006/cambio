@@ -4,6 +4,9 @@
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+// Importing a .css file from JavaScript is a Vite feature: it adds the styles
+// to the page (and bundles them into dist/ for production).
+import './styles.css'
 import App from './App.jsx'
 import LanguageProvider from './i18n/LanguageProvider.jsx'
 
