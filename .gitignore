@@ -1,0 +1,21 @@
+# .gitignore tells git which files to never track.
+# Rule of thumb: ignore anything that can be regenerated (installs, builds)
+# or that is specific to one computer.
+
+# JavaScript dependencies: recreated by `npm install` from package.json
+node_modules/
+
+# Vite production build output: recreated by `npm run build`
+dist/
+
+# Python virtual environment: recreated by `python3 -m venv .venv`
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Local environment variables (may hold secrets)
+.env
+.env.local
+
+# OS / editor clutter
+.DS_Store

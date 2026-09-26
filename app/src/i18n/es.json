@@ -1,0 +1,89 @@
+{
+  "app": {
+    "name": "Cambio",
+    "tagline": "Encuentre los cambios de plástico que le ahorran dinero a su negocio."
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "EN",
+    "es": "ES"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "switchToDark": "Cambiar a tema oscuro",
+    "switchToLight": "Cambiar a tema claro"
+  },
+  "nav": {
+    "label": "Secciones principales",
+    "owner": "Ahorros",
+    "map": "Mapa"
+  },
+  "owner": {
+    "title": "¿Qué cambios le ahorran dinero?",
+    "intro": "Escriba lo que compra cada semana. Le mostramos qué cambios a reutilizables le ahorran dinero.",
+    "daysOpen": "Días abiertos por semana",
+    "daysOpenHelp": "Sirve para calcular cuántos artículos reutilizables necesita tener.",
+    "weeklyQty": "¿Cuántos usa por semana?",
+    "dineInShare": "Para comer aquí",
+    "dineInHelp": "Los reutilizables solo reemplazan pedidos para comer aquí. Los pedidos para llevar siguen necesitando desechables.",
+    "currentSpend": "Hoy gasta unos {amount} al año en estos.",
+    "noDineIn": "Si 0% de los pedidos son para comer aquí, no hay nada que cambiar. Los reutilizables solo sirven para esos pedidos."
+  },
+  "summary": {
+    "title": "Sus ahorros al año",
+    "empty": "Escriba cuántos artículos usa por semana para ver sus ahorros.",
+    "perYear": "al año",
+    "plastic": "{count} artículos desechables evitados al año",
+    "upfront": "Costo inicial de los reutilizables: {amount}",
+    "basis": "Usando el mejor cambio para cada artículo.",
+    "noSavingSwap_one": "{count} artículo no tiene un cambio que ahorre dinero con estos precios.",
+    "noSavingSwap_other": "{count} artículos no tienen un cambio que ahorre dinero con estos precios."
+  },
+  "swap": {
+    "best": "Mejor opción",
+    "saves": "Ahorra {amount} al año",
+    "costsMore": "Le cuesta {amount} más al año",
+    "breakEven": "No ahorra nada al año (queda igual)",
+    "payback": "Se paga solo en {weeks} semanas",
+    "neverPaysBack": "Nunca se paga solo con estos precios",
+    "upfront_one": "Costo inicial: {amount} ({count} reutilizable)",
+    "upfront_other": "Costo inicial: {amount} ({count} reutilizables)",
+    "plastic": "{count} desechables menos al año",
+    "details": "Cómo lo calculamos",
+    "replacedPerWeek": "Artículos reemplazados por semana",
+    "itemsNeeded": "Reutilizables que debe tener",
+    "disposablesAvoided": "Desechables que deja de comprar (al año)",
+    "washCost": "Lavado (al año)",
+    "replacementCost": "Reponer artículos perdidos o rotos (al año)",
+    "savings": "Ahorro al año"
+  },
+  "map": {
+    "title": "Dónde empezar",
+    "comingSoon": "Próximamente: un mapa de los barrios del condado de Fresno, ordenados según dónde un programa de reutilizables ayudaría más, para que el piloto empiece donde más importa.",
+    "placeholderData": "Datos de ejemplo, todavía sin barrios reales",
+    "sourcesTitle": "Qué usará el mapa",
+    "sources": {
+      "restaurants": "Cuántos restaurantes hay en cada barrio",
+      "census": "Datos del censo: población, ingresos y hogares de habla hispana",
+      "calenviroscreen": "Puntajes de CalEnviroScreen para comunidades desfavorecidas"
+    },
+    "scoreNote": "Cada barrio recibe un puntaje sencillo y transparente, con una explicación de por qué queda en ese lugar."
+  },
+  "placeholder": {
+    "badge": "Precios de ejemplo, no cotizaciones reales",
+    "explain": "Estos números son ejemplos de prueba. Los precios reales vendrán de proveedores locales y entrevistas con restaurantes."
+  },
+  "items": {
+    "plastic_cups": "Vasos de plástico",
+    "takeout_clamshells": "Contenedores para llevar",
+    "plastic_forks": "Tenedores de plástico"
+  },
+  "swaps": {
+    "reusable_tumbler": "Vaso reutilizable",
+    "glass_cup": "Vaso de vidrio",
+    "reusable_basket": "Canasta reutilizable",
+    "reusable_plate": "Plato reutilizable",
+    "metal_fork": "Tenedor de metal"
+  }
+}

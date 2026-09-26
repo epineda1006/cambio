@@ -57,18 +57,24 @@ For each disposable item an owner enters:
 
 - `weekly_qty` = how many they use per week
 - `dine_in_share` = fraction of orders eaten on site (reuse only applies here)
+- `days_open` = days open per week (one setting for the whole restaurant, default 7)
 - `annual_disposable_cost` = weekly_qty x unit_cost x 52
 
 For a swap:
 
 - `replaced_per_week` = weekly_qty x dine_in_share
 - `upfront_cost` = reusable items needed x reusable unit price
+  - `items_needed` = ceil(replaced_per_week / days_open x par_multiplier)
 - `annual_ongoing_cost` = washing cost + replacement of lost or broken items
+  - washing = wash_cost_per_use x replaced_per_week x 52
+  - replacement = items_needed x annual_loss_rate x reusable_unit_price
 - `annual_savings` = (replaced_per_week x unit_cost x 52) - annual_ongoing_cost
 - `payback_weeks` = upfront_cost / (annual_savings / 52)
 - `plastic_avoided_per_year` = replaced_per_week x 52
 
 If `annual_savings` is zero or negative, the app says so honestly instead of hiding the swap.
+
+`par_multiplier` (stock on hand, in days of use), `wash_cost_per_use`, and `annual_loss_rate` are set per swap in `swaps.csv`. The summary card totals the best swap per item (highest `annual_savings`); an item whose best swap does not save money adds $0 and is reported. See `docs/decisions.md` (2026-09-26). The math lives in `app/src/lib/calculator.js`, with tests in `calculator.test.js`.
 
 ---
 
@@ -95,6 +101,8 @@ npm install
 npm run dev
 ```
 Then open the local URL Vite prints (usually http://localhost:5173).
+
+Run the tests (calculator math, CSV loading, EN/ES text) with `npm test`.
 
 **Data pipeline**
 ```bash
