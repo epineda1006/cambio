@@ -14,6 +14,17 @@
     "switchToDark": "Cambiar a tema oscuro",
     "switchToLight": "Cambiar a tema claro"
   },
+  "nav": {
+    "label": "Secciones principales",
+    "owner": "Ahorros",
+    "map": "Mapa"
+  },
+  "owner": {
+    "title": "¿Qué cambios le ahorran dinero?"
+  },
+  "map": {
+    "title": "Dónde empezar"
+  },
   "placeholder": {
     "badge": "Precios de ejemplo, no cotizaciones reales",
     "explain": "Estos números son ejemplos de prueba. Los precios reales vendrán de proveedores locales y entrevistas con restaurantes."

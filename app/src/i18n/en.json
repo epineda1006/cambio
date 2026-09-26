@@ -14,6 +14,17 @@
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
   },
+  "nav": {
+    "label": "Main sections",
+    "owner": "Savings",
+    "map": "Map"
+  },
+  "owner": {
+    "title": "Which swaps save you money?"
+  },
+  "map": {
+    "title": "Where to start"
+  },
   "placeholder": {
     "badge": "Placeholder prices, not real quotes",
     "explain": "These numbers are examples for testing. Real prices will come from local suppliers and restaurant interviews."
