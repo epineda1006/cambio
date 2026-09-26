@@ -5,6 +5,12 @@
 //   Item cards          inputs + swap results for each disposable
 //   Placeholder note    reminder that prices aren't real yet
 //
+// WHERE THE STATE LIVES
+// This screen does NOT own the owner's inputs; App.jsx does, and passes them
+// in as props. Why: when the owner taps the Map tab, React removes
+// ("unmounts") this screen, and any state inside it is thrown away. State
+// kept in App survives, because App is always on screen.
+//
 // STATE vs DERIVED VALUES
 // Only the owner's inputs are stored in state (daysOpen and each item's
 // quantity and dine-in share). Everything else (every result, the best swap,
@@ -12,7 +18,6 @@
 // We never store results separately, so they can never get out of sync with
 // the inputs. The math is fast, so recalculating each time is fine.
 
-import { useState } from 'react'
 import ItemCard from '../components/ItemCard.jsx'
 import SummaryCard from '../components/SummaryCard.jsx'
 import { useLanguage } from '../i18n/languageContext.js'
@@ -20,8 +25,6 @@ import { evaluateSwap, pickBestSwap, summarize } from '../lib/calculator.js'
 import { swapItems } from '../lib/loadSwaps.js'
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7]
-const DEFAULT_DAYS_OPEN = 7
-const DEFAULT_DINE_IN_PCT = 50
 
 // True if any price in swaps.csv is still marked PLACEHOLDER.
 const HAS_PLACEHOLDER = swapItems.some((item) => item.swaps.some((swap) => swap.isPlaceholder))
@@ -33,25 +36,15 @@ function toQuantity(text) {
   return Number.isFinite(n) && n > 0 ? n : 0
 }
 
-export default function OwnerTool() {
+/**
+ * Props (all owned by App.jsx):
+ *   daysOpen          1 to 7
+ *   onDaysOpenChange  call with a new number of days
+ *   inputs            { plastic_cups: { weeklyQty: '', dineInPct: 50 }, ... }
+ *   onItemChange      call with (itemId, { weeklyQty } or { dineInPct })
+ */
+export default function OwnerTool({ daysOpen, onDaysOpenChange, inputs, onItemChange }) {
   const { t, formatNumber } = useLanguage()
-
-  const [daysOpen, setDaysOpen] = useState(DEFAULT_DAYS_OPEN)
-
-  // One entry per item: { plastic_cups: { weeklyQty: '', dineInPct: 50 }, ... }
-  // Object.fromEntries turns a list of [key, value] pairs into an object.
-  const [inputs, setInputs] = useState(() =>
-    Object.fromEntries(
-      swapItems.map((item) => [item.itemId, { weeklyQty: '', dineInPct: DEFAULT_DINE_IN_PCT }]),
-    ),
-  )
-
-  // Update one field of one item. State must be REPLACED, not changed in
-  // place, so React notices; the "..." (spread) copies the old values and the
-  // new ones overwrite just what changed.
-  function updateItem(itemId, changes) {
-    setInputs((prev) => ({ ...prev, [itemId]: { ...prev[itemId], ...changes } }))
-  }
 
   // ---- Derived values: recalculated on every redraw ----
   const itemResults = swapItems.map((item) => {
@@ -84,7 +77,7 @@ export default function OwnerTool() {
           <select
             id="days-open"
             value={daysOpen}
-            onChange={(e) => setDaysOpen(Number(e.target.value))}
+            onChange={(e) => onDaysOpenChange(Number(e.target.value))}
           >
             {DAYS.map((d) => (
               <option key={d} value={d}>
@@ -101,7 +94,7 @@ export default function OwnerTool() {
           key={r.itemId}
           item={r.item}
           input={r.input}
-          onChange={(changes) => updateItem(r.itemId, changes)}
+          onChange={(changes) => onItemChange(r.itemId, changes)}
           qty={r.qty}
           results={r.swaps}
           best={r.best}
