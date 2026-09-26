@@ -577,6 +577,103 @@ fieldset.field {
   font-size: 1rem;
 }
 
+/* ----- Summary list (Step 2: what you use each week) -----
+ * One row per item: name, value, actions. On phones the three parts stack;
+ * from 40rem wide they sit side by side in columns. */
+.summary-list {
+  margin: 0 0 1.5rem;
+  border-top: 1px solid var(--divider);
+}
+
+.summary-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.summary-key {
+  font-weight: 500;
+}
+
+.summary-value,
+.summary-actions,
+.summary-edit {
+  margin: 0.15rem 0 0;
+}
+
+.summary-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.25rem;
+}
+
+.summary-edit .field {
+  margin: 0.5rem 0 0.75rem;
+}
+
+/* Save + Cancel side by side (they wrap if there isn't room). */
+.edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+}
+
+/* A primary button that is only as wide as its text. */
+.button.button-inline {
+  display: inline-block;
+  width: auto;
+}
+
+/* Small label after a value: "Estimated" (grey) or "You entered" (green). */
+.tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  vertical-align: 0.1em;
+}
+
+.tag-entered {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (min-width: 40rem) {
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .summary-value,
+  .summary-actions {
+    margin: 0;
+  }
+
+  .summary-edit {
+    grid-column: 2 / -1;
+    margin: 0;
+  }
+}
+
+/* ----- Inset text: a side note with a thick left border ----- */
+.inset-text {
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 6px solid var(--divider);
+}
+
+.inset-text p {
+  margin: 0.5rem 0;
+}
+
 /* ----- Errors ----- */
 
 .error-summary {

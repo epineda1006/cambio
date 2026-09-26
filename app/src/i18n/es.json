@@ -47,7 +47,23 @@
     }
   },
   "usage": {
-    "title": "Lo que usa cada semana"
+    "title": "Lo que usa cada semana",
+    "intro": "Lo calculamos con sus respuestas. Cambie cualquier número que no parezca correcto.",
+    "perWeek": "{count} a la semana",
+    "estimated": "Estimado",
+    "entered": "Usted lo escribió",
+    "change": "Cambiar",
+    "useEstimate": "Usar estimado ({count})",
+    "editLabel": "{item} por semana",
+    "perWeekLabel": "Por semana",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "basis": "Calculado con {customers} clientes al día, {days} días a la semana.",
+    "placeholder": "Las cantidades por cliente son ejemplos hasta que las confirmemos en entrevistas.",
+    "continue": "Ver mis ahorros"
+  },
+  "results": {
+    "title": "Sus ahorros"
   },
   "errors": {
     "summaryTitle": "Hay un problema",
@@ -57,7 +73,9 @@
     "customersTooLow": "Escriba por lo menos 1 cliente al día",
     "customersTooHigh": "Escriba {max} clientes al día o menos",
     "daysRequired": "Elija cuántos días a la semana abre",
-    "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar"
+    "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar",
+    "weeklyInvalid": "Escriba un número entero, por ejemplo 400",
+    "weeklyTooHigh": "Escriba {max} o menos"
   },
   "owner": {
     "title": "¿Qué cambios le ahorran dinero?",

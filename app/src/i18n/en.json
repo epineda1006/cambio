@@ -47,7 +47,23 @@
     }
   },
   "usage": {
-    "title": "What you use each week"
+    "title": "What you use each week",
+    "intro": "We estimated this from your answers. Change any number that looks wrong.",
+    "perWeek": "{count} a week",
+    "estimated": "Estimated",
+    "entered": "You entered",
+    "change": "Change",
+    "useEstimate": "Use estimate ({count})",
+    "editLabel": "{item} per week",
+    "perWeekLabel": "Per week",
+    "save": "Save",
+    "cancel": "Cancel",
+    "basis": "Estimated from {customers} customers a day, {days} days a week.",
+    "placeholder": "The amounts per customer are examples until we check them in interviews.",
+    "continue": "See my savings"
+  },
+  "results": {
+    "title": "Your savings"
   },
   "errors": {
     "summaryTitle": "There is a problem",
@@ -57,7 +73,9 @@
     "customersTooLow": "Enter at least 1 customer a day",
     "customersTooHigh": "Enter {max} customers a day or fewer",
     "daysRequired": "Select how many days a week you are open",
-    "dineInRequired": "Select whether most orders are for here or to go"
+    "dineInRequired": "Select whether most orders are for here or to go",
+    "weeklyInvalid": "Enter a whole number, like 400",
+    "weeklyTooHigh": "Enter {max} or fewer"
   },
   "owner": {
     "title": "Which swaps save you money?",

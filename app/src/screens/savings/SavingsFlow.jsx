@@ -2,7 +2,7 @@
 //
 //   Step 1  Your business           (StepBusiness.jsx)
 //   Step 2  What you use each week  (StepUsage.jsx)
-//   Step 3  Your savings            (coming next)
+//   Step 3  Your savings            (StepResults.jsx)
 //
 // Which step is showing, and every answer, live in App (the `flow` prop),
 // so switching steps or tabs never loses anything. This component just
@@ -11,6 +11,7 @@
 import { useEffect, useRef } from 'react'
 import { useLanguage } from '../../i18n/languageContext.js'
 import StepBusiness from './StepBusiness.jsx'
+import StepResults from './StepResults.jsx'
 import StepUsage from './StepUsage.jsx'
 
 const TOTAL_STEPS = 3
@@ -50,7 +51,15 @@ export default function SavingsFlow({ flow, onChange }) {
       {flow.step === 1 && (
         <StepBusiness flow={flow} onChange={onChange} onContinue={() => goTo(2)} />
       )}
-      {flow.step === 2 && <StepUsage onBack={() => goTo(1)} />}
+      {flow.step === 2 && (
+        <StepUsage
+          flow={flow}
+          onChange={onChange}
+          onBack={() => goTo(1)}
+          onContinue={() => goTo(3)}
+        />
+      )}
+      {flow.step === 3 && <StepResults onBack={() => goTo(2)} />}
     </section>
   )
 }
