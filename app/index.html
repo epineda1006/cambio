@@ -1,7 +1,16 @@
 <!doctype html>
-<html lang="en">
+<!--
+  translate="no" and the "notranslate" meta tag below stop browsers (Chrome,
+  Safari, Edge) from offering to auto-translate the page. Cambio has its own
+  EN/ES toggle with reviewed Spanish; a machine translation would replace our
+  wording, can garble numbers and dollar amounts, and fights with React when
+  it rewrites text on screen. (lang="en" is updated by the app when the
+  language changes.)
+-->
+<html lang="en" translate="no">
   <head>
     <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Cambio</title>
