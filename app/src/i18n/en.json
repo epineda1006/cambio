@@ -87,6 +87,16 @@
     "howBasis": "Based on {weekly} a week, {pct} eaten here, open {days} days a week.",
     "startOver": "Start over"
   },
+  "share": {
+    "title": "My Cambio plan",
+    "intro": "I could save {year} a year ({month} a month) by switching dine-in orders to reusables.",
+    "pounds": "That's {pounds} pounds of plastic avoided a year.",
+    "itemLine": "- {item}: {swap} (saves {amount} a year)",
+    "itemNoSaving": "- {item}: no swap saves money yet",
+    "button": "Share my plan",
+    "copied": "Copied. You can paste it into a message.",
+    "manual": "Copy this text to share your plan:"
+  },
   "errors": {
     "summaryTitle": "There is a problem",
     "prefix": "Error:",

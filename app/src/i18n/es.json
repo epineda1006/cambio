@@ -87,6 +87,16 @@
     "howBasis": "Con {weekly} a la semana, {pct} para comer aquí y {days} días abiertos a la semana.",
     "startOver": "Empezar de nuevo"
   },
+  "share": {
+    "title": "Mi plan de Cambio",
+    "intro": "Podría ahorrar {year} al año ({month} al mes) si uso reutilizables en los pedidos para comer aquí.",
+    "pounds": "Son {pounds} libras de plástico evitadas al año.",
+    "itemLine": "- {item}: {swap} (ahorra {amount} al año)",
+    "itemNoSaving": "- {item}: por ahora ningún cambio ahorra dinero",
+    "button": "Compartir mi plan",
+    "copied": "Copiado. Puede pegarlo en un mensaje.",
+    "manual": "Copie este texto para compartir su plan:"
+  },
   "errors": {
     "summaryTitle": "Hay un problema",
     "prefix": "Error:",

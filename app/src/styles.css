@@ -134,7 +134,8 @@ h3 {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
   color: inherit;
 }
@@ -763,6 +764,28 @@ fieldset.field {
   .summary-row.result-row {
     grid-template-columns: 1fr 2fr;
   }
+}
+
+/* Share my plan */
+.share {
+  margin: 0 0 1rem;
+}
+
+.share-status {
+  min-height: 1.5em; /* reserve the line so nothing jumps when "Copied" appears */
+  margin: 0.5rem 0 0;
+  color: var(--positive);
+  font-weight: 500;
+}
+
+.share textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  font: inherit;
+  font-size: 1rem;
 }
 
 /* "How we calculated this" */

@@ -87,6 +87,34 @@ export function translatePlural(language, key, count, vars = {}) {
   return translate(language, fullKey, { count, ...vars })
 }
 
+/**
+ * Number formatters for one language, built on Intl.NumberFormat (the
+ * browser's built-in formatter). A plain function, not a hook, so code
+ * outside components (like the "Share my plan" text) formats numbers exactly
+ * the way the screen does.
+ */
+export function createFormatters(language) {
+  const locale = LOCALES[language]
+  // Money: whole dollars for big amounts ("$1,246"), cents for small ones
+  // ("$11.25"), so a small loss never rounds to a misleading "$0".
+  const money = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  })
+  const moneyCents = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' })
+  const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 })
+  const oneDecimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 })
+  const percent = new Intl.NumberFormat(locale, { style: 'percent' })
+
+  return {
+    formatMoney: (n) => (Math.abs(n) < 100 ? moneyCents : money).format(n),
+    formatNumber: (n) => whole.format(n),
+    formatDecimal: (n) => oneDecimal.format(n),
+    formatPercent: (fraction) => percent.format(fraction), // 0.5 -> "50%"
+  }
+}
+
 // The Context object itself. Its value is filled in by LanguageProvider.
 export const LanguageContext = createContext(null)
 

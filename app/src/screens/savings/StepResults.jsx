@@ -5,6 +5,7 @@
 //                   pounds of plastic avoided, payback; "Compare N other
 //                   options" opens the rest right there
 //   Inset note      placeholder prices + the takeout share
+//   Share my plan   phone share sheet, or copy the text
 //   How we calculated this   every step of the math (a <details>)
 //   Start over
 //
@@ -15,9 +16,11 @@
 // shown, in red, and is never labeled BEST.
 
 import { useState } from 'react'
+import ShareButton from '../../components/ShareButton.jsx'
 import SwapBreakdown from '../../components/SwapBreakdown.jsx'
 import { useLanguage } from '../../i18n/languageContext.js'
 import { HAS_PLACEHOLDER_DATA, buildResults } from '../../lib/results.js'
+import { buildShareText } from '../../lib/shareText.js'
 
 /**
  * Props:
@@ -26,7 +29,8 @@ import { HAS_PLACEHOLDER_DATA, buildResults } from '../../lib/results.js'
  *   onReset  clear every answer and go back to Step 1
  */
 export default function StepResults({ flow, onBack, onReset }) {
-  const { t, tPlural, formatMoney, formatNumber, formatDecimal, formatPercent } = useLanguage()
+  const { t, tPlural, language, formatMoney, formatNumber, formatDecimal, formatPercent } =
+    useLanguage()
 
   // Which items have "Compare other options" open. A Set holds each id once.
   // This is just how the screen is showing things, so it can stay here.
@@ -165,6 +169,12 @@ export default function StepResults({ flow, onBack, onReset }) {
         {HAS_PLACEHOLDER_DATA && <p>{t('results.placeholder')}</p>}
         <p>{t('results.takeout', { pct: formatPercent(results.takeoutPct / 100) })}</p>
       </div>
+
+      {/* The shared text follows the language currently on screen. */}
+      <ShareButton
+        title={t('share.title')}
+        text={buildShareText(results, language, HAS_PLACEHOLDER_DATA)}
+      />
 
       {/* ---- Every step of the math ----
           <details> opens and closes on tap with no JavaScript. */}

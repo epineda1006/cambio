@@ -6,9 +6,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import {
-  LOCALES,
   LanguageContext,
   STORAGE_KEY,
+  createFormatters,
   detectInitialLanguage,
   translate,
   translatePlural,
@@ -50,20 +50,6 @@ export default function LanguageProvider({ children }) {
   // useMemo rebuilds this object only when the language changes, instead of
   // on every redraw, so components that read it don't redraw needlessly.
   const value = useMemo(() => {
-    const locale = LOCALES[language]
-    // Intl.NumberFormat formats numbers the way each language expects.
-    // Money: whole dollars for big amounts ("$1,246"), cents for small ones
-    // ("$11.25"), so a small loss never rounds to a misleading "$0".
-    const money = new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    })
-    const moneyCents = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' })
-    const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 })
-    const oneDecimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 })
-    const percent = new Intl.NumberFormat(locale, { style: 'percent' })
-
     return {
       language,
       setLanguage(next) {
@@ -74,10 +60,10 @@ export default function LanguageProvider({ children }) {
       // tPlural('summary.noSavingSwap', 2) picks the _one or _other text.
       // Pass an already-formatted count in vars to override {count}.
       tPlural: (key, count, vars) => translatePlural(language, key, count, vars),
-      formatMoney: (n) => (Math.abs(n) < 100 ? moneyCents : money).format(n),
-      formatNumber: (n) => whole.format(n),
-      formatDecimal: (n) => oneDecimal.format(n),
-      formatPercent: (fraction) => percent.format(fraction), // 0.5 -> "50%"
+      // formatMoney, formatNumber, formatDecimal, formatPercent. They're built
+      // in createFormatters (languageContext.js) so code outside components
+      // can format numbers exactly the same way. "..." copies them in.
+      ...createFormatters(language),
     }
   }, [language])
 

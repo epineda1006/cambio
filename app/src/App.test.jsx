@@ -11,7 +11,7 @@
 //                          button called Map"), not by CSS class
 //   fireEvent.change/click simulate typing and tapping
 
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App.jsx'
 import LanguageProvider from './i18n/LanguageProvider.jsx'
@@ -209,5 +209,65 @@ describe('Savings flow, step 3', () => {
     expect(screen.getByText('Step 1 of 3')).toBeTruthy()
     expect(screen.getByLabelText('How many customers a day?').value).toBe('')
     for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
+  })
+})
+
+describe('Share my plan', () => {
+  // navigator.share and navigator.clipboard are browser features that jsdom
+  // doesn't have, so each test installs a pretend version ("mock").
+  function setNavigator(name, value) {
+    Object.defineProperty(navigator, name, { value, configurable: true })
+  }
+
+  afterEach(() => {
+    setNavigator('share', undefined)
+    setNavigator('clipboard', undefined)
+  })
+
+  function goToResults() {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(continueButton())
+    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
+  }
+
+  it("opens the phone's share sheet with the plan text", async () => {
+    const share = vi.fn().mockResolvedValue(undefined)
+    setNavigator('share', share)
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'Share my plan' }))
+    await waitFor(() => expect(share).toHaveBeenCalledTimes(1))
+    const { title, text } = share.mock.calls[0][0]
+    expect(title).toBe('My Cambio plan')
+    expect(text).toMatch(/^My Cambio plan\nI could save \$/)
+    expect(text).toContain('Prices are examples, not real quotes.')
+  })
+
+  it('copies the text when sharing is not available', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    setNavigator('clipboard', { writeText })
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'Share my plan' }))
+    expect(await screen.findByText('Copied. You can paste it into a message.')).toBeTruthy()
+    expect(writeText.mock.calls[0][0]).toContain('My Cambio plan')
+  })
+
+  it('does nothing more when the person closes the share sheet', async () => {
+    const abort = Object.assign(new Error('cancelled'), { name: 'AbortError' })
+    setNavigator('share', vi.fn().mockRejectedValue(abort))
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    setNavigator('clipboard', { writeText })
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'Share my plan' }))
+    await waitFor(() => expect(navigator.share).toHaveBeenCalled())
+    expect(writeText).not.toHaveBeenCalled()
+  })
+
+  it('shows the text to copy by hand when copying is blocked', async () => {
+    setNavigator('clipboard', { writeText: vi.fn().mockRejectedValue(new Error('blocked')) })
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'Share my plan' }))
+    const box = await screen.findByLabelText('Copy this text to share your plan:')
+    expect(box.value).toContain('My Cambio plan')
   })
 })
