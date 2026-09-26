@@ -14,7 +14,15 @@
 // These inputs are made-up test numbers, not real prices.
 
 import { describe, it, expect } from 'vitest'
-import { annualDisposableCost, evaluateSwap, pickBestSwap, summarize } from './calculator.js'
+import {
+  annualDisposableCost,
+  estimateWeeklyQty,
+  evaluateSwap,
+  monthlyFromAnnual,
+  pickBestSwap,
+  poundsOfPlastic,
+  summarize,
+} from './calculator.js'
 
 // A cafe using 700 cups a week, half of them for dine-in, open every day.
 const cupsOwner = { weeklyQty: 700, dineInShare: 0.5, unitCost: 0.1, daysOpen: 7 }
@@ -135,5 +143,46 @@ describe('summarize', () => {
     expect(s.totalUpfrontCost).toBeCloseTo(150)
     expect(s.itemsWithSavingSwap).toBe(1)
     expect(s.itemsWithoutSavingSwap).toBe(1)
+  })
+})
+
+describe('estimateWeeklyQty', () => {
+  it('is customers per day x days open x items per customer', () => {
+    // 100 customers x 6 days x 0.8 cups each = 480 cups a week
+    expect(estimateWeeklyQty({ customersPerDay: 100, daysOpen: 6, perCustomer: 0.8 })).toBe(480)
+  })
+
+  it('rounds to a whole item', () => {
+    // 33 x 7 x 0.5 = 115.5, rounded to 116
+    expect(estimateWeeklyQty({ customersPerDay: 33, daysOpen: 7, perCustomer: 0.5 })).toBe(116)
+  })
+
+  it('gives 0 for 0 customers', () => {
+    expect(estimateWeeklyQty({ customersPerDay: 0, daysOpen: 5, perCustomer: 0.8 })).toBe(0)
+  })
+
+  it('rejects impossible days open', () => {
+    expect(() => estimateWeeklyQty({ customersPerDay: 10, daysOpen: 0, perCustomer: 1 })).toThrow(RangeError)
+  })
+})
+
+describe('poundsOfPlastic', () => {
+  it('converts items x grams into pounds', () => {
+    // 18,200 cups x 12 g = 218,400 g = 481.49 lb
+    expect(poundsOfPlastic(18200, 12)).toBeCloseTo(481.49)
+  })
+
+  it('is exactly 1 lb for 453.59237 g', () => {
+    expect(poundsOfPlastic(1, 453.59237)).toBe(1)
+  })
+})
+
+describe('monthlyFromAnnual', () => {
+  it('divides a yearly amount by 12', () => {
+    expect(monthlyFromAnnual(5045)).toBeCloseTo(420.42)
+  })
+
+  it('keeps negative amounts negative (honest losses)', () => {
+    expect(monthlyFromAnnual(-120)).toBe(-10)
   })
 })

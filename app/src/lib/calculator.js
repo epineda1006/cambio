@@ -161,3 +161,38 @@ export function summarize(itemResults) {
 
   return summary
 }
+
+// ---------------------------------------------------------------------------
+// ESTIMATES for the 3-step Savings flow. These are NEW helpers; nothing above
+// changed. They turn what an owner knows off the top of their head
+// ("about 100 customers a day") into the weekly counts the math above needs.
+// ---------------------------------------------------------------------------
+
+const GRAMS_PER_POUND = 453.59237 // exact, by definition of the pound
+
+/**
+ * Estimate how many of one item a business uses per week.
+ *   weekly = customers per day x days open x items per customer
+ * Rounded to a whole item, because you can't use half a cup.
+ * perCustomer comes from items.csv (PLACEHOLDER until interviews).
+ */
+export function estimateWeeklyQty({ customersPerDay, daysOpen, perCustomer }) {
+  if (!(customersPerDay >= 0)) throw new RangeError('customersPerDay must be 0 or more')
+  if (!(daysOpen >= 1 && daysOpen <= 7)) throw new RangeError('daysOpen must be between 1 and 7')
+  if (!(perCustomer >= 0)) throw new RangeError('perCustomer must be 0 or more')
+  return Math.round(customersPerDay * daysOpen * perCustomer)
+}
+
+/**
+ * Turn a count of disposables into pounds of plastic.
+ *   pounds = items x grams each / 453.59237
+ * gramsEach comes from items.csv (PLACEHOLDER until we weigh real samples).
+ */
+export function poundsOfPlastic(itemsPerYear, gramsEach) {
+  return (itemsPerYear * gramsEach) / GRAMS_PER_POUND
+}
+
+/** Yearly amount spread evenly over 12 months. */
+export function monthlyFromAnnual(annual) {
+  return annual / 12
+}
