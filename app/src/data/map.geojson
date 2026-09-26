@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -119.7871,
+          36.7378
+        ]
+      },
+      "properties": {
+        "placeholder": true,
+        "tract_id": "PLACEHOLDER",
+        "score": null,
+        "notes": "PLACEHOLDER: not real data. Replace by running the real pipeline."
+      }
+    }
+  ]
+}

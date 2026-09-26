@@ -330,7 +330,7 @@ select {
   display: inline-block;
   margin: 0 0 0.5rem;
   padding: 0.2rem 0.6rem;
-  border-radius: 999px;
+  border-radius: 0.75rem; /* stays tidy if a long label wraps to two lines */
   font-size: 0.8rem;
   font-weight: 700;
 }

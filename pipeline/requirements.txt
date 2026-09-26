@@ -1,0 +1,4 @@
+# Python libraries the pipeline needs. Install them inside a virtual
+# environment (see README "Data pipeline"):  pip install -r requirements.txt
+pandas      # tables: read CSVs, clean columns, join datasets
+geopandas   # pandas + map shapes: census tract boundaries, spatial joins

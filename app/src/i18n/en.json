@@ -59,7 +59,16 @@
     "savings": "Yearly savings"
   },
   "map": {
-    "title": "Where to start"
+    "title": "Where to start",
+    "comingSoon": "Coming soon: a map of Fresno County neighborhoods ranked by where a reusables program would help most, so a pilot starts where it matters.",
+    "placeholderData": "Placeholder map data, not real yet",
+    "sourcesTitle": "What the map will use",
+    "sources": {
+      "restaurants": "How many restaurants are in each neighborhood",
+      "census": "Census data: population, income, and Spanish-speaking households",
+      "calenviroscreen": "CalEnviroScreen scores for disadvantaged communities"
+    },
+    "scoreNote": "Each neighborhood gets a simple, transparent score, with a breakdown of why it ranks where it does."
   },
   "placeholder": {
     "badge": "Placeholder prices, not real quotes",

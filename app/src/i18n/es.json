@@ -59,7 +59,16 @@
     "savings": "Ahorro al año"
   },
   "map": {
-    "title": "Dónde empezar"
+    "title": "Dónde empezar",
+    "comingSoon": "Próximamente: un mapa de los barrios del condado de Fresno, ordenados según dónde un programa de reutilizables ayudaría más, para que el piloto empiece donde más importa.",
+    "placeholderData": "Datos de ejemplo, todavía sin barrios reales",
+    "sourcesTitle": "Qué usará el mapa",
+    "sources": {
+      "restaurants": "Cuántos restaurantes hay en cada barrio",
+      "census": "Datos del censo: población, ingresos y hogares de habla hispana",
+      "calenviroscreen": "Puntajes de CalEnviroScreen para comunidades desfavorecidas"
+    },
+    "scoreNote": "Cada barrio recibe un puntaje sencillo y transparente, con una explicación de por qué queda en ese lugar."
   },
   "placeholder": {
     "badge": "Precios de ejemplo, no cotizaciones reales",
