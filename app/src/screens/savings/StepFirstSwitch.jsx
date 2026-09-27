@@ -7,29 +7,59 @@
 //                           easy saves money yet" (plus a bigger step, if a
 //                           harder swap does save money)
 //   B. Checklist            what to do, with real quantities
+//   C. Takeout              what giving extras only on request saves, what
+//                           two California laws say, and a note on materials
+//   D. Join the pilot       text us / fill out a form ("Coming soon" until
+//                           config/pilot.js has the team's real details)
+//   E. Placeholder note, Back to your savings, Start over
 //
-// Sections A and B only appear once both questions are answered, because
-// the answers can change the pick and the checklist.
+// Sections A to E only appear once both questions are answered, because
+// the answers can change the pick, the checklist, and the takeout numbers.
 //
 // Every decision comes from tested pure functions: buildResults()
 // (lib/results.js), takeoutExtras() (lib/takeout.js), and pickFirstSwitch()
 // + buildChecklist() (lib/firstSwitch.js). This file only displays them.
 
 import { useState } from 'react'
+import { PILOT, buildSmsLink, isPilotReady } from '../../config/pilot.js'
 import { useLanguage } from '../../i18n/languageContext.js'
 import { buildChecklist, pickFirstSwitch } from '../../lib/firstSwitch.js'
 import { DELIVERY_CHOICES, EXTRAS_CHOICES } from '../../lib/flow.js'
-import { REAL_DATA, buildResults } from '../../lib/results.js'
+import { HAS_PLACEHOLDER_DATA, REAL_DATA, buildResults } from '../../lib/results.js'
 import { takeoutExtras } from '../../lib/takeout.js'
+
+// The two California laws in the takeout section. Links go to the official
+// bill pages on leginfo.legislature.ca.gov. The on-screen notes say only
+// what each law requires or allows (see docs/decisions.md).
+const LAWS = [
+  {
+    id: 'ab1276',
+    url: 'https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202120220AB1276',
+  },
+  {
+    id: 'ab619',
+    url: 'https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=201920200AB619',
+  },
+]
 
 /**
  * Props:
  *   flow      the flow state from App (see lib/flow.js)
  *   onChange  call with the fields that changed, e.g. { extrasAuto: 'yes' }
  *   onBack    go to Step 3
+ *   onReset   clear every answer and go back to Step 1
  *   data      optional { swapItems, itemProfiles, assumptions }, for tests
+ *   pilot     optional { smsNumber, formUrl }, for tests; the app always
+ *             uses config/pilot.js
  */
-export default function StepFirstSwitch({ flow, onChange, onBack, data = REAL_DATA }) {
+export default function StepFirstSwitch({
+  flow,
+  onChange,
+  onBack,
+  onReset,
+  data = REAL_DATA,
+  pilot = PILOT,
+}) {
   const { t } = useLanguage()
   const answered = flow.extrasAuto !== null && flow.deliveryApps !== null
 
@@ -60,7 +90,26 @@ export default function StepFirstSwitch({ flow, onChange, onBack, data = REAL_DA
 
       {/* The plan appears right AFTER the questions in the page, so a screen
           reader user who answers the second one simply keeps reading down. */}
-      {answered && <Plan flow={flow} data={data} />}
+      {answered && (
+        <>
+          <Plan flow={flow} data={data} pilot={pilot} />
+
+          {/* ---- E. The way out ---- */}
+          {HAS_PLACEHOLDER_DATA && (
+            <div className="inset-text">
+              <p>{t('firstSwitch.placeholder')}</p>
+            </div>
+          )}
+          <div className="end-links">
+            <button type="button" className="link-button" onClick={onBack}>
+              {t('firstSwitch.backToSavings')}
+            </button>
+            <button type="button" className="link-button" onClick={onReset}>
+              {t('results.startOver')}
+            </button>
+          </div>
+        </>
+      )}
     </>
   )
 }
@@ -89,8 +138,8 @@ function Question({ name, legend, choices, labelFor, value, onPick }) {
   )
 }
 
-/** Sections A (the pick) and B (the checklist). */
-function Plan({ flow, data }) {
+/** Sections A (the pick), B (the checklist), C (takeout), D (the pilot). */
+function Plan({ flow, data, pilot }) {
   const { t } = useLanguage()
   const results = buildResults(flow, data)
   const extras = takeoutExtras(flow, data)
@@ -132,6 +181,96 @@ function Plan({ flow, data }) {
 
       {/* ---- B. Checklist ---- */}
       {checklist.length > 0 && <Checklist items={checklist} />}
+
+      {/* ---- C. Takeout ---- */}
+      <Takeout extras={extras} />
+
+      {/* ---- D. Join the pilot ---- */}
+      <JoinPilot pilot={pilot} nothingEasy={pick.kind === 'none'} />
+    </>
+  )
+}
+
+/**
+ * Takeout, in the order we recommend (see docs/decisions.md): REDUCE first
+ * (extras only on request), then REUSE (customers' own containers), then
+ * better MATERIALS (once we know what Fresno's compost accepts).
+ */
+function Takeout({ extras }) {
+  const { t, formatMoney } = useLanguage()
+  return (
+    <>
+      <h2>{t('firstSwitch.takeoutTitle')}</h2>
+      {/* Only when extras go in every bag today; otherwise there's nothing
+          to save, and $0 would just be noise. */}
+      {extras.automatic && extras.totalAnnualSavings > 0 && (
+        <p>
+          {t('firstSwitch.extrasSavings', {
+            amount: formatMoney(extras.totalAnnualSavings),
+          })}
+        </p>
+      )}
+      <ul className="law-list">
+        {LAWS.map((law) => (
+          <li key={law.id}>
+            <p>{t(`firstSwitch.laws.${law.id}.text`)}</p>
+            {/* target="_blank" opens a new tab, so the owner's answers
+                stay here. rel="noopener noreferrer" stops the new page
+                from reaching back into ours (a standard safety habit). The
+                link text says it opens a new tab, so nobody is surprised. */}
+            <a href={law.url} target="_blank" rel="noopener noreferrer">
+              {t(`firstSwitch.laws.${law.id}.link`)}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p>{t('firstSwitch.materials')}</p>
+    </>
+  )
+}
+
+/**
+ * Join the pilot. While config/pilot.js still says PLACEHOLDER, the buttons
+ * are disabled and say "Coming soon", and a note says why, so nothing ever
+ * opens a fake number or form.
+ */
+function JoinPilot({ pilot, nothingEasy }) {
+  const { t } = useLanguage()
+  const ready = isPilotReady(pilot)
+
+  return (
+    <>
+      <h2>{t('firstSwitch.pilotTitle')}</h2>
+      <p>{t(nothingEasy ? 'firstSwitch.pilotHelpFind' : 'firstSwitch.pilotHelp')}</p>
+      {ready ? (
+        <div className="button-stack">
+          {/* sms: opens the Messages app with our number and a message
+              already typed, in the language on screen. */}
+          <a className="button" href={buildSmsLink(pilot.smsNumber, t('firstSwitch.smsMessage'))}>
+            {t('firstSwitch.textUs')}
+          </a>
+          <a
+            className="button button-secondary"
+            href={pilot.formUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('firstSwitch.form')}
+          </a>
+        </div>
+      ) : (
+        <>
+          <div className="button-stack">
+            <button type="button" className="button" disabled>
+              {t('firstSwitch.textUsSoon')}
+            </button>
+            <button type="button" className="button button-secondary" disabled>
+              {t('firstSwitch.formSoon')}
+            </button>
+          </div>
+          <p className="muted">{t('firstSwitch.pilotSoon')}</p>
+        </>
+      )}
     </>
   )
 }
@@ -155,13 +294,14 @@ function SwapCard({ itemId, swap, reason, showWhatItTakes = false }) {
   return (
     <div className="pick-card">
       <p className="pick-title">
-        {t(`swaps.${swap.swapId}`)}{' '}
-        <EffortTag effort={swap.effort} />
+        {t(`swaps.${swap.swapId}`)} <EffortTag effort={swap.effort} />
       </p>
       <p className="muted">{t('firstSwitch.insteadOf', { item: t(`items.${itemId}`) })}</p>
       {reason && <p>{reason}</p>}
       <ul className="result-facts">
-        <li className="positive">{t('results.saves', { amount: formatMoney(swap.annualSavings) })}</li>
+        <li className="positive">
+          {t('results.saves', { amount: formatMoney(swap.annualSavings) })}
+        </li>
         <li>{t('results.payback', { weeks: formatDecimal(swap.paybackWeeks) })}</li>
         {showWhatItTakes && (
           <>
@@ -172,11 +312,19 @@ function SwapCard({ itemId, swap, reason, showWhatItTakes = false }) {
                 }),
               })}
             </li>
-            <li>{t('firstSwitch.upfront', { amount: formatMoney(swap.upfrontCost) })}</li>
+            <li>
+              {t('firstSwitch.upfront', {
+                amount: formatMoney(swap.upfrontCost),
+              })}
+            </li>
           </>
         )}
         {swap.handWashMinutesPerDay > 0 && (
-          <li>{tPlural('firstSwitch.handWash', minutes, { count: formatNumber(minutes) })}</li>
+          <li>
+            {tPlural('firstSwitch.handWash', minutes, {
+              count: formatNumber(minutes),
+            })}
+          </li>
         )}
       </ul>
     </div>
@@ -189,8 +337,7 @@ function ExtrasCard({ savings }) {
   return (
     <div className="pick-card">
       <p className="pick-title">
-        {t('firstSwitch.extrasTitle')}{' '}
-        <EffortTag effort="easy" />
+        {t('firstSwitch.extrasTitle')} <EffortTag effort="easy" />
       </p>
       <p>{t('firstSwitch.whyExtras')}</p>
       <ul className="result-facts">
@@ -226,7 +373,9 @@ function Checklist({ items }) {
   function text({ key, vars }) {
     if (key !== 'checklist.buy') return t(key)
     return t(key, {
-      units: tPlural(`units.${vars.swapId}`, vars.count, { count: formatNumber(vars.count) }),
+      units: tPlural(`units.${vars.swapId}`, vars.count, {
+        count: formatNumber(vars.count),
+      }),
     })
   }
 

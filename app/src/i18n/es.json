@@ -121,7 +121,31 @@
     "noneAhead": "Con estos precios, ningún cambio fácil ahorra dinero todavía, y usted ya da los extras solo si se los piden, así que va un paso adelante.",
     "biggerTitle": "Un paso más grande, si se anima",
     "checklistTitle": "Su lista para empezar",
-    "checklistHint": "Marque cada paso cuando lo haga. Esta lista no se guarda."
+    "checklistHint": "Marque cada paso cuando lo haga. Esta lista no se guarda.",
+    "takeoutTitle": "Para llevar",
+    "extrasSavings": "Dar tenedores y salsa solo a quien los pida podría ahorrarle unos {amount} al año.",
+    "laws": {
+      "ab1276": {
+        "text": "Ley de California AB 1276: en pedidos para comer aquí y por apps de entrega, los restaurantes dan cubiertos desechables y salsas en paquetes individuales solo si el cliente los pide. En las apps de entrega, el cliente los elige en el menú.",
+        "link": "Leer la AB 1276 (sitio oficial en inglés, se abre en otra pestaña)"
+      },
+      "ab619": {
+        "text": "Ley de California AB 619: los restaurantes pueden llenar el recipiente limpio y reutilizable que traiga el cliente, siguiendo pasos de seguridad alimentaria.",
+        "link": "Leer la AB 619 (sitio oficial en inglés, se abre en otra pestaña)"
+      }
+    },
+    "materials": "Mejores materiales para lo demás: estamos averiguando qué acepta de verdad el sistema de compostaje de Fresno.",
+    "pilotTitle": "Únase al piloto",
+    "pilotHelp": "Le podemos ayudar a hacer este cambio.",
+    "pilotHelpFind": "Le podemos ayudar a encontrar un cambio que le funcione.",
+    "textUs": "Envíenos un mensaje de texto",
+    "form": "Llene un formulario corto",
+    "textUsSoon": "Mensaje de texto: próximamente",
+    "formSoon": "Formulario corto: próximamente",
+    "pilotSoon": "Todavía estamos preparando el número y el formulario del piloto.",
+    "smsMessage": "Hola, quiero unirme al piloto de Cambio.",
+    "placeholder": "Los precios, los tiempos de lavado y los números de pedidos para llevar son ejemplos hasta que los confirmemos en entrevistas.",
+    "backToSavings": "Volver a sus ahorros"
   },
   "share": {
     "title": "Mi plan de Cambio",

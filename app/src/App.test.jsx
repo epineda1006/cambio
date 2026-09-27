@@ -302,3 +302,102 @@ describe('Share my plan', () => {
     expect(box.value).toContain('My Cambio plan')
   })
 })
+
+describe('Savings flow, step 4', () => {
+  // Steps 1-3 with the given wash method, then "See my first switch".
+  function goToStepFour(wash = 'Dishwasher') {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(screen.getByLabelText(wash))
+    fireEvent.click(continueButton())
+    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
+    fireEvent.click(screen.getByRole('button', { name: 'See my first switch' }))
+  }
+
+  function answerTakeout(extras, delivery) {
+    fireEvent.click(screen.getByLabelText(extras))
+    fireEvent.click(screen.getByLabelText(delivery))
+  }
+
+  it('shows the plan only after both takeout questions are answered', () => {
+    goToStepFour()
+    expect(screen.queryByRole('heading', { name: 'Start here' })).toBeNull()
+    fireEvent.click(screen.getByLabelText('Yes, in every bag'))
+    expect(screen.queryByRole('heading', { name: 'Start here' })).toBeNull() // one isn't enough
+    fireEvent.click(screen.getByLabelText('No'))
+    expect(screen.getByRole('heading', { name: 'Start here' })).toBeTruthy()
+    expect(screen.getByText('Effort: easy')).toBeTruthy()
+    expect(screen.getByRole('group', { name: 'Your checklist' })).toBeTruthy()
+  })
+
+  it('keeps the takeout answers when going back to step 3 and returning', () => {
+    goToStepFour()
+    answerTakeout('Only if the customer asks', 'Yes')
+    fireEvent.click(screen.getAllByRole('button', { name: 'Back' })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'See my first switch' }))
+    expect(screen.getByLabelText('Only if the customer asks').checked).toBe(true)
+    expect(screen.getByLabelText('Yes').checked).toBe(true)
+  })
+
+  it('shows hand-washing minutes only for hand washers', () => {
+    goToStepFour('By hand')
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.getByText(/^Hand washing adds about \d+ minutes? a day$/)).toBeTruthy()
+    cleanup()
+    goToStepFour('Dishwasher')
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.queryByText(/Hand washing adds/)).toBeNull()
+  })
+
+  it('shows extras savings only when extras go in every bag', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(
+      screen.getByText(
+        /^Giving forks and sauce only on request could save about \$[\d,.]+ a year\.$/,
+      ),
+    ).toBeTruthy()
+    fireEvent.click(screen.getByLabelText('Only if the customer asks'))
+    expect(screen.queryByText(/Giving forks and sauce only on request/)).toBeNull()
+  })
+
+  it('adds the delivery-app line to the checklist only for delivery-app users', () => {
+    const appLine =
+      'In your delivery app, check that utensils and sauce go only to customers who ask'
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.queryByLabelText(appLine)).toBeNull()
+    fireEvent.click(screen.getByLabelText('Yes'))
+    expect(screen.getByLabelText(appLine)).toBeTruthy()
+  })
+
+  it('links each law to its official page in a new tab', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    for (const bill of ['AB 1276', 'AB 619']) {
+      const link = screen.getByRole('link', {
+        name: new RegExp(`Read ${bill}`),
+      })
+      expect(link.getAttribute('href')).toMatch(/^https:\/\/leginfo\.legislature\.ca\.gov\//)
+      expect(link.getAttribute('target')).toBe('_blank')
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    }
+  })
+
+  it('says "coming soon" for the pilot while the contact details are PLACEHOLDER', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.getByRole('button', { name: 'Text us: coming soon' }).disabled).toBe(true)
+    expect(screen.getByRole('button', { name: 'Short form: coming soon' }).disabled).toBe(true)
+    expect(document.querySelector('a[href^="sms:"]')).toBeNull() // nothing opens
+  })
+
+  it('starts over from step 4 with every answer cleared', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'Yes')
+    fireEvent.click(screen.getByRole('button', { name: 'Start over' }))
+    expect(screen.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(continueButton()) // nothing answered: all four errors
+    expect(screen.getByRole('alert').textContent).toContain('Select how you wash dishes')
+  })
+})

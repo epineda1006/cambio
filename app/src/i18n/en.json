@@ -121,7 +121,31 @@
     "noneAhead": "At these prices no easy switch saves money yet, and you already give extras only on request, so you're ahead.",
     "biggerTitle": "A bigger step, if you're ready",
     "checklistTitle": "Your checklist",
-    "checklistHint": "Check off each step as you go. This list isn't saved."
+    "checklistHint": "Check off each step as you go. This list isn't saved.",
+    "takeoutTitle": "Takeout",
+    "extrasSavings": "Giving forks and sauce only on request could save about {amount} a year.",
+    "laws": {
+      "ab1276": {
+        "text": "California law AB 1276: for dine-in and delivery-app orders, restaurants give single-use utensils and single-serve condiments only when the customer asks. On delivery apps, customers choose them from the menu.",
+        "link": "Read AB 1276 (official site, opens in a new tab)"
+      },
+      "ab619": {
+        "text": "California law AB 619: restaurants may fill a customer's own clean, reusable container, following food-safety steps.",
+        "link": "Read AB 619 (official site, opens in a new tab)"
+      }
+    },
+    "materials": "Better materials for the rest: we're checking what Fresno's compost system actually accepts.",
+    "pilotTitle": "Join the pilot",
+    "pilotHelp": "We can help you make this switch.",
+    "pilotHelpFind": "We can help you find a switch that works.",
+    "textUs": "Text us",
+    "form": "Fill out a short form",
+    "textUsSoon": "Text us: coming soon",
+    "formSoon": "Short form: coming soon",
+    "pilotSoon": "We're still setting up the pilot's phone number and form.",
+    "smsMessage": "Hi, I'd like to join the Cambio pilot.",
+    "placeholder": "Prices, wash times, and takeout numbers are examples until we confirm them in interviews.",
+    "backToSavings": "Back to your savings"
   },
   "share": {
     "title": "My Cambio plan",
