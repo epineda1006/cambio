@@ -57,6 +57,13 @@ describe('Savings flow, step 1', () => {
     for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
   })
 
+  it('offers every day count from 1 to 7', () => {
+    renderApp()
+    for (let days = 1; days <= 7; days++) {
+      expect(screen.getByLabelText(String(days)).getAttribute('name')).toBe('days')
+    }
+  })
+
   it('lists every missing answer when Continue is pressed too early', () => {
     renderApp()
     fireEvent.click(continueButton())

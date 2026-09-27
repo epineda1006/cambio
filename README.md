@@ -53,7 +53,7 @@ cambio/
 
 Prices live in `app/src/data/swaps.csv`; per-customer ratios and item weights live in `app/src/data/items.csv`. Values marked `PLACEHOLDER` must be replaced with real numbers from interviews or distributor quotes before the video.
 
-The owner answers three questions (Step 1 of the Savings tab): customers per day, days open (5, 6, or 7), and "for here or to go" (mostly to go = 20%, half and half = 50%, mostly here = 80% dine-in). For each disposable item:
+The owner answers three questions (Step 1 of the Savings tab): customers per day, days open (1 to 7), and "for here or to go" (mostly to go = 20%, half and half = 50%, mostly here = 80% dine-in). For each disposable item:
 
 - `weekly_qty` = customers_per_day x days_open x per_customer (from `items.csv`), rounded; the owner can replace any estimate with their own number (Step 2), and that number is kept even if they change customers per day
 - `dine_in_share` = fraction of orders eaten on site (reuse only applies here); the same for every item

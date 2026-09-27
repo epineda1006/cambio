@@ -26,6 +26,12 @@ describe('validateBusiness', () => {
     expect(validateBusiness(good)).toEqual([])
   })
 
+  it('accepts every day count from 1 to 7', () => {
+    for (let days = 1; days <= 7; days++) {
+      expect(validateBusiness({ ...good, daysOpen: days })).toEqual([])
+    }
+  })
+
   it('lists every missing answer, in screen order', () => {
     const keys = validateBusiness(INITIAL_FLOW).map((e) => e.key)
     expect(keys).toEqual(['errors.customersRequired', 'errors.daysRequired', 'errors.dineInRequired'])
@@ -33,7 +39,7 @@ describe('validateBusiness', () => {
 
   it('points each error at the field to fix', () => {
     const fields = validateBusiness(INITIAL_FLOW).map((e) => e.field)
-    expect(fields).toEqual(['customers', 'days-5', 'dinein-20'])
+    expect(fields).toEqual(['customers', 'days-1', 'dinein-20'])
   })
 
   it('explains what is wrong with the customer number', () => {
@@ -45,7 +51,8 @@ describe('validateBusiness', () => {
   })
 
   it('rejects answers that are not one of the choices', () => {
-    expect(validateBusiness({ ...good, daysOpen: 4 })[0].key).toBe('errors.daysRequired')
+    expect(validateBusiness({ ...good, daysOpen: 0 })[0].key).toBe('errors.daysRequired')
+    expect(validateBusiness({ ...good, daysOpen: 8 })[0].key).toBe('errors.daysRequired')
     expect(validateBusiness({ ...good, dineInPct: 35 })[0].key).toBe('errors.dineInRequired')
   })
 })

@@ -5,6 +5,15 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 — Days open: any number from 1 to 7
+
+**Before:** Step 1 offered only 5, 6, or 7 days a week.
+
+**Now:** 1 through 7, nothing preselected. Food trucks and weekend-only vendors often open
+fewer than 5 days, and forcing them to pick 5 would overstate their weekly use.
+
+---
+
 ## 2026-09-26 — Savings tab redesigned as a 3-step flow ("clean civic" style)
 
 **Before:** one long page where the owner typed weekly counts for every item and saw every

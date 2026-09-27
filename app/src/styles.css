@@ -30,6 +30,11 @@
   --accent: #1d7248; /* Cambio green: money saved */
   --accent-hover: #145535;
   --accent-contrast: #ffffff; /* text on top of green */
+  /* Green used as TEXT (links, active tab, tags). In light mode it's the same
+     green as the fills. In dark mode no single green works for both: white
+     text needs a dark green behind it, but green text on a near-black page
+     needs a lighter green. So dark mode splits them. */
+  --accent-text: #1d7248;
   --positive: #1d7248;
   --negative: #b3261e;
   --warning-bg: #fff3d1;
@@ -40,6 +45,8 @@
   --header-bg: #000000;
   --header-text: #ffffff;
   --header-accent: #5fd39a;
+  --header-toggle-border: #666666; /* 3.7:1 against black */
+  --header-toggle-selected: #333333; /* white text on it: 12.6:1 */
 
   --tap: 44px; /* minimum size for anything you tap (Apple/Google guideline) */
   --tab-bar-height: 64px;
@@ -52,16 +59,17 @@
 /* Layer 2: follow the phone, unless the owner chose "light". */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #111412;
-    --surface: #1b201d;
-    --text: #edf1ee;
-    --text-muted: #a9b2ad;
-    --border: #d3d9d5;
-    --divider: #3d4641;
-    --accent: #5fd39a;
-    --accent-hover: #86e0b3;
-    --accent-contrast: #0b1f14;
-    --positive: #5fd39a;
+    --bg: #151515;
+    --surface: #222222;
+    --text: #ececec;
+    --text-muted: #a3a3a3;
+    --border: #7a7a7a;
+    --divider: #3a3a3a;
+    --accent: #23724a;
+    --accent-hover: #1f6b45;
+    --accent-contrast: #ffffff;
+    --accent-text: #6aab86;
+    --positive: #6aab86;
     --negative: #ff8a80;
     --warning-bg: #3a2e10;
     --warning-text: #ffd479;
@@ -73,16 +81,17 @@
 /* Layer 3: the owner chose "dark" with the toggle. (Same values as above;
    CSS can't share one block between a media query and a selector.) */
 :root[data-theme='dark'] {
-  --bg: #111412;
-  --surface: #1b201d;
-  --text: #edf1ee;
-  --text-muted: #a9b2ad;
-  --border: #d3d9d5;
-  --divider: #3d4641;
-  --accent: #5fd39a;
-  --accent-hover: #86e0b3;
-  --accent-contrast: #0b1f14;
-  --positive: #5fd39a;
+  --bg: #151515;
+  --surface: #222222;
+  --text: #ececec;
+  --text-muted: #a3a3a3;
+  --border: #7a7a7a;
+  --divider: #3a3a3a;
+  --accent: #23724a;
+  --accent-hover: #1f6b45;
+  --accent-contrast: #ffffff;
+  --accent-text: #6aab86;
+  --positive: #6aab86;
   --negative: #ff8a80;
   --warning-bg: #3a2e10;
   --warning-text: #ffd479;
@@ -237,43 +246,89 @@ textarea {
   color: var(--text-muted);
 }
 
-/* ---------- Header toggles (language + theme), on the black bar ---------- */
+/* ---------- Header toggles (language + theme), on the black bar ----------
+ * Soft and small: a thin gray outline, slightly rounded, smaller text.
+ * The header is black in both themes, so these look the same in both.
+ *
+ * TAP AREA vs VISIBLE SIZE: each button is drawn 32px tall, but an invisible
+ * ::after layer reaches 6px above and below it, so a thumb still has a 44px
+ * target. (::after is a "pseudo-element": an extra box CSS adds to an element
+ * without any extra HTML.) */
+
+.app-header-controls {
+  align-items: center;
+}
 
 .toggle-group {
   display: inline-flex;
-  border: 2px solid var(--header-text);
+  border: 1px solid var(--header-toggle-border);
+  border-radius: 6px;
 }
 
 .toggle-group button,
 .theme-toggle {
-  min-height: var(--tap);
-  min-width: var(--tap);
-  padding: 0 0.65rem;
+  position: relative; /* anchors the ::after tap area */
+  min-height: 2rem; /* 32px visible */
+  min-width: var(--tap); /* 44px wide */
+  padding: 0 0.6rem;
   border: 0;
   background: transparent;
   color: var(--header-text);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
-/* The selected language is filled, so it's obvious at a glance. */
+.toggle-group button::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+}
+
+/* Round the outer corners of the first and last button so the gray fill
+   of the selected one follows the group's rounded outline. */
+.toggle-group button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.toggle-group button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+/* The selected language gets a subtle gray fill, not solid white. */
 .toggle-group button[aria-pressed='true'] {
-  background: var(--header-text);
-  color: var(--header-bg);
+  background: var(--header-toggle-selected);
 }
 
 .theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  border: 2px solid var(--header-text);
+  /* The button itself is the full 44 x 44 tap area... */
+  width: var(--tap);
+  height: var(--tap);
+  /* ...but takes up only 32px of the header's height, like the language
+     buttons, thanks to negative top/bottom margins. */
+  margin: -6px 0;
+  padding: 0;
+}
+
+/* ...and the visible outline (36 x 32) is drawn inside it with ::before, so
+   nothing sticks out of the button's box. */
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 6px 4px;
+  border: 1px solid var(--header-toggle-border);
+  border-radius: 6px;
 }
 
 .theme-toggle svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 /* The header toggles sit on black, so their focus ring is the light green. */
@@ -320,8 +375,8 @@ textarea {
 }
 
 .tab-bar button[aria-current='page'] {
-  color: var(--accent);
-  border-top-color: var(--accent);
+  color: var(--accent-text);
+  border-top-color: var(--accent-text);
 }
 
 /* ---------- Buttons and links ---------- */
@@ -358,7 +413,7 @@ textarea {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: inherit;
   text-align: left;
   text-decoration: underline;
@@ -451,15 +506,18 @@ fieldset.field {
   margin: 0 0 0.5rem;
 }
 
-/* ----- Option buttons (days open: 5 / 6 / 7) -----
- * Real radio buttons, visually hidden, with their <label> drawn as a big
+/* ----- Option buttons (days open: 1 to 7) -----
+ * Real radio buttons, visually hidden, with their <label> drawn as a
  * square button. The radio still does the work: one choice at a time,
- * arrow keys to move, and screen readers announce "radio, 2 of 3". */
+ * arrow keys to move, and screen readers announce "radio, 2 of 7".
+ *
+ * flex-wrap lets the seven 44px buttons sit in one row when there's room
+ * (7 x 44px + gaps = 341px, so from about a 375px phone up) and wrap onto
+ * a second row on narrower phones. */
 .option-buttons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  max-width: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 .option-button {
@@ -479,7 +537,8 @@ fieldset.field {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 3rem;
+  width: var(--tap); /* 44px square tap target */
+  min-height: var(--tap);
   margin: 0;
   border: 2px solid var(--border);
   font-weight: 500;
@@ -612,8 +671,8 @@ fieldset.field {
 }
 
 .tag-entered {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--accent-text);
+  color: var(--accent-text);
 }
 
 @media (min-width: 40rem) {
@@ -901,7 +960,7 @@ details summary {
   cursor: pointer;
   font-size: 1.1875rem;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }

@@ -5,7 +5,7 @@
 //   {
 //     step: 1 | 2 | 3,
 //     customersPerDay: '120',   text exactly as typed
-//     daysOpen: 6,              5, 6, 7, or null = not answered yet
+//     daysOpen: 6,              1 to 7, or null = not answered yet
 //     dineInPct: 50,            20, 50, 80, or null = not answered yet
 //     overrides: { plastic_cups: '400' }   weekly numbers the owner typed
 //   }                                      over our estimate (step 2)
@@ -13,7 +13,8 @@
 import { estimateWeeklyQty } from './calculator.js'
 import { itemProfiles } from './loadItems.js'
 
-export const DAYS_CHOICES = [5, 6, 7]
+// Every possible number of days, so a weekend-only food truck fits too.
+export const DAYS_CHOICES = [1, 2, 3, 4, 5, 6, 7]
 
 // "For here or to go?" answers, and the dine-in share each one stands for.
 export const DINE_IN_CHOICES = [

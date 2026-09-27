@@ -1,7 +1,7 @@
 // StepBusiness.jsx: Step 1 of 3, "Your business". Three questions an owner
 // can answer without looking anything up:
 //   - customers a day (typed)
-//   - days open per week (5 / 6 / 7)
+//   - days open per week (1 to 7)
 //   - for here or to go (three choices, none preselected)
 //
 // The answers live in App (passed in as `flow`), so they survive switching
@@ -26,7 +26,7 @@ export default function StepBusiness({ flow, onChange, onContinue }) {
   const [errors, setErrors] = useState([])
 
   // Find the error (if any) for one question. Field ids start with the
-  // question's name: 'customers', 'days-5', 'dinein-20'.
+  // question's name: 'customers', 'days-1', 'dinein-20'.
   const errorFor = (prefix) => errors.find((e) => e.field.startsWith(prefix))
   const customersError = errorFor('customers')
   const daysError = errorFor('days')
@@ -74,7 +74,7 @@ export default function StepBusiness({ flow, onChange, onContinue }) {
         />
       </div>
 
-      {/* ---- Days open: 5 / 6 / 7 ----
+      {/* ---- Days open: 1 to 7 ----
           A <fieldset> groups related choices, and its <legend> is the
           question. They are real radio buttons (only one can be picked, and
           arrow keys move between them) that are STYLED to look like big
