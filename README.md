@@ -51,9 +51,9 @@ cambio/
 
 ## Calculator math
 
-Prices live in `app/src/data/swaps.csv`; per-customer ratios and item weights live in `app/src/data/items.csv`. Values marked `PLACEHOLDER` must be replaced with real numbers from interviews or distributor quotes before the video.
+Prices, effort levels, and hand-wash times live in `app/src/data/swaps.csv`; per-customer ratios and item weights live in `app/src/data/items.csv`; single numbers (hourly wage, takeout extras) live in `app/src/data/assumptions.csv`. Values marked `PLACEHOLDER` must be replaced with real numbers from interviews or distributor quotes before the video.
 
-The owner answers three questions (Step 1 of the Savings tab): customers per day, days open (1 to 7), and "for here or to go" (mostly to go = 20%, half and half = 50%, mostly here = 80% dine-in). For each disposable item:
+The owner answers four questions (Step 1 of the Savings tab): customers per day, days open (1 to 7), "for here or to go" (mostly to go = 20%, half and half = 50%, mostly here = 80% dine-in), and how they wash dishes (dishwasher or by hand). For each disposable item:
 
 - `weekly_qty` = customers_per_day x days_open x per_customer (from `items.csv`), rounded; the owner can replace any estimate with their own number (Step 2), and that number is kept even if they change customers per day
 - `dine_in_share` = fraction of orders eaten on site (reuse only applies here); the same for every item
@@ -67,16 +67,26 @@ For a swap:
   - `items_needed` = ceil(replaced_per_week / days_open x par_multiplier)
 - `annual_ongoing_cost` = washing cost + replacement of lost or broken items
   - washing = wash_cost_per_use x replaced_per_week x 52
+  - by hand, `wash_cost_per_use` first gets hand-wash labor added: hand_wash_seconds / 3600 x hand_wash_hourly_wage (the same number on Steps 3 and 4)
   - replacement = items_needed x annual_loss_rate x reusable_unit_price
 - `annual_savings` = (replaced_per_week x unit_cost x 52) - annual_ongoing_cost
 - `payback_weeks` = upfront_cost / (annual_savings / 52)
 - `plastic_avoided_per_year` = replaced_per_week x 52
 - `pounds_of_plastic` = plastic_avoided_per_year x grams_each (from `items.csv`) / 453.59237
 - monthly savings = annual_savings / 12
+- hand-wash minutes per day = replaced_per_week x hand_wash_seconds / 60 / days_open (hand washers only)
 
 If `annual_savings` is zero or negative, the app says so honestly instead of hiding the swap.
 
-`par_multiplier` (stock on hand, in days of use), `wash_cost_per_use`, and `annual_loss_rate` are set per swap in `swaps.csv`. The results (Step 3) total the best swap per item (highest `annual_savings`); an item whose best swap does not save money adds $0, is never labeled BEST, and is reported in red. The takeout share (1 - dine_in_share) is shown with a note that compostable options are coming. See `docs/decisions.md` (2026-09-26). The math lives in `app/src/lib/calculator.js` (tests in `calculator.test.js`); `app/src/lib/results.js` combines it for the results screen.
+`par_multiplier` (stock on hand, in days of use), `wash_cost_per_use`, and `annual_loss_rate` are set per swap in `swaps.csv`. The results (Step 3) total the best swap per item (highest `annual_savings`); an item whose best swap does not save money adds $0, is never labeled BEST, and is reported in red. The takeout share (1 - dine_in_share) is shown with a note that compostable options are coming. See `docs/decisions.md` (2026-09-26). The math lives in `app/src/lib/calculator.js` (tests in `calculator.test.js`); `app/src/lib/results.js` combines it for the results screen, and `app/src/lib/washing.js` adds hand-wash labor.
+
+**Step 4, "Your first switch"** asks two takeout questions (forks and sauce in every bag, or only if asked? DoorDash, Uber Eats, or similar?). Takeout extras (`app/src/lib/takeout.js`), with takeout_share = 1 - dine_in_share:
+
+- takeout forks per week = Step 2's weekly forks (estimate or the owner's number) x takeout_share, so nothing is counted twice
+- takeout sauce per week = customers_per_day x days_open x takeout_share x sauce_per_order
+- savings per extra = weekly qty x (1 - extras_request_share) x unit cost x 52, and $0 if they already give extras only on request (forks use their unit cost from `swaps.csv`; sauce uses `sauce_unit_cost`)
+
+The pick (`app/src/lib/firstSwitch.js`): the `easy` swap with the highest `annual_savings` that saves money; if none, "forks and sauce only when asked" if that saves money; otherwise an honest "nothing easy saves money yet", plus the best `medium` or `hard` swap as "a bigger step" only if one saves money. The checklist depends on the pick (buy about `items_needed`, bus tub, tell staff; or stop extras, train staff), plus a delivery-app line for owners on delivery apps. See `docs/decisions.md` (2026-09-27).
 
 ---
 
