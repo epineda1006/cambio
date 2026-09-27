@@ -23,8 +23,10 @@
 // column) throws an error with the row number, so a bad edit is caught
 // immediately instead of quietly producing wrong savings.
 
-import Papa from 'papaparse'
 import swapsCsvText from '../data/swaps.csv?raw'
+import { isPlaceholderNote, parseCsvRows, toNumber as toNumberIn } from './csv.js'
+
+const FILE = 'swaps.csv'
 
 const NUMBER_COLUMNS = [
   'unit_cost',
@@ -34,15 +36,8 @@ const NUMBER_COLUMNS = [
   'annual_loss_rate',
 ]
 
-// CSV files only hold text, so "0.10" arrives as a string. This converts it to
-// a real number and complains loudly if it isn't one.
-function toNumber(row, column, rowNumber) {
-  const value = Number(row[column])
-  if (row[column] === undefined || row[column].trim() === '' || !Number.isFinite(value)) {
-    throw new Error(`swaps.csv row ${rowNumber}: "${column}" is not a number (got "${row[column]}")`)
-  }
-  return value
-}
+// Same as csv.js toNumber, with this file's name filled in for error messages.
+const toNumber = (row, column, rowNumber) => toNumberIn(row, column, rowNumber, FILE)
 
 /**
  * Turn CSV text into a list of items, each holding its swaps.
@@ -52,18 +47,12 @@ function toNumber(row, column, rowNumber) {
  *   parMultiplier, washCostPerUse, annualLossRate, notes, isPlaceholder }] }]
  */
 export function parseSwapsCsv(csvText) {
-  // header: true means "use the first row as column names", so each row
-  // becomes an object like { item_id: 'plastic_cups', unit_cost: '0.10', ... }.
-  const { data, errors } = Papa.parse(csvText, { header: true, skipEmptyLines: true })
-  if (errors.length > 0) {
-    throw new Error(`swaps.csv could not be read: ${errors[0].message} (row ${errors[0].row + 2})`)
-  }
+  const rows = parseCsvRows(csvText, FILE)
 
   // A Map keeps items in the order they first appear in the CSV.
   const items = new Map()
 
-  data.forEach((row, index) => {
-    const rowNumber = index + 2 // +1 for the header row, +1 because people count from 1
+  rows.forEach(({ row, rowNumber }) => {
     for (const column of NUMBER_COLUMNS) toNumber(row, column, rowNumber)
 
     const itemId = row.item_id?.trim()
@@ -93,7 +82,7 @@ export function parseSwapsCsv(csvText) {
       annualLossRate: toNumber(row, 'annual_loss_rate', rowNumber),
       notes,
       // The UI uses this flag to show the "placeholder prices" badge.
-      isPlaceholder: notes.includes('PLACEHOLDER'),
+      isPlaceholder: isPlaceholderNote(notes),
     })
   })
 

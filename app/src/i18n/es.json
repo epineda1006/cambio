@@ -9,8 +9,6 @@
     "es": "ES"
   },
   "theme": {
-    "light": "Claro",
-    "dark": "Oscuro",
     "switchToDark": "Cambiar a tema oscuro",
     "switchToLight": "Cambiar a tema claro"
   },
@@ -19,40 +17,100 @@
     "owner": "Ahorros",
     "map": "Mapa"
   },
-  "owner": {
-    "title": "¿Qué cambios le ahorran dinero?",
-    "intro": "Escriba lo que compra cada semana. Le mostramos qué cambios a reutilizables le ahorran dinero.",
-    "daysOpen": "Días abiertos por semana",
-    "daysOpenHelp": "Sirve para calcular cuántos artículos reutilizables necesita tener.",
-    "weeklyQty": "¿Cuántos usa por semana?",
-    "dineInShare": "Para comer aquí",
-    "dineInHelp": "Los reutilizables solo reemplazan pedidos para comer aquí. Los pedidos para llevar siguen necesitando desechables.",
-    "currentSpend": "Hoy gasta unos {amount} al año en estos.",
-    "noDineIn": "Si 0% de los pedidos son para comer aquí, no hay nada que cambiar. Los reutilizables solo sirven para esos pedidos."
+  "flow": {
+    "stepOf": "Paso {n} de {total}",
+    "continue": "Continuar",
+    "back": "Atrás"
   },
-  "summary": {
-    "title": "Sus ahorros al año",
-    "empty": "Escriba cuántos artículos usa por semana para ver sus ahorros.",
-    "perYear": "al año",
-    "plastic": "{count} artículos desechables evitados al año",
-    "upfront": "Costo inicial de los reutilizables: {amount}",
-    "basis": "Usando el mejor cambio para cada artículo.",
-    "noSavingSwap_one": "{count} artículo no tiene un cambio que ahorre dinero con estos precios.",
-    "noSavingSwap_other": "{count} artículos no tienen un cambio que ahorre dinero con estos precios."
+  "business": {
+    "title": "Su negocio",
+    "customersLabel": "¿Cuántos clientes al día?",
+    "customersHint": "Con un número aproximado está bien. Cuente cada pedido como un cliente.",
+    "daysLegend": "Días abiertos por semana",
+    "dineInLegend": "¿Para aquí o para llevar?",
+    "dineInHint": "Piense en una semana normal.",
+    "choices": {
+      "mostlyToGo": {
+        "label": "Casi todo para llevar",
+        "hint": "Cerca del {pct} se come aquí"
+      },
+      "halfAndHalf": {
+        "label": "Mitad y mitad",
+        "hint": "Cerca del {pct} se come aquí"
+      },
+      "mostlyHere": {
+        "label": "Casi todo para aquí",
+        "hint": "Cerca del {pct} se come aquí"
+      }
+    }
   },
-  "swap": {
-    "best": "Mejor opción",
+  "usage": {
+    "title": "Lo que usa cada semana",
+    "intro": "Lo calculamos con sus respuestas. Cambie cualquier número que no parezca correcto.",
+    "perWeek": "{count} a la semana",
+    "estimated": "Estimado",
+    "entered": "Usted lo escribió",
+    "change": "Cambiar",
+    "useEstimate": "Usar estimado ({count})",
+    "editLabel": "{item} por semana",
+    "perWeekLabel": "Por semana",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "basis": "Calculado con {customers} clientes al día, {days} días a la semana.",
+    "placeholder": "Las cantidades por cliente son ejemplos hasta que las confirmemos en entrevistas.",
+    "continue": "Ver mis ahorros"
+  },
+  "results": {
+    "title": "Sus ahorros",
+    "couldSave": "Podría ahorrar",
+    "perYear": "{amount} al año",
+    "perMonth": "({amount} al mes)",
+    "pounds": "y evitar {pounds} libras de plástico al año",
+    "noSavings": "Ninguno de estos cambios ahorra dinero con estos precios.",
+    "best": "MEJOR",
     "saves": "Ahorra {amount} al año",
-    "costsMore": "Le cuesta {amount} más al año",
-    "breakEven": "No ahorra nada al año (queda igual)",
+    "costsMore": "Cuesta {amount} más al año",
+    "breakEven": "No ahorra nada al año",
+    "poundsAvoided": "Evita {pounds} lb de plástico al año",
     "payback": "Se paga solo en {weeks} semanas",
     "neverPaysBack": "Nunca se paga solo con estos precios",
-    "upfront_one": "Costo inicial: {amount} ({count} reutilizable)",
-    "upfront_other": "Costo inicial: {amount} ({count} reutilizables)",
-    "plastic": "{count} desechables menos al año",
-    "details": "Cómo lo calculamos",
+    "noSavingSwap": "Por ahora ningún cambio ahorra dinero en este artículo.",
+    "nothingToSwap": "Escribió 0 a la semana, así que no hay nada que cambiar.",
+    "compare_one": "Comparar {count} opción más",
+    "compare_other": "Comparar {count} opciones más",
+    "hideCompare": "Ocultar otras opciones",
+    "placeholder": "Los precios son ejemplos, no cotizaciones reales.",
+    "takeout": "Para llevar ({pct}): opciones compostables próximamente.",
+    "howTitle": "Cómo lo calculamos",
+    "howBasis": "Con {weekly} a la semana, {pct} para comer aquí y {days} días abiertos a la semana.",
+    "startOver": "Empezar de nuevo"
+  },
+  "share": {
+    "title": "Mi plan de Cambio",
+    "intro": "Podría ahorrar {year} al año ({month} al mes) si uso reutilizables en los pedidos para comer aquí.",
+    "pounds": "Son {pounds} libras de plástico evitadas al año.",
+    "itemLine": "- {item}: {swap} (ahorra {amount} al año)",
+    "itemNoSaving": "- {item}: por ahora ningún cambio ahorra dinero",
+    "button": "Compartir mi plan",
+    "copied": "Copiado. Puede pegarlo en un mensaje.",
+    "manual": "Copie este texto para compartir su plan:"
+  },
+  "errors": {
+    "summaryTitle": "Hay un problema",
+    "prefix": "Error:",
+    "customersRequired": "Escriba cuántos clientes tiene al día",
+    "customersInvalid": "Escriba un número entero, por ejemplo 80",
+    "customersTooLow": "Escriba por lo menos 1 cliente al día",
+    "customersTooHigh": "Escriba {max} clientes al día o menos",
+    "daysRequired": "Elija cuántos días a la semana abre",
+    "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar",
+    "weeklyInvalid": "Escriba un número entero, por ejemplo 400",
+    "weeklyTooHigh": "Escriba {max} o menos"
+  },
+  "swap": {
     "replacedPerWeek": "Artículos reemplazados por semana",
     "itemsNeeded": "Reutilizables que debe tener",
+    "pounds": "Plástico evitado (libras al año)",
     "disposablesAvoided": "Desechables que deja de comprar (al año)",
     "washCost": "Lavado (al año)",
     "replacementCost": "Reponer artículos perdidos o rotos (al año)",
@@ -70,13 +128,9 @@
     },
     "scoreNote": "Cada barrio recibe un puntaje sencillo y transparente, con una explicación de por qué queda en ese lugar."
   },
-  "placeholder": {
-    "badge": "Precios de ejemplo, no cotizaciones reales",
-    "explain": "Estos números son ejemplos de prueba. Los precios reales vendrán de proveedores locales y entrevistas con restaurantes."
-  },
   "items": {
     "plastic_cups": "Vasos de plástico",
-    "takeout_clamshells": "Contenedores para llevar",
+    "takeout_clamshells": "Cajas para llevar",
     "plastic_forks": "Tenedores de plástico"
   },
   "swaps": {

@@ -60,7 +60,7 @@ function lookup(dictionary, key) {
 /**
  * Translate one key. Falls back to English if the Spanish text is missing,
  * and to the key itself if both are missing, so a gap is visible on screen
- * ("owner.title") instead of a blank space.
+ * ("results.title") instead of a blank space.
  *
  * vars fills {placeholders}: translate('es', 'x', { amount: '$5' }) turns
  * "Ahorra {amount}" into "Ahorra $5".
@@ -85,6 +85,34 @@ export function translatePlural(language, key, count, vars = {}) {
   const form = new Intl.PluralRules(LOCALES[language]).select(count) // 'one' or 'other'
   const fullKey = form === 'one' ? `${key}_one` : `${key}_other`
   return translate(language, fullKey, { count, ...vars })
+}
+
+/**
+ * Number formatters for one language, built on Intl.NumberFormat (the
+ * browser's built-in formatter). A plain function, not a hook, so code
+ * outside components (like the "Share my plan" text) formats numbers exactly
+ * the way the screen does.
+ */
+export function createFormatters(language) {
+  const locale = LOCALES[language]
+  // Money: whole dollars for big amounts ("$1,246"), cents for small ones
+  // ("$11.25"), so a small loss never rounds to a misleading "$0".
+  const money = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  })
+  const moneyCents = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' })
+  const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 })
+  const oneDecimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 })
+  const percent = new Intl.NumberFormat(locale, { style: 'percent' })
+
+  return {
+    formatMoney: (n) => (Math.abs(n) < 100 ? moneyCents : money).format(n),
+    formatNumber: (n) => whole.format(n),
+    formatDecimal: (n) => oneDecimal.format(n),
+    formatPercent: (fraction) => percent.format(fraction), // 0.5 -> "50%"
+  }
 }
 
 // The Context object itself. Its value is filled in by LanguageProvider.

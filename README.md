@@ -51,13 +51,13 @@ cambio/
 
 ## Calculator math
 
-All prices and quantities live in `app/src/data/swaps.csv`. Values marked `PLACEHOLDER` must be replaced with real numbers from interviews or distributor quotes before the video.
+Prices live in `app/src/data/swaps.csv`; per-customer ratios and item weights live in `app/src/data/items.csv`. Values marked `PLACEHOLDER` must be replaced with real numbers from interviews or distributor quotes before the video.
 
-For each disposable item an owner enters:
+The owner answers three questions (Step 1 of the Savings tab): customers per day, days open (1 to 7), and "for here or to go" (mostly to go = 20%, half and half = 50%, mostly here = 80% dine-in). For each disposable item:
 
-- `weekly_qty` = how many they use per week
-- `dine_in_share` = fraction of orders eaten on site (reuse only applies here)
-- `days_open` = days open per week (one setting for the whole restaurant, default 7)
+- `weekly_qty` = customers_per_day x days_open x per_customer (from `items.csv`), rounded; the owner can replace any estimate with their own number (Step 2), and that number is kept even if they change customers per day
+- `dine_in_share` = fraction of orders eaten on site (reuse only applies here); the same for every item
+- `days_open` = days open per week (one setting for the whole restaurant)
 - `annual_disposable_cost` = weekly_qty x unit_cost x 52
 
 For a swap:
@@ -71,10 +71,12 @@ For a swap:
 - `annual_savings` = (replaced_per_week x unit_cost x 52) - annual_ongoing_cost
 - `payback_weeks` = upfront_cost / (annual_savings / 52)
 - `plastic_avoided_per_year` = replaced_per_week x 52
+- `pounds_of_plastic` = plastic_avoided_per_year x grams_each (from `items.csv`) / 453.59237
+- monthly savings = annual_savings / 12
 
 If `annual_savings` is zero or negative, the app says so honestly instead of hiding the swap.
 
-`par_multiplier` (stock on hand, in days of use), `wash_cost_per_use`, and `annual_loss_rate` are set per swap in `swaps.csv`. The summary card totals the best swap per item (highest `annual_savings`); an item whose best swap does not save money adds $0 and is reported. See `docs/decisions.md` (2026-09-26). The math lives in `app/src/lib/calculator.js`, with tests in `calculator.test.js`.
+`par_multiplier` (stock on hand, in days of use), `wash_cost_per_use`, and `annual_loss_rate` are set per swap in `swaps.csv`. The results (Step 3) total the best swap per item (highest `annual_savings`); an item whose best swap does not save money adds $0, is never labeled BEST, and is reported in red. The takeout share (1 - dine_in_share) is shown with a note that compostable options are coming. See `docs/decisions.md` (2026-09-26). The math lives in `app/src/lib/calculator.js` (tests in `calculator.test.js`); `app/src/lib/results.js` combines it for the results screen.
 
 ---
 

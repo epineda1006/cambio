@@ -1,5 +1,5 @@
 // App.jsx: the app "shell", the parts that stay on screen everywhere:
-//   header   (app name, language toggle, theme toggle)
+//   header   (logo, app name, language toggle, theme toggle)
 //   main     (whichever screen is selected)
 //   tab bar  (switches screens, fixed to the bottom of the phone)
 //
@@ -12,23 +12,13 @@
 
 import { useState } from 'react'
 import LanguageToggle from './components/LanguageToggle.jsx'
+import LogoMark from './components/LogoMark.jsx'
 import TabBar from './components/TabBar.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import { useLanguage } from './i18n/languageContext.js'
-import { swapItems } from './lib/loadSwaps.js'
+import { INITIAL_FLOW } from './lib/flow.js'
 import MapPage from './screens/MapPage.jsx'
-import OwnerTool from './screens/OwnerTool.jsx'
-
-const DEFAULT_DAYS_OPEN = 7
-const DEFAULT_DINE_IN_PCT = 50
-
-// One entry per item: { plastic_cups: { weeklyQty: '', dineInPct: 50 }, ... }
-// Object.fromEntries turns a list of [key, value] pairs into an object.
-function createDefaultInputs() {
-  return Object.fromEntries(
-    swapItems.map((item) => [item.itemId, { weeklyQty: '', dineInPct: DEFAULT_DINE_IN_PCT }]),
-  )
-}
+import SavingsFlow from './screens/savings/SavingsFlow.jsx'
 
 function App() {
   const { t } = useLanguage()
@@ -37,18 +27,19 @@ function App() {
   // so a piece of state is enough; no router library needed.
   const [screen, setScreen] = useState('owner')
 
-  // The owner's Savings inputs live HERE, not inside OwnerTool. Switching to
-  // the Map tab removes ("unmounts") OwnerTool, and a component's state is
-  // thrown away when it unmounts. App never unmounts, so state kept here
-  // survives tab switches. This is called "lifting state up".
-  const [daysOpen, setDaysOpen] = useState(DEFAULT_DAYS_OPEN)
-  const [inputs, setInputs] = useState(createDefaultInputs)
+  // Everything the owner has answered in the Savings flow, plus which step
+  // they're on (shape described in lib/flow.js). It lives HERE, not inside
+  // SavingsFlow: switching to the Map tab removes ("unmounts") SavingsFlow,
+  // and a component's state is thrown away when it unmounts. App never
+  // unmounts, so state kept here survives tab and step switches. This is
+  // called "lifting state up".
+  const [flow, setFlow] = useState(INITIAL_FLOW)
 
-  // Update one field of one item. State must be REPLACED, not changed in
-  // place, so React notices; the "..." (spread) copies the old values and the
-  // new ones overwrite just what changed.
-  function updateItem(itemId, changes) {
-    setInputs((prev) => ({ ...prev, [itemId]: { ...prev[itemId], ...changes } }))
+  // Merge in whatever changed, e.g. { daysOpen: 6 } or { step: 2 }. State
+  // must be REPLACED, not changed in place, so React notices; the "..."
+  // (spread) copies the old values and the new ones overwrite what changed.
+  function updateFlow(changes) {
+    setFlow((prev) => ({ ...prev, ...changes }))
   }
 
   function changeScreen(next) {
@@ -59,7 +50,13 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <span className="app-name">{t('app.name')}</span>
+        <div className="brand">
+          {/* Logo slot: 32px, left of the wordmark. The mark is provisional. */}
+          <span className="logo-slot">
+            <LogoMark />
+          </span>
+          <span className="app-name">{t('app.name')}</span>
+        </div>
         <div className="app-header-controls">
           <LanguageToggle />
           <ThemeToggle />
@@ -70,12 +67,7 @@ function App() {
         {/* Conditional rendering: show one screen or the other depending on
             state. "condition ? A : B" is JavaScript's short if/else. */}
         {screen === 'owner' ? (
-          <OwnerTool
-            daysOpen={daysOpen}
-            onDaysOpenChange={setDaysOpen}
-            inputs={inputs}
-            onItemChange={updateItem}
-          />
+          <SavingsFlow flow={flow} onChange={updateFlow} />
         ) : (
           <MapPage />
         )}

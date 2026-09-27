@@ -1,7 +1,12 @@
 /* styles.css: every color and base style for the app.
  *
+ * STYLE: "clean civic". Plain, high-clarity patterns (big readable text,
+ * strong 2px input borders, square corners, full-width buttons, lots of
+ * space), in the spirit of government service sites, but with Cambio's own
+ * colors, font, and logo.
+ *
  * CSS CUSTOM PROPERTIES ("CSS variables")
- * A name starting with -- holds a value, e.g. --bg: #f7f6f2. Anywhere else
+ * A name starting with -- holds a value, e.g. --bg: #ffffff. Anywhere else
  * we write var(--bg) instead of the color itself. To make a dark theme we
  * don't restyle anything; we only change what the variables hold.
  *
@@ -16,20 +21,33 @@
  */
 
 :root {
-  --bg: #f7f6f2;
-  --surface: #ffffff;
-  --text: #1c1f1d;
-  --text-muted: #56605a;
-  --border: #d5d9d2;
-  --accent: #1d7248; /* Cambio green; white text on it passes contrast checks */
-  --accent-contrast: #ffffff;
+  --bg: #ffffff;
+  --surface: #f3f4f2; /* light grey panels and cards */
+  --text: #141414;
+  --text-muted: #4d5450;
+  --border: #141414; /* input borders: strong and dark, easy to see */
+  --divider: #b5bbb7; /* thin lines between rows */
+  --accent: #1d7248; /* Cambio green: money saved */
+  --accent-hover: #145535;
+  --accent-contrast: #ffffff; /* text on top of green */
+  /* Green used as TEXT (links, active tab, tags). In light mode it's the same
+     green as the fills. In dark mode no single green works for both: white
+     text needs a dark green behind it, but green text on a near-black page
+     needs a lighter green. So dark mode splits them. */
+  --accent-text: #1d7248;
   --positive: #1d7248;
   --negative: #b3261e;
   --warning-bg: #fff3d1;
   --warning-text: #6b4200;
   --focus: #1d63c8;
 
-  --radius: 12px;
+  /* The header is black in BOTH themes, so its colors don't change. */
+  --header-bg: #000000;
+  --header-text: #ffffff;
+  --header-accent: #5fd39a;
+  --header-toggle-border: #666666; /* 3.7:1 against black */
+  --header-toggle-selected: #333333; /* white text on it: 12.6:1 */
+
   --tap: 44px; /* minimum size for anything you tap (Apple/Google guideline) */
   --tab-bar-height: 64px;
 
@@ -41,14 +59,17 @@
 /* Layer 2: follow the phone, unless the owner chose "light". */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #111412;
-    --surface: #1b201d;
-    --text: #edf1ee;
-    --text-muted: #a4aea8;
-    --border: #2e3631;
-    --accent: #5fd39a;
-    --accent-contrast: #0b1f14;
-    --positive: #5fd39a;
+    --bg: #151515;
+    --surface: #222222;
+    --text: #ececec;
+    --text-muted: #a3a3a3;
+    --border: #7a7a7a;
+    --divider: #3a3a3a;
+    --accent: #23724a;
+    --accent-hover: #1f6b45;
+    --accent-contrast: #ffffff;
+    --accent-text: #6aab86;
+    --positive: #6aab86;
     --negative: #ff8a80;
     --warning-bg: #3a2e10;
     --warning-text: #ffd479;
@@ -60,14 +81,17 @@
 /* Layer 3: the owner chose "dark" with the toggle. (Same values as above;
    CSS can't share one block between a media query and a selector.) */
 :root[data-theme='dark'] {
-  --bg: #111412;
-  --surface: #1b201d;
-  --text: #edf1ee;
-  --text-muted: #a4aea8;
-  --border: #2e3631;
-  --accent: #5fd39a;
-  --accent-contrast: #0b1f14;
-  --positive: #5fd39a;
+  --bg: #151515;
+  --surface: #222222;
+  --text: #ececec;
+  --text-muted: #a3a3a3;
+  --border: #7a7a7a;
+  --divider: #3a3a3a;
+  --accent: #23724a;
+  --accent-hover: #1f6b45;
+  --accent-contrast: #ffffff;
+  --accent-text: #6aab86;
+  --positive: #6aab86;
   --negative: #ff8a80;
   --warning-bg: #3a2e10;
   --warning-text: #ffd479;
@@ -89,11 +113,26 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  /* System fonts: already on the phone, so nothing extra to download. */
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
+  /* Public Sans is bundled with the app (see main.jsx), so it loads with no
+     outside request. The rest of the list is a fallback while it loads. */
+  font-family: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem; /* 19px: civic sites use large body text for readability */
+  line-height: 1.45;
   -webkit-text-size-adjust: 100%;
+  /* Long Spanish words may break onto the next line instead of being cut off. */
+  overflow-wrap: break-word;
+}
+
+/* We only load weights 400 and 500, so headings get 500 and more size,
+   never bold (700). Otherwise the browser would fake a bold. */
+h1,
+h2,
+h3,
+h4,
+strong,
+b {
+  font-weight: 500;
 }
 
 h1,
@@ -104,64 +143,35 @@ h3 {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
   color: inherit;
 }
 
-/* A clear outline when moving through the page with a keyboard. */
+/* A thick, clear outline when moving through the page with a keyboard. */
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
 
-/* ---------- Header toggles (language + theme) ---------- */
-
-.toggle-group {
-  display: inline-flex;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+/* Text that screen readers read but that is hidden on screen. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
   overflow: hidden;
-  background: var(--surface);
-}
-
-.toggle-group button,
-.theme-toggle {
-  min-height: var(--tap);
-  min-width: var(--tap);
-  padding: 0 0.9rem;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
   border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-/* The selected option in a group is filled with the accent color. */
-.toggle-group button[aria-pressed='true'] {
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-}
-
-.theme-toggle svg {
-  width: 1.1rem;
-  height: 1.1rem;
 }
 
 /* ---------- App shell: header, main, bottom tab bar ----------
  *
  * MOBILE-FIRST: the styles below are for phones, with no media query.
- * Wider screens get ADDITIONS inside @media (min-width: ...) at the end.
- * Designing for the smallest screen first keeps the phone version simple,
- * and phones are what owners will use.
+ * Wider screens get ADDITIONS inside @media (min-width: ...).
  */
 
 .app {
@@ -170,6 +180,7 @@ select {
   min-height: 100dvh;
 }
 
+/* Solid black bar, no stripe or border underneath. */
 .app-header {
   /* sticky: scrolls normally, then sticks to the top of the screen. */
   position: sticky;
@@ -182,14 +193,34 @@ select {
   padding: 0.5rem 1rem;
   /* env(safe-area-inset-top): extra room for an iPhone notch. */
   padding-top: max(0.5rem, env(safe-area-inset-top));
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--header-bg);
+  color: var(--header-text);
+}
+
+/* Logo mark + wordmark, side by side. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.logo-slot {
+  flex: 0 0 auto; /* never shrink the logo */
+  width: 32px;
+  height: 32px;
+}
+
+.logo-slot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .app-name {
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: var(--accent);
+  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
 }
 
 .app-header-controls {
@@ -200,20 +231,112 @@ select {
 .app-main {
   max-width: 40rem; /* keeps lines readable on big screens */
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1.25rem 1rem;
   /* Leave room at the bottom so the fixed tab bar never covers content. */
-  padding-bottom: calc(var(--tab-bar-height) + 1.5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--tab-bar-height) + 2rem + env(safe-area-inset-bottom));
 }
 
 .app-main h1 {
-  margin: 0.5rem 0;
-  font-size: 1.6rem;
+  margin: 0.5rem 0 1rem;
+  font-size: 2rem;
 }
 
 .lead {
-  margin: 0 0 1rem;
+  margin: 0 0 1.5rem;
   color: var(--text-muted);
 }
+
+/* ---------- Header toggles (language + theme), on the black bar ----------
+ * Soft and small: a thin gray outline, slightly rounded, smaller text.
+ * The header is black in both themes, so these look the same in both.
+ *
+ * TAP AREA vs VISIBLE SIZE: each button is drawn 32px tall, but an invisible
+ * ::after layer reaches 6px above and below it, so a thumb still has a 44px
+ * target. (::after is a "pseudo-element": an extra box CSS adds to an element
+ * without any extra HTML.) */
+
+.app-header-controls {
+  align-items: center;
+}
+
+.toggle-group {
+  display: inline-flex;
+  border: 1px solid var(--header-toggle-border);
+  border-radius: 6px;
+}
+
+.toggle-group button,
+.theme-toggle {
+  position: relative; /* anchors the ::after tap area */
+  min-height: 2rem; /* 32px visible */
+  min-width: var(--tap); /* 44px wide */
+  padding: 0 0.6rem;
+  border: 0;
+  background: transparent;
+  color: var(--header-text);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.toggle-group button::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+}
+
+/* Round the outer corners of the first and last button so the gray fill
+   of the selected one follows the group's rounded outline. */
+.toggle-group button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.toggle-group button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+
+/* The selected language gets a subtle gray fill, not solid white. */
+.toggle-group button[aria-pressed='true'] {
+  background: var(--header-toggle-selected);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* The button itself is the full 44 x 44 tap area... */
+  width: var(--tap);
+  height: var(--tap);
+  /* ...but takes up only 32px of the header's height, like the language
+     buttons, thanks to negative top/bottom margins. */
+  margin: -6px 0;
+  padding: 0;
+}
+
+/* ...and the visible outline (36 x 32) is drawn inside it with ::before, so
+   nothing sticks out of the button's box. */
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 6px 4px;
+  border: 1px solid var(--header-toggle-border);
+  border-radius: 6px;
+}
+
+.theme-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* The header toggles sit on black, so their focus ring is the light green. */
+.app-header :focus-visible {
+  outline-color: var(--header-accent);
+}
+
+/* ---------- Bottom tab bar ---------- */
 
 .tab-bar {
   /* fixed: pinned to the bottom of the screen, even while scrolling. */
@@ -225,8 +348,8 @@ select {
   display: grid;
   grid-template-columns: 1fr 1fr; /* two equal-width tabs */
   padding-bottom: env(safe-area-inset-bottom); /* iPhone home-bar area */
-  background: var(--surface);
-  border-top: 1px solid var(--border);
+  background: var(--bg);
+  border-top: 1px solid var(--divider);
 }
 
 .tab-bar button {
@@ -237,10 +360,12 @@ select {
   gap: 0.15rem;
   min-height: var(--tab-bar-height);
   border: 0;
+  /* A 4px bar on top marks the active tab; transparent when inactive. */
+  border-top: 4px solid transparent;
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -250,45 +375,566 @@ select {
 }
 
 .tab-bar button[aria-current='page'] {
-  color: var(--accent);
+  color: var(--accent-text);
+  border-top-color: var(--accent-text);
 }
 
-/* ---------- Wider screens (tablets, laptops) ----------
- * 48rem = 768px, about the width of a tablet held upright. */
-@media (min-width: 48rem) {
-  .app-header {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+/* ---------- Buttons and links ---------- */
+
+/* Primary button: full width and green, because the main action on each
+   step moves the owner toward money saved. */
+.button {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--accent-hover);
+}
+
+/* Secondary actions (Back, Change, Start over) look like links but are real
+   <button>s, because they do something on this page instead of going to
+   another address. */
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font-size: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration-thickness: 3px;
+}
+
+/* ---------- Form fields ---------- */
+
+.field {
+  margin: 0 0 1.75rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field label,
+.field legend {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+}
+
+/* 2px solid borders and square corners: the box is unmistakable. */
+.field input[type='text'] {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.1875rem; /* 16px or more also stops iPhones zooming in */
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 0;
+}
+
+.help {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+/* ---------- 3-step flow ---------- */
+
+/* "Paso 1 de 3", a small caption above each step's heading. */
+.step-indicator {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.1875rem;
+}
+
+.step-indicator + form h1,
+.step-indicator + h1 {
+  margin-top: 0.25rem;
+}
+
+/* Headings get focus when a step changes (for screen readers), but a
+   focus ring around a heading would just confuse sighted people. */
+h1:focus {
+  outline: none;
+}
+
+.back-link {
+  margin-bottom: 0.25rem;
+}
+
+/* Inputs for short numbers shouldn't stretch the full width: the box's size
+   hints at the answer's size. */
+.field input.input-short {
+  max-width: 8rem;
+}
+
+/* <fieldset> comes with a border and padding by default; remove them. */
+fieldset.field {
+  min-width: 0; /* lets a fieldset shrink on narrow screens */
+  padding: 0;
+  border: 0;
+}
+
+.field legend {
+  padding: 0;
+  font-size: 1.1875rem;
+}
+
+.field .help {
+  margin: 0 0 0.5rem;
+}
+
+/* ----- Option buttons (days open: 1 to 7) -----
+ * Real radio buttons, visually hidden, with their <label> drawn as a
+ * square button. The radio still does the work: one choice at a time,
+ * arrow keys to move, and screen readers announce "radio, 2 of 7".
+ *
+ * flex-wrap lets the seven 44px buttons sit in one row when there's room
+ * (7 x 44px + gaps = 341px, so from about a 375px phone up) and wrap onto
+ * a second row on narrower phones. */
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.option-button {
+  position: relative;
+}
+
+.option-button input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.option-button label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap); /* 44px square tap target */
+  min-height: var(--tap);
+  margin: 0;
+  border: 2px solid var(--border);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* "input:checked + label" means "a label right after a checked input". */
+.option-button input:checked + label {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* The input is invisible, so show its keyboard focus on the label. */
+.option-button input:focus-visible + label {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ----- Large radio buttons (for here / to go) -----
+ * appearance: none removes the browser's tiny default circle so we can
+ * draw a bigger one that's easy to hit with a thumb. */
+.radios {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.radio input {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  border: 2px solid var(--border);
+  border-radius: 50%; /* circles stay round: it's how people recognize a radio */
+  background: var(--bg);
+  cursor: pointer;
+}
+
+/* The dot: an inner ring of background color around a filled center. */
+.radio input:checked {
+  background: var(--text);
+  box-shadow: inset 0 0 0 6px var(--bg);
+}
+
+.radio label {
+  margin: 0;
+  padding-top: 0.3rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.radio-hint {
+  display: block;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* ----- Summary list (Step 2: what you use each week) -----
+ * One row per item: name, value, actions. On phones the three parts stack;
+ * from 40rem wide they sit side by side in columns. */
+.summary-list {
+  margin: 0 0 1.5rem;
+  border-top: 1px solid var(--divider);
+}
+
+.summary-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.summary-key {
+  font-weight: 500;
+}
+
+/* Browsers indent every <dd> by 40px by default; summary lists don't want that. */
+.summary-list dd {
+  margin-left: 0;
+}
+
+.summary-value,
+.summary-actions,
+.summary-edit {
+  margin: 0.15rem 0 0;
+}
+
+.summary-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.25rem;
+}
+
+.summary-edit .field {
+  margin: 0.5rem 0 0.75rem;
+}
+
+/* Save + Cancel side by side (they wrap if there isn't room). */
+.edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+}
+
+/* A primary button that is only as wide as its text. */
+.button.button-inline {
+  display: inline-block;
+  width: auto;
+}
+
+/* Small label after a value: "Estimated" (grey) or "You entered" (green). */
+.tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  vertical-align: 0.1em;
+}
+
+.tag-entered {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+}
+
+@media (min-width: 40rem) {
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
   }
 
-  .app-main {
-    padding: 2rem 1.5rem;
-    padding-bottom: calc(var(--tab-bar-height) + 2rem);
+  .summary-value,
+  .summary-actions {
+    margin: 0;
   }
 
-  /* Keep the tabs from stretching across a whole laptop screen. */
-  .tab-bar {
-    grid-template-columns: repeat(2, 10rem);
-    justify-content: center;
+  .summary-edit {
+    grid-column: 2 / -1;
+    margin: 0;
   }
 }
 
-/* ---------- Savings screen: cards, inputs, results ---------- */
+/* ----- Inset text: a side note with a thick left border ----- */
+.inset-text {
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 6px solid var(--divider);
+}
+
+.inset-text p {
+  margin: 0.5rem 0;
+}
+
+/* ----- Results (Step 3) ----- */
+
+/* The green headline panel: money saved = green. */
+.result-panel {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  text-align: center;
+}
+
+.result-panel p {
+  margin: 0.25rem 0;
+}
+
+.result-panel-lead {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.result-panel-amount {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No savings: a plain panel, so $0 never looks like good news. */
+.result-panel-neutral {
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.result-panel-neutral .result-panel-lead {
+  font-size: 1.25rem;
+}
+
+.result-detail p {
+  margin: 0.15rem 0;
+}
+
+.result-swap {
+  font-weight: 500;
+}
+
+.tag-best {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.result-facts {
+  margin: 0.25rem 0;
+  padding-left: 1.2rem;
+  font-size: 1rem;
+}
+
+/* The other swaps, opened by "Compare N other options". */
+.compare-list {
+  margin: 0.25rem 0 0.5rem;
+  padding: 0 0 0 0.9rem;
+  border-left: 4px solid var(--divider);
+  list-style: none;
+  font-size: 1rem;
+}
+
+.compare-list li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem 0;
+}
+
+.compare-list li + li {
+  border-top: 1px solid var(--divider);
+}
+
+@media (min-width: 40rem) {
+  /* Results rows have two parts (item, details), not three. */
+  .summary-row.result-row {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* Share my plan */
+.share {
+  margin: 0 0 1rem;
+}
+
+.share-status {
+  min-height: 1.5em; /* reserve the line so nothing jumps when "Copied" appears */
+  margin: 0.5rem 0 0;
+  color: var(--positive);
+  font-weight: 500;
+}
+
+.share textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: 0;
+  background: var(--bg);
+  font: inherit;
+  font-size: 1rem;
+}
+
+/* "How we calculated this" */
+.how {
+  margin: 0 0 1.5rem;
+}
+
+.how-item h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.375rem;
+}
+
+.how-item > p {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.how-swap {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  background: var(--surface);
+}
+
+.how-swap h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1875rem;
+}
+
+/* ----- Errors ----- */
+
+.error-summary {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 4px solid var(--negative);
+}
+
+.error-summary:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+}
+
+.error-summary h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.error-summary ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.error-summary li + li {
+  margin-top: 0.5rem;
+}
+
+.error-summary a {
+  color: var(--negative);
+  font-weight: 500;
+  text-underline-offset: 0.15em;
+}
+
+/* A red bar down the left of a question that needs fixing.
+   ".field.field-error" (two classes) is more specific than
+   "fieldset.field" (a tag + one class), so this rule wins for fieldsets. */
+.field.field-error {
+  padding-left: 0.9rem;
+  border-left: 4px solid var(--negative);
+}
+
+.error-message {
+  margin: 0 0 0.5rem;
+  color: var(--negative);
+  font-weight: 500;
+}
+
+.field-error input[type='text'] {
+  border-color: var(--negative);
+}
+
+/* ---------- Small helpers ---------- */
 
 .muted {
   color: var(--text-muted);
 }
 
 .small {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
+.positive {
+  color: var(--positive);
+}
+
+.negative {
+  color: var(--negative);
+}
+
+.note-negative {
+  color: var(--negative);
+  font-weight: 500;
+}
+
+/* Small label ("Placeholder map data"). Square, like the rest. */
+.badge {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.badge-placeholder {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+/* ---------- Cards (Map screen) ---------- */
+
 .card {
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
   padding: 1rem;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
 }
 
 .card h2,
@@ -300,170 +946,23 @@ select {
   margin: 0.5rem 0;
 }
 
-/* The summary card is the headline: accent border and a big number. */
-.summary-card {
-  border: 2px solid var(--accent);
-}
-
-.summary-total {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem;
-}
-
-.summary-amount {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  /* tabular-nums: every digit is the same width, so numbers don't jiggle
-     while the owner types. */
-  font-variant-numeric: tabular-nums;
-}
-
-.summary-plastic {
-  font-weight: 600;
-}
-
-/* Small rounded labels ("Best swap", "Placeholder prices"). */
-.badge {
-  display: inline-block;
-  margin: 0 0 0.5rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.75rem; /* stays tidy if a long label wraps to two lines */
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.badge-placeholder {
-  background: var(--warning-bg);
-  color: var(--warning-text);
-}
-
-.badge-best {
-  margin: 0;
-  background: var(--accent);
-  color: var(--accent-contrast);
-  white-space: nowrap;
-}
-
-/* ----- Form fields ----- */
-
-.field {
-  margin: 0 0 1rem;
-}
-
-.field:last-child {
-  margin-bottom: 0;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-weight: 600;
-}
-
-.field-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.field-row output {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.field input[type='number'],
-.field select {
-  width: 100%;
-  min-height: var(--tap);
-  padding: 0.5rem 0.75rem;
-  /* 16px or larger stops iPhones from zooming in when you tap the box. */
-  font-size: 1rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.field input[type='range'] {
-  width: 100%;
-  min-height: var(--tap);
-  /* accent-color recolors the browser's built-in slider to our green. */
-  accent-color: var(--accent);
-}
-
-.help {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: var(--text-muted);
-}
-
-.note-negative {
-  color: var(--negative);
-  font-weight: 600;
-}
-
-/* ----- Swap result cards ----- */
-
-.swap-list {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
-.swap-card {
-  padding: 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg);
-}
-
-.swap-card.is-best {
-  border: 2px solid var(--accent);
-}
-
-.swap-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.swap-card h4 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.swap-headline {
-  font-size: 1.15rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.positive {
-  color: var(--positive);
-}
-
-.negative {
-  color: var(--negative);
-}
-
 .facts {
   margin: 0.25rem 0 0.5rem;
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
+  padding-left: 1.2rem;
+  font-size: 1rem;
 }
 
+/* display: list-item keeps the browser's ▸ / ▾ marker, which shows that
+   this opens and closes. (display: flex would hide it.) */
 details summary {
-  min-height: var(--tap);
-  display: flex;
-  align-items: center;
+  display: list-item;
+  padding: 0.6rem 0; /* keeps the tap area at least 44px tall */
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--accent);
+  font-size: 1.1875rem;
+  font-weight: 500;
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 /* Two-column table of the math: label on the left, number on the right. */
@@ -472,7 +971,7 @@ details summary {
   grid-template-columns: 1fr auto;
   gap: 0.35rem 1rem;
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .breakdown dt {
@@ -489,6 +988,30 @@ details summary {
 .breakdown dt:last-of-type,
 .breakdown dd:last-of-type {
   padding-top: 0.35rem;
-  border-top: 1px solid var(--border);
-  font-weight: 700;
+  border-top: 1px solid var(--divider);
+  font-weight: 500;
+}
+
+/* ---------- Wider screens (tablets, laptops) ----------
+ * 48rem = 768px, about the width of a tablet held upright. */
+@media (min-width: 48rem) {
+  .app-header {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .app-main {
+    padding: 2rem 1.5rem;
+    padding-bottom: calc(var(--tab-bar-height) + 2rem);
+  }
+
+  .app-main h1 {
+    font-size: 2.5rem;
+  }
+
+  /* Keep the tabs from stretching across a whole laptop screen. */
+  .tab-bar {
+    grid-template-columns: repeat(2, 10rem);
+    justify-content: center;
+  }
 }

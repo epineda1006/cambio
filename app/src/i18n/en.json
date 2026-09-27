@@ -9,8 +9,6 @@
     "es": "ES"
   },
   "theme": {
-    "light": "Light",
-    "dark": "Dark",
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
   },
@@ -19,40 +17,100 @@
     "owner": "Savings",
     "map": "Map"
   },
-  "owner": {
-    "title": "Which swaps save you money?",
-    "intro": "Enter what you buy each week. We'll show which reusable swaps save you money.",
-    "daysOpen": "Days open per week",
-    "daysOpenHelp": "Used to figure out how many reusable items you need on hand.",
-    "weeklyQty": "How many do you use per week?",
-    "dineInShare": "Eaten on site (dine-in)",
-    "dineInHelp": "Reusables only replace dine-in orders. Takeout still needs disposables.",
-    "currentSpend": "You spend about {amount} a year on these now.",
-    "noDineIn": "With 0% dine-in there is nothing to swap. Reusables only work for orders eaten on site."
+  "flow": {
+    "stepOf": "Step {n} of {total}",
+    "continue": "Continue",
+    "back": "Back"
   },
-  "summary": {
-    "title": "Your yearly savings",
-    "empty": "Enter how many items you use each week to see your savings.",
-    "perYear": "per year",
-    "plastic": "{count} single-use items avoided per year",
-    "upfront": "Upfront cost for reusables: {amount}",
-    "basis": "Using the best swap for each item.",
-    "noSavingSwap_one": "{count} item has no swap that saves money at these prices.",
-    "noSavingSwap_other": "{count} items have no swap that saves money at these prices."
+  "business": {
+    "title": "Your business",
+    "customersLabel": "How many customers a day?",
+    "customersHint": "A rough average is fine. Count each order as one customer.",
+    "daysLegend": "Days open per week",
+    "dineInLegend": "For here or to go?",
+    "dineInHint": "Think about a normal week.",
+    "choices": {
+      "mostlyToGo": {
+        "label": "Mostly to go",
+        "hint": "About {pct} eaten here"
+      },
+      "halfAndHalf": {
+        "label": "Half and half",
+        "hint": "About {pct} eaten here"
+      },
+      "mostlyHere": {
+        "label": "Mostly here",
+        "hint": "About {pct} eaten here"
+      }
+    }
   },
-  "swap": {
-    "best": "Best swap",
-    "saves": "Saves {amount} per year",
-    "costsMore": "Costs you {amount} more per year",
-    "breakEven": "Saves nothing per year (breaks even)",
+  "usage": {
+    "title": "What you use each week",
+    "intro": "We estimated this from your answers. Change any number that looks wrong.",
+    "perWeek": "{count} a week",
+    "estimated": "Estimated",
+    "entered": "You entered",
+    "change": "Change",
+    "useEstimate": "Use estimate ({count})",
+    "editLabel": "{item} per week",
+    "perWeekLabel": "Per week",
+    "save": "Save",
+    "cancel": "Cancel",
+    "basis": "Estimated from {customers} customers a day, {days} days a week.",
+    "placeholder": "The amounts per customer are examples until we check them in interviews.",
+    "continue": "See my savings"
+  },
+  "results": {
+    "title": "Your savings",
+    "couldSave": "You could save",
+    "perYear": "{amount} a year",
+    "perMonth": "({amount} a month)",
+    "pounds": "and use {pounds} pounds less plastic a year",
+    "noSavings": "None of these swaps save money at these prices.",
+    "best": "BEST",
+    "saves": "Saves {amount} a year",
+    "costsMore": "Costs {amount} more a year",
+    "breakEven": "Saves nothing a year",
+    "poundsAvoided": "{pounds} lb of plastic avoided a year",
     "payback": "Pays for itself in {weeks} weeks",
     "neverPaysBack": "Never pays for itself at these prices",
-    "upfront_one": "Upfront: {amount} ({count} reusable)",
-    "upfront_other": "Upfront: {amount} ({count} reusables)",
-    "plastic": "{count} fewer single-use items per year",
-    "details": "How we calculated this",
+    "noSavingSwap": "No swap saves money on this item yet.",
+    "nothingToSwap": "You entered 0 a week, so there's nothing to swap.",
+    "compare_one": "Compare {count} other option",
+    "compare_other": "Compare {count} other options",
+    "hideCompare": "Hide other options",
+    "placeholder": "Prices are examples, not real quotes.",
+    "takeout": "Takeout ({pct}): compostable options coming soon.",
+    "howTitle": "How we calculated this",
+    "howBasis": "Based on {weekly} a week, {pct} eaten here, open {days} days a week.",
+    "startOver": "Start over"
+  },
+  "share": {
+    "title": "My Cambio plan",
+    "intro": "I could save {year} a year ({month} a month) by switching dine-in orders to reusables.",
+    "pounds": "That's {pounds} pounds of plastic avoided a year.",
+    "itemLine": "- {item}: {swap} (saves {amount} a year)",
+    "itemNoSaving": "- {item}: no swap saves money yet",
+    "button": "Share my plan",
+    "copied": "Copied. You can paste it into a message.",
+    "manual": "Copy this text to share your plan:"
+  },
+  "errors": {
+    "summaryTitle": "There is a problem",
+    "prefix": "Error:",
+    "customersRequired": "Enter how many customers you have a day",
+    "customersInvalid": "Enter a whole number, like 80",
+    "customersTooLow": "Enter at least 1 customer a day",
+    "customersTooHigh": "Enter {max} customers a day or fewer",
+    "daysRequired": "Select how many days a week you are open",
+    "dineInRequired": "Select whether most orders are for here or to go",
+    "weeklyInvalid": "Enter a whole number, like 400",
+    "weeklyTooHigh": "Enter {max} or fewer"
+  },
+  "swap": {
     "replacedPerWeek": "Items replaced per week",
     "itemsNeeded": "Reusables to keep on hand",
+    "pounds": "Plastic avoided (pounds per year)",
     "disposablesAvoided": "Disposables you stop buying (per year)",
     "washCost": "Washing (per year)",
     "replacementCost": "Replacing lost or broken items (per year)",
@@ -70,13 +128,9 @@
     },
     "scoreNote": "Each neighborhood gets a simple, transparent score, with a breakdown of why it ranks where it does."
   },
-  "placeholder": {
-    "badge": "Placeholder prices, not real quotes",
-    "explain": "These numbers are examples for testing. Real prices will come from local suppliers and restaurant interviews."
-  },
   "items": {
     "plastic_cups": "Plastic cups",
-    "takeout_clamshells": "Takeout clamshells",
+    "takeout_clamshells": "To-go boxes",
     "plastic_forks": "Plastic forks"
   },
   "swaps": {

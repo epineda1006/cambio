@@ -5,6 +5,68 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 — Days open: any number from 1 to 7
+
+**Before:** Step 1 offered only 5, 6, or 7 days a week.
+
+**Now:** 1 through 7, nothing preselected. Food trucks and weekend-only vendors often open
+fewer than 5 days, and forcing them to pick 5 would overstate their weekly use.
+
+---
+
+## 2026-09-26 — Savings tab redesigned as a 3-step flow ("clean civic" style)
+
+**Before:** one long page where the owner typed weekly counts for every item and saw every
+swap card at once.
+
+**Now:**
+
+1. **Your business:** customers per day, days open (5/6/7), and for here or to go
+   (20/50/80% dine-in). Nothing is preselected, and missing answers get an error summary.
+2. **What you use each week:** weekly cups, to-go boxes, and forks, *estimated* from
+   customers per day x per-customer ratios (`app/src/data/items.csv`, PLACEHOLDER). The owner
+   can correct any number, and their number is kept even if they change customers per day.
+3. **Your savings:** yearly and monthly savings, each item's best swap (BEST tag),
+   pounds of plastic avoided, payback, other options on request, the full math, and "Share
+   my plan".
+
+**Why:** owners rarely know their weekly cup count but do know roughly how many customers
+they have. Guided steps with big, plain controls work better on a phone, and the plain
+"civic" look (inspired by government service design, with Cambio's own colors and logo)
+reads as trustworthy rather than salesy.
+
+**Kept honest:** the calculator math did not change (only estimate helpers were added). Money-losing
+swaps are shown in red and never labeled BEST. The shared text always carries the "prices
+are examples" line while data is PLACEHOLDER.
+
+**Still to validate in interviews:** per-customer ratios, item weights (grams), and the
+open question below (orders vs. people per day).
+
+---
+
+## 2026-09-26 — OPEN QUESTION: orders per day or people served per day?
+
+**Status:** open. To be decided after interviews.
+
+**The mismatch:** Step 1 of the Savings flow asks "How many customers a day?", and its help text
+says to count each order as one customer. But the per-customer ratios in
+`app/src/data/items.csv` (for example 0.8 cups per customer) assume one *person*. A family
+order for four people counts as 1 customer but probably uses about 4 forks, so the current
+wording could undercount.
+
+**Options:**
+
+- **Orders per day:** easier for owners, who often know it from their register or POS. The
+  ratios would then need to be per order (for example forks per order).
+- **People served per day:** matches the current per-person ratios, but it's harder for an
+  owner to know.
+
+**To ask in interviews:** "Do you know roughly how many orders you do a day? How many
+people is a typical order?" Then update the question, the help text (EN/ES), and the
+`per_customer` ratios together.
+
+---
+
 ## 2026-09-26 — Calculator: how many reusables, and what they cost to run
 
 **Context:** The README defines `upfront_cost = reusable items needed x reusable unit price` and

@@ -1,14 +1,15 @@
-// PlaceholderBadge.jsx: a warning-colored label that says the data is an
-// example, not real. Shown whenever swaps.csv has a PLACEHOLDER row (or the
-// map data is a placeholder), so invented numbers are never presented as
-// real (including in the video).
-//
-// textKey is optional: it defaults to the prices message, and the Map screen
-// passes its own.
+// PlaceholderBadge.jsx: a warning-colored label saying the data shown is an
+// example, not real, so invented numbers are never presented as real
+// (including in the video). Used on the Map screen; the Savings flow says
+// the same thing in its inset notes.
 
 import { useLanguage } from '../i18n/languageContext.js'
 
-export default function PlaceholderBadge({ textKey = 'placeholder.badge' }) {
+/**
+ * Props:
+ *   textKey  the i18n key of the message, e.g. 'map.placeholderData'
+ */
+export default function PlaceholderBadge({ textKey }) {
   const { t } = useLanguage()
   return <p className="badge badge-placeholder">{t(textKey)}</p>
 }
