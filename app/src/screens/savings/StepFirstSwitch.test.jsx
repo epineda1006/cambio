@@ -84,6 +84,15 @@ describe('when no swap saves money', () => {
     expect(screen.getByLabelText('Stop putting forks and sauce in every bag')).toBeTruthy()
   })
 
+  it('shows the extras savings once, in the pick, not again under Takeout', () => {
+    renderStep({ data: losingData })
+    // $602.78 a year: forks 216/wk x 0.7 x $0.01 x 52 + sauce 360/wk x 0.7 x $0.04 x 52
+    expect(screen.getAllByText('Saves $603 a year')).toHaveLength(1)
+    expect(screen.queryByText(/Giving forks and sauce only on request could save/)).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Takeout' })).toBeTruthy() // laws still there
+    expect(screen.getByRole('link', { name: /Read AB 1276/ })).toBeTruthy()
+  })
+
   it("says they're ahead if extras are already on request, with no checklist", () => {
     renderStep({ data: losingData, flow: { ...flow, extrasAuto: 'ifAsked' } })
     expect(

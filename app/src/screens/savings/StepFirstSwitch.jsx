@@ -183,7 +183,9 @@ function Plan({ flow, data, pilot }) {
       {checklist.length > 0 && <Checklist items={checklist} />}
 
       {/* ---- C. Takeout ---- */}
-      <Takeout extras={extras} />
+      {/* When the pick IS extras-on-request, the pick card already shows
+          the savings, so C skips it (each number appears once). */}
+      <Takeout extras={extras} showSavings={pick.kind !== 'extras'} />
 
       {/* ---- D. Join the pilot ---- */}
       <JoinPilot pilot={pilot} nothingEasy={pick.kind === 'none'} />
@@ -196,14 +198,15 @@ function Plan({ flow, data, pilot }) {
  * (extras only on request), then REUSE (customers' own containers), then
  * better MATERIALS (once we know what Fresno's compost accepts).
  */
-function Takeout({ extras }) {
+function Takeout({ extras, showSavings }) {
   const { t, formatMoney } = useLanguage()
   return (
     <>
       <h2>{t('firstSwitch.takeoutTitle')}</h2>
-      {/* Only when extras go in every bag today; otherwise there's nothing
-          to save, and $0 would just be noise. */}
-      {extras.automatic && extras.totalAnnualSavings > 0 && (
+      {/* Only when extras go in every bag today (otherwise there's nothing
+          to save, and $0 would just be noise), and not already shown in
+          the pick above. */}
+      {showSavings && extras.automatic && extras.totalAnnualSavings > 0 && (
         <p>
           {t('firstSwitch.extrasSavings', {
             amount: formatMoney(extras.totalAnnualSavings),
