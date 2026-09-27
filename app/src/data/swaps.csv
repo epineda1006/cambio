@@ -1,6 +1,6 @@
-item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,notes
-plastic_cups,0.10,reusable_tumbler,2.00,1.5,0.03,0.20,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
-plastic_cups,0.10,glass_cup,1.25,1.5,0.03,0.30,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
-takeout_clamshells,0.25,reusable_basket,3.00,1.5,0.04,0.10,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
-takeout_clamshells,0.25,reusable_plate,4.00,1.5,0.05,0.05,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
-plastic_forks,0.02,metal_fork,0.75,2.0,0.002,0.15,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
+item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,effort,hand_wash_seconds,notes
+plastic_cups,0.10,reusable_tumbler,2.00,1.5,0.03,0.20,medium,10,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
+plastic_cups,0.10,glass_cup,1.25,1.5,0.03,0.30,easy,10,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
+takeout_clamshells,0.25,reusable_basket,3.00,1.5,0.04,0.10,easy,15,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
+takeout_clamshells,0.25,reusable_plate,4.00,1.5,0.05,0.05,medium,15,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers
+plastic_forks,0.02,metal_fork,0.75,2.0,0.002,0.15,easy,4,PLACEHOLDER: all values invented for the prototype; replace with distributor quote and interview answers

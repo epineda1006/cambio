@@ -25,13 +25,14 @@ function renderApp() {
   )
 }
 
-// Answer Step 1: 120 customers a day, open 6 days, half and half.
+// Answer Step 1: 120 customers a day, open 6 days, half and half, dishwasher.
 function answerStepOne() {
   fireEvent.change(screen.getByLabelText('How many customers a day?'), {
     target: { value: '120' },
   })
   fireEvent.click(screen.getByLabelText('6'))
   fireEvent.click(screen.getByLabelText(/Half and half/))
+  fireEvent.click(screen.getByLabelText('Dishwasher'))
 }
 
 const continueButton = () => screen.getByRole('button', { name: 'Continue' })
@@ -52,7 +53,7 @@ afterEach(() => {
 describe('Savings flow, step 1', () => {
   it('starts on step 1 with nothing preselected', () => {
     renderApp()
-    expect(screen.getByText('Step 1 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 1 of 4')).toBeTruthy()
     expect(screen.getByLabelText('How many customers a day?').value).toBe('')
     for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
   })
@@ -73,14 +74,15 @@ describe('Savings flow, step 1', () => {
     expect(summary.textContent).toContain('Enter how many customers you have a day')
     expect(summary.textContent).toContain('Select how many days a week you are open')
     expect(summary.textContent).toContain('Select whether most orders are for here or to go')
-    expect(screen.getByText('Step 1 of 3')).toBeTruthy() // didn't move on
+    expect(summary.textContent).toContain('Select how you wash dishes')
+    expect(screen.getByText('Step 1 of 4')).toBeTruthy() // didn't move on
   })
 
   it('moves to step 2 once every answer is valid', () => {
     renderApp()
     answerStepOne()
     fireEvent.click(continueButton())
-    expect(screen.getByText('Step 2 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 2 of 4')).toBeTruthy()
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('What you use each week')
   })
 })
@@ -93,9 +95,9 @@ describe('switching tabs and steps', () => {
 
     // Go to the Map tab and back: still on step 2.
     fireEvent.click(screen.getByRole('button', { name: 'Map' }))
-    expect(screen.queryByText('Step 2 of 3')).toBeNull() // the flow really is gone
+    expect(screen.queryByText('Step 2 of 4')).toBeNull() // the flow really is gone
     fireEvent.click(screen.getByRole('button', { name: 'Savings' }))
-    expect(screen.getByText('Step 2 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 2 of 4')).toBeTruthy()
 
     // Back to step 1: the answers are still there.
     fireEvent.click(screen.getByRole('button', { name: 'Back' }))
@@ -163,7 +165,7 @@ describe('Savings flow, step 2', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Change Plastic cups' }))
     fireEvent.change(screen.getByLabelText('Plastic cups per week'), { target: { value: '250' } })
     fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
-    expect(screen.getByText('Step 3 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 3 of 4')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Back' }))
     expect(row('Plastic cups').textContent).toContain('250 a week')
   })
@@ -179,7 +181,7 @@ describe('Savings flow, step 3', () => {
 
   it('shows the yearly and monthly savings in the headline panel', () => {
     goToResults()
-    expect(screen.getByText('Step 3 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 3 of 4')).toBeTruthy()
     expect(screen.getByText('You could save')).toBeTruthy()
     expect(screen.getByText(/^\$[\d,.]+ a year$/)).toBeTruthy()
     expect(screen.getByText(/^\(\$[\d,.]+ a month\)$/)).toBeTruthy()
@@ -210,10 +212,32 @@ describe('Savings flow, step 3', () => {
     expect(screen.getAllByText('Yearly savings').length).toBe(5) // one per swap in swaps.csv
   })
 
+  it('continues to step 4, "Your first switch", and back', () => {
+    goToResults()
+    fireEvent.click(screen.getByRole('button', { name: 'See my first switch' }))
+    expect(screen.getByText('Step 4 of 4')).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Your first switch')
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    expect(screen.getByText('Step 3 of 4')).toBeTruthy()
+  })
+
+  it('shows lower savings for hand washing than for a dishwasher', () => {
+    // The panel's yearly amount, as a number.
+    const yearly = () => Number(screen.getByText(/^\$[\d,.]+ a year$/).textContent.replace(/[^\d.]/g, ''))
+    goToResults()
+    const machine = yearly()
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    fireEvent.click(screen.getByLabelText('By hand'))
+    fireEvent.click(continueButton())
+    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
+    expect(yearly()).toBeLessThan(machine)
+  })
+
   it('starts over with every answer cleared', () => {
     goToResults()
     fireEvent.click(screen.getByRole('button', { name: 'Start over' }))
-    expect(screen.getByText('Step 1 of 3')).toBeTruthy()
+    expect(screen.getByText('Step 1 of 4')).toBeTruthy()
     expect(screen.getByLabelText('How many customers a day?').value).toBe('')
     for (const radio of screen.getAllByRole('radio')) expect(radio.checked).toBe(false)
   })
@@ -276,5 +300,104 @@ describe('Share my plan', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Share my plan' }))
     const box = await screen.findByLabelText('Copy this text to share your plan:')
     expect(box.value).toContain('My Cambio plan')
+  })
+})
+
+describe('Savings flow, step 4', () => {
+  // Steps 1-3 with the given wash method, then "See my first switch".
+  function goToStepFour(wash = 'Dishwasher') {
+    renderApp()
+    answerStepOne()
+    fireEvent.click(screen.getByLabelText(wash))
+    fireEvent.click(continueButton())
+    fireEvent.click(screen.getByRole('button', { name: 'See my savings' }))
+    fireEvent.click(screen.getByRole('button', { name: 'See my first switch' }))
+  }
+
+  function answerTakeout(extras, delivery) {
+    fireEvent.click(screen.getByLabelText(extras))
+    fireEvent.click(screen.getByLabelText(delivery))
+  }
+
+  it('shows the plan only after both takeout questions are answered', () => {
+    goToStepFour()
+    expect(screen.queryByRole('heading', { name: 'Start here' })).toBeNull()
+    fireEvent.click(screen.getByLabelText('Yes, in every bag'))
+    expect(screen.queryByRole('heading', { name: 'Start here' })).toBeNull() // one isn't enough
+    fireEvent.click(screen.getByLabelText('No'))
+    expect(screen.getByRole('heading', { name: 'Start here' })).toBeTruthy()
+    expect(screen.getByText('Effort: easy')).toBeTruthy()
+    expect(screen.getByRole('group', { name: 'Your checklist' })).toBeTruthy()
+  })
+
+  it('keeps the takeout answers when going back to step 3 and returning', () => {
+    goToStepFour()
+    answerTakeout('Only if the customer asks', 'Yes')
+    fireEvent.click(screen.getAllByRole('button', { name: 'Back' })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'See my first switch' }))
+    expect(screen.getByLabelText('Only if the customer asks').checked).toBe(true)
+    expect(screen.getByLabelText('Yes').checked).toBe(true)
+  })
+
+  it('shows hand-washing minutes only for hand washers', () => {
+    goToStepFour('By hand')
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.getByText(/^Hand washing adds about \d+ minutes? a day$/)).toBeTruthy()
+    cleanup()
+    goToStepFour('Dishwasher')
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.queryByText(/Hand washing adds/)).toBeNull()
+  })
+
+  it('shows extras savings only when extras go in every bag', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(
+      screen.getByText(
+        /^Giving forks and sauce only on request could save about \$[\d,.]+ a year\.$/,
+      ),
+    ).toBeTruthy()
+    fireEvent.click(screen.getByLabelText('Only if the customer asks'))
+    expect(screen.queryByText(/Giving forks and sauce only on request/)).toBeNull()
+  })
+
+  it('adds the delivery-app line to the checklist only for delivery-app users', () => {
+    const appLine =
+      'In your delivery app, check that utensils and sauce go only to customers who ask'
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.queryByLabelText(appLine)).toBeNull()
+    fireEvent.click(screen.getByLabelText('Yes'))
+    expect(screen.getByLabelText(appLine)).toBeTruthy()
+  })
+
+  it('links each law to its official page in a new tab', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    for (const bill of ['AB 1276', 'AB 619']) {
+      const link = screen.getByRole('link', {
+        name: new RegExp(`Read ${bill}`),
+      })
+      expect(link.getAttribute('href')).toMatch(/^https:\/\/leginfo\.legislature\.ca\.gov\//)
+      expect(link.getAttribute('target')).toBe('_blank')
+      expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    }
+  })
+
+  it('says "coming soon" for the pilot while the contact details are PLACEHOLDER', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'No')
+    expect(screen.getByRole('button', { name: 'Text us: coming soon' }).disabled).toBe(true)
+    expect(screen.getByRole('button', { name: 'Short form: coming soon' }).disabled).toBe(true)
+    expect(document.querySelector('a[href^="sms:"]')).toBeNull() // nothing opens
+  })
+
+  it('starts over from step 4 with every answer cleared', () => {
+    goToStepFour()
+    answerTakeout('Yes, in every bag', 'Yes')
+    fireEvent.click(screen.getByRole('button', { name: 'Start over' }))
+    expect(screen.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(continueButton()) // nothing answered: all four errors
+    expect(screen.getByRole('alert').textContent).toContain('Select how you wash dishes')
   })
 })

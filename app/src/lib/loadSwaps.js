@@ -15,8 +15,14 @@
 //   swap_id              the reusable alternative (names live in i18n files)
 //   reusable_unit_price  price of ONE reusable item, in dollars
 //   par_multiplier       stock kept on hand, in days of use (1.5 = a day and a half)
-//   wash_cost_per_use    water, soap, and labor to wash one item once, in dollars
+//   wash_cost_per_use    dishwasher cost to wash one item once (water, soap,
+//                        energy, loading), in dollars; hand washing adds labor
+//                        on top (see washing.js)
 //   annual_loss_rate     fraction of reusables lost or broken per year (0.2 = 20%)
+//   effort               how hard the switch is for staff: easy, medium, or hard
+//                        (Step 4 recommends the easy swap that saves the most)
+//   hand_wash_seconds    seconds to wash ONE of these by hand; turned into
+//                        dollars with the hourly wage in assumptions.csv
 //   notes                where the numbers came from; "PLACEHOLDER" = not real yet
 //
 // Everything that can go wrong with the file (typo in a number, a missing
@@ -34,7 +40,10 @@ const NUMBER_COLUMNS = [
   'par_multiplier',
   'wash_cost_per_use',
   'annual_loss_rate',
+  'hand_wash_seconds',
 ]
+
+export const EFFORT_LEVELS = ['easy', 'medium', 'hard']
 
 // Same as csv.js toNumber, with this file's name filled in for error messages.
 const toNumber = (row, column, rowNumber) => toNumberIn(row, column, rowNumber, FILE)
@@ -44,7 +53,8 @@ const toNumber = (row, column, rowNumber) => toNumberIn(row, column, rowNumber, 
  * Kept separate from the ?raw import so tests can pass in their own CSV text.
  *
  * @returns {Array} [{ itemId, unitCost, swaps: [{ swapId, reusableUnitPrice,
- *   parMultiplier, washCostPerUse, annualLossRate, notes, isPlaceholder }] }]
+ *   parMultiplier, washCostPerUse, annualLossRate, effort, handWashSeconds,
+ *   notes, isPlaceholder }] }]
  */
 export function parseSwapsCsv(csvText) {
   const rows = parseCsvRows(csvText, FILE)
@@ -73,6 +83,13 @@ export function parseSwapsCsv(csvText) {
       throw new Error(`swaps.csv row ${rowNumber}: unit_cost for ${itemId} differs from an earlier row`)
     }
 
+    // Only the three known effort levels are allowed, so a typo like "esay"
+    // can't silently drop a swap out of Step 4's "easy" pick.
+    const effort = row.effort?.trim()
+    if (!EFFORT_LEVELS.includes(effort)) {
+      throw new Error(`swaps.csv row ${rowNumber}: effort must be easy, medium, or hard (got "${row.effort}")`)
+    }
+
     const notes = row.notes ?? ''
     item.swaps.push({
       swapId,
@@ -80,6 +97,8 @@ export function parseSwapsCsv(csvText) {
       parMultiplier: toNumber(row, 'par_multiplier', rowNumber),
       washCostPerUse: toNumber(row, 'wash_cost_per_use', rowNumber),
       annualLossRate: toNumber(row, 'annual_loss_rate', rowNumber),
+      effort,
+      handWashSeconds: toNumber(row, 'hand_wash_seconds', rowNumber),
       notes,
       // The UI uses this flag to show the "placeholder prices" badge.
       isPlaceholder: isPlaceholderNote(notes),

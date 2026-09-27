@@ -403,6 +403,18 @@ textarea {
   background: var(--accent-hover);
 }
 
+/* Secondary button: same size, outlined instead of filled, for an action
+   that sits below the main one (e.g. Share under Continue). */
+.button.button-secondary {
+  background: transparent;
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 2px var(--accent-text); /* a border that doesn't change the size */
+}
+
+.button.button-secondary:hover {
+  background: var(--surface);
+}
+
 /* Secondary actions (Back, Change, Start over) look like links but are real
    <button>s, because they do something on this page instead of going to
    another address. */
@@ -793,7 +805,7 @@ fieldset.field {
 
 /* Share my plan */
 .share {
-  margin: 0 0 1rem;
+  margin: 0.75rem 0 1rem;
 }
 
 .share-status {
@@ -889,6 +901,165 @@ fieldset.field {
 
 .field-error input[type='text'] {
   border-color: var(--negative);
+}
+
+/* ---------- Your first switch (Step 4) ---------- */
+
+/* The recommended move: a shaded box with a thick green edge on the left. */
+.pick-card {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border-left: 6px solid var(--accent);
+}
+
+/* "Nothing easy saves money yet": same box, no green (it isn't a win). */
+.pick-card-neutral {
+  border-left-color: var(--border);
+}
+
+.pick-card p {
+  margin: 0.25rem 0;
+}
+
+.pick-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+/* There's a real space before the tag (so screen readers don't run the
+   words together), so it needs less margin than usual. */
+.pick-title .tag {
+  margin-left: 0.25rem;
+}
+
+/* ----- Checkboxes (the checklist) -----
+ * The real <input type="checkbox"> is invisible but sits right on top of
+ * the box we draw, so tapping, the keyboard, and screen readers all still
+ * use the real one. label::before draws the empty square; label::after
+ * draws the tick: a rectangle with only two borders, turned 45 degrees. */
+.checkboxes {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.checkbox {
+  position: relative;
+  min-height: 2.25rem;
+  padding-left: 3rem;
+}
+
+.checkbox input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox label {
+  display: block;
+  padding-top: 0.3rem;
+  cursor: pointer;
+}
+
+.checkbox label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid var(--border);
+  background: var(--bg);
+}
+
+.checkbox label::after {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  left: 0.55rem;
+  width: 1.15rem;
+  height: 0.6rem;
+  border: solid var(--text);
+  border-width: 0 0 4px 4px;
+  transform: rotate(-45deg);
+  opacity: 0;
+}
+
+.checkbox input:checked + label::after {
+  opacity: 1;
+}
+
+.checkbox input:focus-visible + label::before {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* The two law notes: each a short line, then its official link. */
+.law-list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.law-list li {
+  margin: 0 0 1rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--divider);
+}
+
+.law-list p {
+  margin: 0;
+}
+
+/* Real links (they go to another address), drawn like our link buttons.
+   inline-flex + min-height gives a 44px-tall tap target. */
+.law-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--accent-text);
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+
+.law-list a:hover {
+  text-decoration-thickness: 3px;
+}
+
+/* Join the pilot: two full-width buttons, one above the other. */
+.button-stack {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+/* An <a> styled as .button: no underline, like the real buttons. */
+a.button {
+  text-decoration: none;
+}
+
+/* "Coming soon": grey and flat, so it clearly can't be pressed yet. */
+.button:disabled,
+.button.button-secondary:disabled {
+  background: var(--surface);
+  color: var(--text-muted);
+  box-shadow: inset 0 0 0 2px var(--divider);
+  cursor: not-allowed;
+}
+
+/* Back to your savings / Start over, one under the other. */
+.end-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 1rem;
 }
 
 /* ---------- Small helpers ---------- */

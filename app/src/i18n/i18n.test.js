@@ -25,6 +25,14 @@ describe('translation files', () => {
         expect(translate(lang, `items.${item.itemId}`)).not.toBe(`items.${item.itemId}`)
         for (const swap of item.swaps) {
           expect(translate(lang, `swaps.${swap.swapId}`)).not.toBe(`swaps.${swap.swapId}`)
+          // The checklist's "Buy about 45 reusable baskets" needs a singular
+          // and a plural name for every swap, plus its effort level.
+          for (const form of ['one', 'other']) {
+            const key = `units.${swap.swapId}_${form}`
+            expect(translate(lang, key)).not.toBe(key)
+          }
+          const effortKey = `firstSwitch.effort.${swap.effort}`
+          expect(translate(lang, effortKey)).not.toBe(effortKey)
         }
       }
     }

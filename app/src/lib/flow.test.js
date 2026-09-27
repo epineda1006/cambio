@@ -20,7 +20,7 @@ describe('parseCustomers', () => {
 })
 
 describe('validateBusiness', () => {
-  const good = { customersPerDay: '120', daysOpen: 6, dineInPct: 50 }
+  const good = { customersPerDay: '120', daysOpen: 6, dineInPct: 50, washMethod: 'dishwasher' }
 
   it('accepts a complete, sensible answer', () => {
     expect(validateBusiness(good)).toEqual([])
@@ -34,12 +34,17 @@ describe('validateBusiness', () => {
 
   it('lists every missing answer, in screen order', () => {
     const keys = validateBusiness(INITIAL_FLOW).map((e) => e.key)
-    expect(keys).toEqual(['errors.customersRequired', 'errors.daysRequired', 'errors.dineInRequired'])
+    expect(keys).toEqual([
+      'errors.customersRequired',
+      'errors.daysRequired',
+      'errors.dineInRequired',
+      'errors.washRequired',
+    ])
   })
 
   it('points each error at the field to fix', () => {
     const fields = validateBusiness(INITIAL_FLOW).map((e) => e.field)
-    expect(fields).toEqual(['customers', 'days-1', 'dinein-20'])
+    expect(fields).toEqual(['customers', 'days-1', 'dinein-20', 'wash-dishwasher'])
   })
 
   it('explains what is wrong with the customer number', () => {
@@ -54,6 +59,7 @@ describe('validateBusiness', () => {
     expect(validateBusiness({ ...good, daysOpen: 0 })[0].key).toBe('errors.daysRequired')
     expect(validateBusiness({ ...good, daysOpen: 8 })[0].key).toBe('errors.daysRequired')
     expect(validateBusiness({ ...good, dineInPct: 35 })[0].key).toBe('errors.dineInRequired')
+    expect(validateBusiness({ ...good, washMethod: 'robot' })[0].key).toBe('errors.washRequired')
   })
 })
 

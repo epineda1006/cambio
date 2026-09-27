@@ -16,24 +16,29 @@ import {
   summarize,
 } from './calculator.js'
 import { weeklyUsage } from './flow.js'
+import { assumptions } from './loadAssumptions.js'
 import { itemProfiles } from './loadItems.js'
 import { swapItems } from './loadSwaps.js'
+import { handWashMinutesPerDay, withWashMethod } from './washing.js'
 
-// True while any number in either data file is still marked PLACEHOLDER.
+// True while any number in the data files is still marked PLACEHOLDER.
 export const HAS_PLACEHOLDER_DATA =
   swapItems.some((item) => item.swaps.some((swap) => swap.isPlaceholder)) ||
-  itemProfiles.some((profile) => profile.isPlaceholder)
+  itemProfiles.some((profile) => profile.isPlaceholder) ||
+  assumptions.isPlaceholder
 
 // The real data from the two CSV files. Tests can pass their own data in the
 // same shape instead (a "fixture"), e.g. prices where every swap loses money.
-export const REAL_DATA = { swapItems, itemProfiles }
+export const REAL_DATA = { swapItems, itemProfiles, assumptions }
 
 /**
  * @param flow  the flow state from App (see lib/flow.js)
- * @param data  { swapItems, itemProfiles }; defaults to the real CSV data
+ * @param data  { swapItems, itemProfiles, assumptions }; defaults to the real
+ *              CSV data
  * @returns {
  *   items: [{ itemId, weeklyQty, results, best, others, bestSavesMoney }],
- *     results = every swap's evaluateSwap() output plus `pounds`
+ *     results = every swap's evaluateSwap() output plus `pounds`, `effort`,
+ *               and `handWashMinutesPerDay` (0 unless washing by hand)
  *     best    = the best swap (pickBestSwap), or null if nothing to swap
  *     others  = the remaining swaps, in CSV order
  *   totalAnnualSavings, totalMonthlySavings, totalPounds, totalUpfrontCost,
@@ -54,8 +59,19 @@ export function buildResults(flow, data = REAL_DATA) {
     const results =
       weeklyQty > 0
         ? item.swaps.map((swap) => {
-            const r = evaluateSwap(owner, swap)
-            return { ...r, pounds: poundsOfPlastic(r.plasticAvoidedPerYear, gramsEach) }
+            // Hand-wash owners pay staff time too; the calculator sees it as
+            // a higher wash cost. Dishwasher owners get the swap unchanged.
+            const washed = withWashMethod(swap, flow.washMethod, data.assumptions.handWashHourlyWage)
+            const r = evaluateSwap(owner, washed)
+            return {
+              ...r,
+              pounds: poundsOfPlastic(r.plasticAvoidedPerYear, gramsEach),
+              effort: swap.effort,
+              handWashMinutesPerDay:
+                flow.washMethod === 'hand'
+                  ? handWashMinutesPerDay(r.replacedPerWeek, swap.handWashSeconds, flow.daysOpen)
+                  : 0,
+            }
           })
         : []
     const best = pickBestSwap(results)

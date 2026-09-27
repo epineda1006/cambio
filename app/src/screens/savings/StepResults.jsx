@@ -5,6 +5,7 @@
 //                   pounds of plastic avoided, payback; "Compare N other
 //                   options" opens the rest right there
 //   Inset note      placeholder prices + the takeout share
+//   Continue        to Step 4, "Your first switch"
 //   Share my plan   phone share sheet, or copy the text
 //   How we calculated this   every step of the math (a <details>)
 //   Start over
@@ -25,12 +26,13 @@ import { buildShareText } from '../../lib/shareText.js'
 /**
  * Props:
  *   flow     the flow state from App (see lib/flow.js)
- *   onBack   go to Step 2
+ *   onBack      go to Step 2
+ *   onContinue  go to Step 4, "Your first switch"
  *   onReset  clear every answer and go back to Step 1
  *   data     optional { swapItems, itemProfiles }, for tests only; the app
  *            always uses the real CSV data
  */
-export default function StepResults({ flow, onBack, onReset, data = REAL_DATA }) {
+export default function StepResults({ flow, onBack, onContinue, onReset, data = REAL_DATA }) {
   const { t, tPlural, language, formatMoney, formatNumber, formatDecimal, formatPercent } =
     useLanguage()
 
@@ -172,7 +174,13 @@ export default function StepResults({ flow, onBack, onReset, data = REAL_DATA })
         <p>{t('results.takeout', { pct: formatPercent(results.takeoutPct / 100) })}</p>
       </div>
 
-      {/* The shared text follows the language currently on screen. */}
+      {/* The main next step: turn these numbers into one concrete move. */}
+      <button type="button" className="button" onClick={onContinue}>
+        {t('results.continue')}
+      </button>
+
+      {/* The shared text follows the language currently on screen. Share is
+          secondary now, so it's drawn as an outlined button. */}
       <ShareButton
         title={t('share.title')}
         text={buildShareText(results, language, HAS_PLACEHOLDER_DATA)}

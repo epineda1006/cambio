@@ -1,4 +1,4 @@
-item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,notes
-plastic_cups,0.01,reusable_tumbler,4.00,1.5,0.05,0.50,TEST FIXTURE: washing costs more than a new cup
-plastic_cups,0.01,glass_cup,3.00,1.5,0.06,0.60,TEST FIXTURE: washing costs more than a new cup
-plastic_forks,0.01,metal_fork,1.00,2.0,0.03,0.40,TEST FIXTURE: washing costs more than a new fork
+item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,effort,hand_wash_seconds,notes
+plastic_cups,0.01,reusable_tumbler,4.00,1.5,0.05,0.50,medium,10,TEST FIXTURE: washing costs more than a new cup
+plastic_cups,0.01,glass_cup,3.00,1.5,0.06,0.60,easy,10,TEST FIXTURE: washing costs more than a new cup
+plastic_forks,0.01,metal_fork,1.00,2.0,0.03,0.40,easy,4,TEST FIXTURE: washing costs more than a new fork

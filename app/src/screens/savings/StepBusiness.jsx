@@ -3,6 +3,7 @@
 //   - customers a day (typed)
 //   - days open per week (1 to 7)
 //   - for here or to go (three choices, none preselected)
+//   - how they wash dishes (dishwasher or by hand, none preselected)
 //
 // The answers live in App (passed in as `flow`), so they survive switching
 // steps or tabs. The only thing this component keeps for itself is the list
@@ -13,7 +14,7 @@ import { useState } from 'react'
 import ErrorSummary from '../../components/ErrorSummary.jsx'
 import FieldError from '../../components/FieldError.jsx'
 import { useLanguage } from '../../i18n/languageContext.js'
-import { DAYS_CHOICES, DINE_IN_CHOICES, validateBusiness } from '../../lib/flow.js'
+import { DAYS_CHOICES, DINE_IN_CHOICES, WASH_CHOICES, validateBusiness } from '../../lib/flow.js'
 
 /**
  * Props:
@@ -31,6 +32,7 @@ export default function StepBusiness({ flow, onChange, onContinue }) {
   const customersError = errorFor('customers')
   const daysError = errorFor('days')
   const dineInError = errorFor('dinein')
+  const washError = errorFor('wash')
 
   function handleSubmit(event) {
     // A <form> normally reloads the page on submit; we handle it ourselves.
@@ -130,6 +132,32 @@ export default function StepBusiness({ flow, onChange, onContinue }) {
                   {t(`business.choices.${key}.hint`, { pct: formatPercent(pct / 100) })}
                 </span>
               </label>
+            </div>
+          ))}
+        </div>
+      </fieldset>
+
+      {/* ---- How they wash dishes ----
+          Hand washing adds staff time, which can change which swap saves
+          money (see lib/washing.js). */}
+      <fieldset
+        className={`field${washError ? ' field-error' : ''}`}
+        aria-describedby={washError ? 'wash-error' : undefined}
+      >
+        <legend>{t('business.washLegend')}</legend>
+        <FieldError id="wash-error" error={washError} />
+        <div className="radios">
+          {WASH_CHOICES.map((method) => (
+            <div key={method} className="radio">
+              <input
+                type="radio"
+                id={`wash-${method}`}
+                name="wash"
+                value={method}
+                checked={flow.washMethod === method}
+                onChange={() => onChange({ washMethod: method })}
+              />
+              <label htmlFor={`wash-${method}`}>{t(`business.wash.${method}`)}</label>
             </div>
           ))}
         </div>

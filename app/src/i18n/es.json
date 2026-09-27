@@ -42,6 +42,11 @@
         "label": "Casi todo para aquí",
         "hint": "Cerca del {pct} se come aquí"
       }
+    },
+    "washLegend": "¿Cómo lava los platos?",
+    "wash": {
+      "dishwasher": "Lavaplatos",
+      "hand": "A mano"
     }
   },
   "usage": {
@@ -83,7 +88,64 @@
     "takeout": "Para llevar ({pct}): opciones compostables próximamente.",
     "howTitle": "Cómo lo calculamos",
     "howBasis": "Con {weekly} a la semana, {pct} para comer aquí y {days} días abiertos a la semana.",
-    "startOver": "Empezar de nuevo"
+    "startOver": "Empezar de nuevo",
+    "continue": "Ver mi primer cambio"
+  },
+  "firstSwitch": {
+    "title": "Su primer cambio",
+    "intro": "Dos preguntas rápidas sobre sus pedidos para llevar y luego un cambio para empezar.",
+    "extrasLegend": "¿Pone tenedores y salsa en cada bolsa para llevar?",
+    "extras": {
+      "yes": "Sí, en cada bolsa",
+      "ifAsked": "Solo si el cliente los pide"
+    },
+    "deliveryLegend": "¿Vende por DoorDash, Uber Eats o apps similares?",
+    "delivery": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "startHere": "Empiece por aquí",
+    "insteadOf": "En lugar de: {item}",
+    "whySwap": "Es el cambio fácil que más ahorra.",
+    "effort": {
+      "easy": "Esfuerzo: fácil",
+      "medium": "Esfuerzo: medio",
+      "hard": "Esfuerzo: alto"
+    },
+    "upfront": "Inversión inicial: unos {amount}",
+    "handWash_one": "Lavar a mano agrega cerca de {count} minuto al día",
+    "handWash_other": "Lavar a mano agrega unos {count} minutos al día",
+    "extrasTitle": "Tenedores y salsa solo si los piden",
+    "whyExtras": "Con estos precios, ningún cambio fácil a reutilizables ahorra dinero todavía, así que empiece por los pedidos para llevar.",
+    "none": "Con estos precios, ningún cambio fácil ahorra dinero todavía.",
+    "noneAhead": "Con estos precios, ningún cambio fácil ahorra dinero todavía, y usted ya da los extras solo si se los piden, así que va un paso adelante.",
+    "biggerTitle": "Un paso más grande, si se anima",
+    "checklistTitle": "Su lista para empezar",
+    "checklistHint": "Marque cada paso cuando lo haga. Esta lista no se guarda.",
+    "takeoutTitle": "Para llevar",
+    "extrasSavings": "Dar tenedores y salsa solo a quien los pida podría ahorrarle unos {amount} al año.",
+    "laws": {
+      "ab1276": {
+        "text": "Ley de California AB 1276: en pedidos para comer aquí y por apps de entrega, los restaurantes dan cubiertos desechables y salsas en paquetes individuales solo si el cliente los pide. En las apps de entrega, el cliente los elige en el menú.",
+        "link": "Leer la AB 1276 (sitio oficial en inglés, se abre en otra pestaña)"
+      },
+      "ab619": {
+        "text": "Ley de California AB 619: los restaurantes pueden llenar el recipiente limpio y reutilizable que traiga el cliente, siguiendo pasos de seguridad alimentaria.",
+        "link": "Leer la AB 619 (sitio oficial en inglés, se abre en otra pestaña)"
+      }
+    },
+    "materials": "Mejores materiales para lo demás: estamos averiguando qué acepta de verdad el sistema de compostaje de Fresno.",
+    "pilotTitle": "Únase al piloto",
+    "pilotHelp": "Le podemos ayudar a hacer este cambio.",
+    "pilotHelpFind": "Le podemos ayudar a encontrar un cambio que le funcione.",
+    "textUs": "Envíenos un mensaje de texto",
+    "form": "Llene un formulario corto",
+    "textUsSoon": "Mensaje de texto: próximamente",
+    "formSoon": "Formulario corto: próximamente",
+    "pilotSoon": "Todavía estamos preparando el número y el formulario del piloto.",
+    "smsMessage": "Hola, quiero unirme al piloto de Cambio.",
+    "placeholder": "Los precios, los tiempos de lavado y los números de pedidos para llevar son ejemplos hasta que los confirmemos en entrevistas.",
+    "backToSavings": "Volver a sus ahorros"
   },
   "share": {
     "title": "Mi plan de Cambio",
@@ -105,7 +167,8 @@
     "daysRequired": "Elija cuántos días a la semana abre",
     "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar",
     "weeklyInvalid": "Escriba un número entero, por ejemplo 400",
-    "weeklyTooHigh": "Escriba {max} o menos"
+    "weeklyTooHigh": "Escriba {max} o menos",
+    "washRequired": "Elija cómo lava los platos"
   },
   "swap": {
     "replacedPerWeek": "Artículos reemplazados por semana",
@@ -139,5 +202,25 @@
     "reusable_basket": "Canasta reutilizable",
     "reusable_plate": "Plato reutilizable",
     "metal_fork": "Tenedor de metal"
+  },
+  "checklist": {
+    "buy": "Compre {units}",
+    "busTub": "Ponga una tina para juntar los trastes sucios",
+    "tellStaff": "Explíquele el cambio a su personal y dónde van los sucios",
+    "appSetting": "Revise en la app que los cubiertos y la salsa vayan solo a quien los pida",
+    "stopExtras": "Deje de poner tenedores y salsa en cada bolsa",
+    "trainStaff": "Enseñe a su personal a preguntar: “¿Quiere cubiertos o salsa?”"
+  },
+  "units": {
+    "reusable_tumbler_one": "{count} vaso reutilizable",
+    "reusable_tumbler_other": "unos {count} vasos reutilizables",
+    "glass_cup_one": "{count} vaso de vidrio",
+    "glass_cup_other": "unos {count} vasos de vidrio",
+    "reusable_basket_one": "{count} canasta reutilizable",
+    "reusable_basket_other": "unas {count} canastas reutilizables",
+    "reusable_plate_one": "{count} plato reutilizable",
+    "reusable_plate_other": "unos {count} platos reutilizables",
+    "metal_fork_one": "{count} tenedor de metal",
+    "metal_fork_other": "unos {count} tenedores de metal"
   }
 }

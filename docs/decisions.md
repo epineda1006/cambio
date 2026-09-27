@@ -5,6 +5,68 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-27 — Step 4 "Your first switch": reduce, then reuse, then materials
+
+**Before:** the Savings flow ended at Step 3 with numbers, but no concrete first move.
+
+**Now:** Step 4 picks ONE first switch and gives a checklist. For takeout, the order of
+priorities is:
+
+1. **Reduce:** don't hand out what nobody asked for (forks and sauce only on request).
+2. **Reuse:** reusables for dine-in (Steps 3 and 4), and customers' own containers for takeout.
+3. **Better materials:** only once we know what Fresno's compost system accepts (see below).
+
+**How the pick works** (`app/src/lib/firstSwitch.js`, tested):
+
+- The `easy` swap with the highest yearly savings that actually saves money.
+- If none: "forks and sauce only when asked", if extras go in every bag today.
+- If neither: say so honestly. If they already give extras only on request, say they're ahead.
+  A `medium` or `hard` swap is offered as "a bigger step" only if it saves money.
+
+**Hand washing** (new Step 1 question): hand-wash labor = `hand_wash_seconds` (per swap) / 3600 x
+one hourly wage (`assumptions.csv`), added to the wash cost before the unchanged calculator runs.
+Steps 3 and 4 show the same savings, and "minutes a day" comes from the same seconds, so the two
+can't disagree. This can flip the pick: a swap that saves money with a dishwasher may not by hand.
+
+**The two California laws on screen** (checked on the official bill pages on 2026-09-27; the
+notes state only what each law requires or allows, with no claims about fines or enforcement):
+
+- **AB 1276 (2021)**, Public Resources Code section 42271:
+  <https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202120220AB1276>.
+  For **on-premises dining and third-party delivery platform** orders, a food facility gives
+  single-use foodware accessories and single-serve condiments only when the customer asks, and on
+  delivery platforms the menu lists them so customers choose. It does not name counter takeout,
+  so the app presents extras-on-request for takeout as a money saver, not as a legal rule.
+- **AB 619 (2019)**, Health and Safety Code section 114121:
+  <https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=201920200AB619>.
+  A food facility **may** fill a customer's own clean, reusable container, following
+  food-safety steps. It is a permission, not a requirement, and the app says it that way.
+
+**Why materials wait:** the City of Fresno's green cart page lists food-soiled paper plates,
+napkins, and paper bags, but does not mention compostable containers, cups, or clamshells at
+all (it is also the residential page):
+<https://www.fresno.gov/publicutilities/trash-disposal-recycling/what-goes-where-green-gray-blue/>
+(checked 2026-09-27). Recommending "compostable" packaging that ends up in the landfill would
+cost owners more for nothing, so Step 4 only says we're checking, until we ask the city
+(commercial organics) directly.
+
+**Join the pilot:** the text number and form link live in ONE file, `app/src/config/pilot.js`.
+The repo is public, so it must hold a team Google Voice number and a team Google Form, never a
+personal number. While either value is `PLACEHOLDER`, the buttons are disabled and say
+"Coming soon".
+
+**Still to validate in interviews:**
+
+- `effort` levels and `hand_wash_seconds` per swap; the hourly wage; `extras_request_share`
+  (share of takeout customers who actually want extras); `sauce_per_order` and
+  `sauce_unit_cost`. All are PLACEHOLDER.
+- The Spanish word for a bus tub: the checklist says "tina" ("Ponga una tina para juntar los
+  trastes sucios"). Confirm the word owners actually use.
+- Whether delivery apps give restaurants a setting for utensils and sauce; the checklist only
+  says to check the app, until we've seen the settings.
+
+---
+
 ## 2026-09-26 — Days open: any number from 1 to 7
 
 **Before:** Step 1 offered only 5, 6, or 7 days a week.
