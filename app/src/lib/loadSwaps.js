@@ -15,7 +15,9 @@
 //   swap_id              the reusable alternative (names live in i18n files)
 //   reusable_unit_price  price of ONE reusable item, in dollars
 //   par_multiplier       stock kept on hand, in days of use (1.5 = a day and a half)
-//   wash_cost_per_use    water, soap, and labor to wash one item once, in dollars
+//   wash_cost_per_use    dishwasher cost to wash one item once (water, soap,
+//                        energy, loading), in dollars; hand washing adds labor
+//                        on top (see washing.js)
 //   annual_loss_rate     fraction of reusables lost or broken per year (0.2 = 20%)
 //   effort               how hard the switch is for staff: easy, medium, or hard
 //                        (Step 4 recommends the easy swap that saves the most)

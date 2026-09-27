@@ -9,6 +9,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import LanguageProvider from '../../i18n/LanguageProvider.jsx'
+import { assumptions } from '../../lib/loadAssumptions.js'
 import { parseItemsCsv } from '../../lib/loadItems.js'
 import { parseSwapsCsv } from '../../lib/loadSwaps.js'
 import { buildResults } from '../../lib/results.js'
@@ -19,6 +20,7 @@ import StepResults from './StepResults.jsx'
 const losingData = {
   swapItems: parseSwapsCsv(losingSwapsCsv),
   itemProfiles: parseItemsCsv(losingItemsCsv),
+  assumptions, // the real wage and takeout numbers; only prices are made up
 }
 const flow = { step: 3, customersPerDay: '120', daysOpen: 6, dineInPct: 50, overrides: {} }
 
