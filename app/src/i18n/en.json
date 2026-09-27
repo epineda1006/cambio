@@ -92,7 +92,36 @@
     "continue": "See my first switch"
   },
   "firstSwitch": {
-    "title": "Your first switch"
+    "title": "Your first switch",
+    "intro": "Two quick questions about takeout, then one switch to start with.",
+    "extrasLegend": "Do you put forks and sauce in every to-go bag?",
+    "extras": {
+      "yes": "Yes, in every bag",
+      "ifAsked": "Only if the customer asks"
+    },
+    "deliveryLegend": "Do you sell on DoorDash, Uber Eats, or similar?",
+    "delivery": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "startHere": "Start here",
+    "insteadOf": "In place of: {item}",
+    "whySwap": "The easy switch that saves the most.",
+    "effort": {
+      "easy": "Effort: easy",
+      "medium": "Effort: medium",
+      "hard": "Effort: high"
+    },
+    "upfront": "Up front: about {amount}",
+    "handWash_one": "Hand washing adds about {count} minute a day",
+    "handWash_other": "Hand washing adds about {count} minutes a day",
+    "extrasTitle": "Forks and sauce only when asked",
+    "whyExtras": "No easy reusable swap saves money yet at these prices, so start with takeout.",
+    "none": "At these prices no easy switch saves money yet.",
+    "noneAhead": "At these prices no easy switch saves money yet, and you already give extras only on request, so you're ahead.",
+    "biggerTitle": "A bigger step, if you're ready",
+    "checklistTitle": "Your checklist",
+    "checklistHint": "Check off each step as you go. This list isn't saved."
   },
   "share": {
     "title": "My Cambio plan",
@@ -149,5 +178,25 @@
     "reusable_basket": "Reusable basket",
     "reusable_plate": "Reusable plate",
     "metal_fork": "Metal fork"
+  },
+  "checklist": {
+    "buy": "Buy {units}",
+    "busTub": "Set out a bus tub to collect the dirty ones",
+    "tellStaff": "Tell your staff about the switch and where the dirty ones go",
+    "appSetting": "In your delivery app, check that utensils and sauce go only to customers who ask",
+    "stopExtras": "Stop putting forks and sauce in every bag",
+    "trainStaff": "Train staff to ask: “Do you want utensils or sauce?”"
+  },
+  "units": {
+    "reusable_tumbler_one": "{count} reusable tumbler",
+    "reusable_tumbler_other": "about {count} reusable tumblers",
+    "glass_cup_one": "{count} glass cup",
+    "glass_cup_other": "about {count} glass cups",
+    "reusable_basket_one": "{count} reusable basket",
+    "reusable_basket_other": "about {count} reusable baskets",
+    "reusable_plate_one": "{count} reusable plate",
+    "reusable_plate_other": "about {count} reusable plates",
+    "metal_fork_one": "{count} metal fork",
+    "metal_fork_other": "about {count} metal forks"
   }
 }

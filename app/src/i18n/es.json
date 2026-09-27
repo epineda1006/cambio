@@ -92,7 +92,36 @@
     "continue": "Ver mi primer cambio"
   },
   "firstSwitch": {
-    "title": "Su primer cambio"
+    "title": "Su primer cambio",
+    "intro": "Dos preguntas rápidas sobre sus pedidos para llevar y luego un cambio para empezar.",
+    "extrasLegend": "¿Pone tenedores y salsa en cada bolsa para llevar?",
+    "extras": {
+      "yes": "Sí, en cada bolsa",
+      "ifAsked": "Solo si el cliente los pide"
+    },
+    "deliveryLegend": "¿Vende por DoorDash, Uber Eats o apps similares?",
+    "delivery": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "startHere": "Empiece por aquí",
+    "insteadOf": "En lugar de: {item}",
+    "whySwap": "Es el cambio fácil que más ahorra.",
+    "effort": {
+      "easy": "Esfuerzo: fácil",
+      "medium": "Esfuerzo: medio",
+      "hard": "Esfuerzo: alto"
+    },
+    "upfront": "Inversión inicial: unos {amount}",
+    "handWash_one": "Lavar a mano agrega cerca de {count} minuto al día",
+    "handWash_other": "Lavar a mano agrega unos {count} minutos al día",
+    "extrasTitle": "Tenedores y salsa solo si los piden",
+    "whyExtras": "Con estos precios, ningún cambio fácil a reutilizables ahorra dinero todavía, así que empiece por los pedidos para llevar.",
+    "none": "Con estos precios, ningún cambio fácil ahorra dinero todavía.",
+    "noneAhead": "Con estos precios, ningún cambio fácil ahorra dinero todavía, y usted ya da los extras solo si se los piden, así que va un paso adelante.",
+    "biggerTitle": "Un paso más grande, si se anima",
+    "checklistTitle": "Su lista para empezar",
+    "checklistHint": "Marque cada paso cuando lo haga. Esta lista no se guarda."
   },
   "share": {
     "title": "Mi plan de Cambio",
@@ -149,5 +178,25 @@
     "reusable_basket": "Canasta reutilizable",
     "reusable_plate": "Plato reutilizable",
     "metal_fork": "Tenedor de metal"
+  },
+  "checklist": {
+    "buy": "Compre {units}",
+    "busTub": "Ponga una tina para juntar los trastes sucios",
+    "tellStaff": "Explíquele el cambio a su personal y dónde van los sucios",
+    "appSetting": "Revise en la app que los cubiertos y la salsa vayan solo a quien los pida",
+    "stopExtras": "Deje de poner tenedores y salsa en cada bolsa",
+    "trainStaff": "Enseñe a su personal a preguntar: “¿Quiere cubiertos o salsa?”"
+  },
+  "units": {
+    "reusable_tumbler_one": "{count} vaso reutilizable",
+    "reusable_tumbler_other": "unos {count} vasos reutilizables",
+    "glass_cup_one": "{count} vaso de vidrio",
+    "glass_cup_other": "unos {count} vasos de vidrio",
+    "reusable_basket_one": "{count} canasta reutilizable",
+    "reusable_basket_other": "unas {count} canastas reutilizables",
+    "reusable_plate_one": "{count} plato reutilizable",
+    "reusable_plate_other": "unos {count} platos reutilizables",
+    "metal_fork_one": "{count} tenedor de metal",
+    "metal_fork_other": "unos {count} tenedores de metal"
   }
 }

@@ -71,7 +71,9 @@ export default function SavingsFlow({ flow, onChange }) {
           onReset={() => onChange(INITIAL_FLOW)}
         />
       )}
-      {flow.step === 4 && <StepFirstSwitch onBack={() => goTo(3)} />}
+      {flow.step === 4 && (
+        <StepFirstSwitch flow={flow} onChange={onChange} onBack={() => goTo(3)} />
+      )}
     </section>
   )
 }
