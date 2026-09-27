@@ -19,7 +19,7 @@ import { useState } from 'react'
 import ShareButton from '../../components/ShareButton.jsx'
 import SwapBreakdown from '../../components/SwapBreakdown.jsx'
 import { useLanguage } from '../../i18n/languageContext.js'
-import { HAS_PLACEHOLDER_DATA, buildResults } from '../../lib/results.js'
+import { HAS_PLACEHOLDER_DATA, REAL_DATA, buildResults } from '../../lib/results.js'
 import { buildShareText } from '../../lib/shareText.js'
 
 /**
@@ -27,8 +27,10 @@ import { buildShareText } from '../../lib/shareText.js'
  *   flow     the flow state from App (see lib/flow.js)
  *   onBack   go to Step 2
  *   onReset  clear every answer and go back to Step 1
+ *   data     optional { swapItems, itemProfiles }, for tests only; the app
+ *            always uses the real CSV data
  */
-export default function StepResults({ flow, onBack, onReset }) {
+export default function StepResults({ flow, onBack, onReset, data = REAL_DATA }) {
   const { t, tPlural, language, formatMoney, formatNumber, formatDecimal, formatPercent } =
     useLanguage()
 
@@ -46,7 +48,7 @@ export default function StepResults({ flow, onBack, onReset }) {
     })
   }
 
-  const results = buildResults(flow)
+  const results = buildResults(flow, data)
   const saves = results.totalAnnualSavings > 0
 
   // One sentence for a swap's money: saves / costs more / breaks even.

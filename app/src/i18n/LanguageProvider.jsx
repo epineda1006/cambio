@@ -57,7 +57,7 @@ export default function LanguageProvider({ children }) {
         saveLanguage(next) // only an explicit toggle is remembered
       },
       t: (key, vars) => translate(language, key, vars),
-      // tPlural('summary.noSavingSwap', 2) picks the _one or _other text.
+      // tPlural('results.compare', 2) picks the _one or _other text.
       // Pass an already-formatted count in vars to override {count}.
       tPlural: (key, count, vars) => translatePlural(language, key, count, vars),
       // formatMoney, formatNumber, formatDecimal, formatPercent. They're built

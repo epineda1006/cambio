@@ -9,8 +9,6 @@
     "es": "ES"
   },
   "theme": {
-    "light": "Light",
-    "dark": "Dark",
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
   },
@@ -109,38 +107,7 @@
     "weeklyInvalid": "Enter a whole number, like 400",
     "weeklyTooHigh": "Enter {max} or fewer"
   },
-  "owner": {
-    "title": "Which swaps save you money?",
-    "intro": "Enter what you buy each week. We'll show which reusable swaps save you money.",
-    "daysOpen": "Days open per week",
-    "daysOpenHelp": "Used to figure out how many reusable items you need on hand.",
-    "weeklyQty": "How many do you use per week?",
-    "dineInShare": "Eaten on site (dine-in)",
-    "dineInHelp": "Reusables only replace dine-in orders. Takeout still needs disposables.",
-    "currentSpend": "You spend about {amount} a year on these now.",
-    "noDineIn": "With 0% dine-in there is nothing to swap. Reusables only work for orders eaten on site."
-  },
-  "summary": {
-    "title": "Your yearly savings",
-    "empty": "Enter how many items you use each week to see your savings.",
-    "perYear": "per year",
-    "plastic": "{count} single-use items avoided per year",
-    "upfront": "Upfront cost for reusables: {amount}",
-    "basis": "Using the best swap for each item.",
-    "noSavingSwap_one": "{count} item has no swap that saves money at these prices.",
-    "noSavingSwap_other": "{count} items have no swap that saves money at these prices."
-  },
   "swap": {
-    "best": "Best swap",
-    "saves": "Saves {amount} per year",
-    "costsMore": "Costs you {amount} more per year",
-    "breakEven": "Saves nothing per year (breaks even)",
-    "payback": "Pays for itself in {weeks} weeks",
-    "neverPaysBack": "Never pays for itself at these prices",
-    "upfront_one": "Upfront: {amount} ({count} reusable)",
-    "upfront_other": "Upfront: {amount} ({count} reusables)",
-    "plastic": "{count} fewer single-use items per year",
-    "details": "How we calculated this",
     "replacedPerWeek": "Items replaced per week",
     "itemsNeeded": "Reusables to keep on hand",
     "pounds": "Plastic avoided (pounds per year)",
@@ -160,10 +127,6 @@
       "calenviroscreen": "CalEnviroScreen scores for disadvantaged communities"
     },
     "scoreNote": "Each neighborhood gets a simple, transparent score, with a breakdown of why it ranks where it does."
-  },
-  "placeholder": {
-    "badge": "Placeholder prices, not real quotes",
-    "explain": "These numbers are examples for testing. Real prices will come from local suppliers and restaurant interviews."
   },
   "items": {
     "plastic_cups": "Plastic cups",

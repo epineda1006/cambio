@@ -5,6 +5,36 @@ Newest entries at the top.
 
 ---
 
+## 2026-09-26 — Savings tab redesigned as a 3-step flow ("clean civic" style)
+
+**Before:** one long page where the owner typed weekly counts for every item and saw every
+swap card at once.
+
+**Now:**
+
+1. **Your business:** customers per day, days open (5/6/7), and for here or to go
+   (20/50/80% dine-in). Nothing is preselected, and missing answers get an error summary.
+2. **What you use each week:** weekly cups, to-go boxes, and forks, *estimated* from
+   customers per day x per-customer ratios (`app/src/data/items.csv`, PLACEHOLDER). The owner
+   can correct any number, and their number is kept even if they change customers per day.
+3. **Your savings:** yearly and monthly savings, each item's best swap (BEST tag),
+   pounds of plastic avoided, payback, other options on request, the full math, and "Share
+   my plan".
+
+**Why:** owners rarely know their weekly cup count but do know roughly how many customers
+they have. Guided steps with big, plain controls work better on a phone, and the plain
+"civic" look (inspired by government service design, with Cambio's own colors and logo)
+reads as trustworthy rather than salesy.
+
+**Kept honest:** the calculator math did not change (only estimate helpers were added). Money-losing
+swaps are shown in red and never labeled BEST. The shared text always carries the "prices
+are examples" line while data is PLACEHOLDER.
+
+**Still to validate in interviews:** per-customer ratios, item weights (grams), and the
+open question below (orders vs. people per day).
+
+---
+
 ## 2026-09-26 — OPEN QUESTION: orders per day or people served per day?
 
 **Status:** open. To be decided after interviews.

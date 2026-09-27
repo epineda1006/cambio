@@ -98,13 +98,14 @@ export function validateWeekly(text) {
  * What the business uses per week, item by item: our estimate from Step 1,
  * replaced by the owner's own number wherever they typed one.
  *
+ * @param profiles  item ratios; defaults to items.csv (tests can pass their own)
  * @returns [{ itemId, estimate, weeklyQty, isOverride }] in items.csv order
  */
-export function weeklyUsage({ customersPerDay, daysOpen, overrides }) {
+export function weeklyUsage({ customersPerDay, daysOpen, overrides }, profiles = itemProfiles) {
   const customers = parseCustomers(customersPerDay) ?? 0
   const days = DAYS_CHOICES.includes(daysOpen) ? daysOpen : DAYS_CHOICES[DAYS_CHOICES.length - 1]
 
-  return itemProfiles.map(({ itemId, perCustomer }) => {
+  return profiles.map(({ itemId, perCustomer }) => {
     const estimate = estimateWeeklyQty({ customersPerDay: customers, daysOpen: days, perCustomer })
     // An override only counts if it's a valid number; otherwise use the estimate.
     const typed = overrides?.[itemId]

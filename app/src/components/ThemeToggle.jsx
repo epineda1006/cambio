@@ -1,8 +1,11 @@
 // ThemeToggle.jsx: one button that flips between light and dark.
 //
-// The button's visible label names the theme you'll SWITCH TO ("Dark" while
-// in light mode), next to a moon or sun icon. The aria-label spells out the
-// action for screen readers.
+// ICON ONLY, on purpose: a moon (switch to dark) or a sun (switch to
+// light). An earlier version also showed a word, but it named the theme
+// you'd switch TO ("Dark" while the page was light), which people read as
+// the CURRENT theme. The aria-label spells out the action for screen
+// readers ("Switch to dark theme"), and the title attribute shows the same
+// words as a tooltip when you hover with a mouse.
 
 import { useState } from 'react'
 import { useLanguage } from '../i18n/languageContext.js'
@@ -33,6 +36,7 @@ export default function ThemeToggle() {
   // Start from the saved choice, or from what the phone is set to.
   const [theme, setTheme] = useState(() => readSavedTheme() ?? systemTheme())
   const next = theme === 'dark' ? 'light' : 'dark'
+  const label = t(next === 'dark' ? 'theme.switchToDark' : 'theme.switchToLight')
 
   function handleClick() {
     applyTheme(next)
@@ -44,11 +48,10 @@ export default function ThemeToggle() {
       type="button"
       className="theme-toggle"
       onClick={handleClick}
-      aria-label={t(next === 'dark' ? 'theme.switchToDark' : 'theme.switchToLight')}
+      aria-label={label}
+      title={label}
     >
       {next === 'dark' ? <MoonIcon /> : <SunIcon />}
-      {/* Hidden on the narrowest phones (see .theme-toggle-label in styles.css). */}
-      <span className="theme-toggle-label">{t(`theme.${next}`)}</span>
     </button>
   )
 }

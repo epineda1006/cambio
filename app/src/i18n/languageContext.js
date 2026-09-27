@@ -60,7 +60,7 @@ function lookup(dictionary, key) {
 /**
  * Translate one key. Falls back to English if the Spanish text is missing,
  * and to the key itself if both are missing, so a gap is visible on screen
- * ("owner.title") instead of a blank space.
+ * ("results.title") instead of a blank space.
  *
  * vars fills {placeholders}: translate('es', 'x', { amount: '$5' }) turns
  * "Ahorra {amount}" into "Ahorra $5".

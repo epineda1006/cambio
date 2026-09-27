@@ -276,19 +276,6 @@ textarea {
   height: 1.2rem;
 }
 
-/* On the narrowest phones the theme button shows only its icon; the label
-   stays available to screen readers through aria-label. From 368px up there
-   is room for the word too. */
-.theme-toggle-label {
-  display: none;
-}
-
-@media (min-width: 23rem) {
-  .theme-toggle-label {
-    display: inline;
-  }
-}
-
 /* The header toggles sit on black, so their focus ring is the light green. */
 .app-header :focus-visible {
   outline-color: var(--header-accent);
@@ -401,22 +388,8 @@ textarea {
   font-weight: 500;
 }
 
-.field-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.field-row output {
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
 /* 2px solid borders and square corners: the box is unmistakable. */
-.field input[type='text'],
-.field input[type='number'],
-.field select {
+.field input[type='text'] {
   width: 100%;
   min-height: 2.75rem;
   padding: 0.4rem 0.6rem;
@@ -424,13 +397,6 @@ textarea {
   background: var(--bg);
   border: 2px solid var(--border);
   border-radius: 0;
-}
-
-.field input[type='range'] {
-  width: 100%;
-  min-height: var(--tap);
-  /* accent-color recolors the browser's built-in slider to our green. */
-  accent-color: var(--accent);
 }
 
 .help {
@@ -889,7 +855,7 @@ fieldset.field {
   font-weight: 500;
 }
 
-/* Small labels ("Best swap", "Placeholder prices"). Square, like the rest. */
+/* Small label ("Placeholder map data"). Square, like the rest. */
 .badge {
   display: inline-block;
   margin: 0 0 0.5rem;
@@ -904,16 +870,7 @@ fieldset.field {
   color: var(--warning-text);
 }
 
-.badge-best {
-  margin: 0;
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
-
-/* ---------- Cards and results (current Savings screen) ----------
- * These classes belong to the one-page Savings screen, which the 3-step
- * flow replaces in the next steps. They're restyled here so the app keeps
- * working in the meantime, and get removed in the cleanup step. */
+/* ---------- Cards (Map screen) ---------- */
 
 .card {
   margin: 0 0 1.25rem;
@@ -928,65 +885,6 @@ fieldset.field {
 
 .card p {
   margin: 0.5rem 0;
-}
-
-.summary-card {
-  border-left: 6px solid var(--accent);
-}
-
-.summary-total {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem;
-}
-
-.summary-amount {
-  font-size: 2.5rem;
-  font-weight: 500;
-  line-height: 1.1;
-  /* tabular-nums: every digit is the same width, so numbers don't jiggle
-     while the owner types. */
-  font-variant-numeric: tabular-nums;
-}
-
-.summary-plastic {
-  font-weight: 500;
-}
-
-.swap-list {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
-.swap-card {
-  padding: 0.75rem;
-  border: 2px solid var(--divider);
-  background: var(--bg);
-}
-
-.swap-card.is-best {
-  border-color: var(--accent);
-}
-
-.swap-card-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.swap-card h4 {
-  margin: 0;
-  font-size: 1.1875rem;
-}
-
-.swap-headline {
-  font-size: 1.25rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
 }
 
 .facts {

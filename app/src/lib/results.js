@@ -16,7 +16,7 @@ import {
   summarize,
 } from './calculator.js'
 import { weeklyUsage } from './flow.js'
-import { itemProfiles, itemProfilesById } from './loadItems.js'
+import { itemProfiles } from './loadItems.js'
 import { swapItems } from './loadSwaps.js'
 
 // True while any number in either data file is still marked PLACEHOLDER.
@@ -24,8 +24,13 @@ export const HAS_PLACEHOLDER_DATA =
   swapItems.some((item) => item.swaps.some((swap) => swap.isPlaceholder)) ||
   itemProfiles.some((profile) => profile.isPlaceholder)
 
+// The real data from the two CSV files. Tests can pass their own data in the
+// same shape instead (a "fixture"), e.g. prices where every swap loses money.
+export const REAL_DATA = { swapItems, itemProfiles }
+
 /**
  * @param flow  the flow state from App (see lib/flow.js)
+ * @param data  { swapItems, itemProfiles }; defaults to the real CSV data
  * @returns {
  *   items: [{ itemId, weeklyQty, results, best, others, bestSavesMoney }],
  *     results = every swap's evaluateSwap() output plus `pounds`
@@ -36,13 +41,14 @@ export const HAS_PLACEHOLDER_DATA =
  * }
  * Totals follow summarize(): only best swaps that actually save money count.
  */
-export function buildResults(flow) {
-  const usage = weeklyUsage(flow)
+export function buildResults(flow, data = REAL_DATA) {
+  const usage = weeklyUsage(flow, data.itemProfiles)
+  const profilesById = Object.fromEntries(data.itemProfiles.map((p) => [p.itemId, p]))
   const dineInShare = flow.dineInPct / 100
 
   const items = usage.map(({ itemId, weeklyQty }) => {
-    const item = swapItems.find((i) => i.itemId === itemId)
-    const { gramsEach } = itemProfilesById[itemId]
+    const item = data.swapItems.find((i) => i.itemId === itemId)
+    const { gramsEach } = profilesById[itemId]
     const owner = { weeklyQty, dineInShare, unitCost: item.unitCost, daysOpen: flow.daysOpen }
 
     const results =
