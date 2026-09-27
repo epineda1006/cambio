@@ -5,7 +5,7 @@ import { describe, it, expect } from 'vitest'
 import { parseSwapsCsv, swapItems } from './loadSwaps.js'
 
 const HEADER =
-  'item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,notes'
+  'item_id,unit_cost,swap_id,reusable_unit_price,par_multiplier,wash_cost_per_use,annual_loss_rate,effort,hand_wash_seconds,notes'
 
 describe('the real swaps.csv', () => {
   it('loads every item with at least one swap and valid numbers', () => {
@@ -20,7 +20,7 @@ describe('the real swaps.csv', () => {
 describe('parseSwapsCsv', () => {
   it('groups swaps under their item and converts numbers', () => {
     const items = parseSwapsCsv(
-      `${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,PLACEHOLDER\ncups,0.10,b,1,1.5,0.03,0.3,real quote`,
+      `${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,easy,10,PLACEHOLDER\ncups,0.10,b,1,1.5,0.03,0.3,medium,10,real quote`,
     )
     expect(items).toHaveLength(1)
     expect(items[0].unitCost).toBe(0.1)
@@ -30,12 +30,21 @@ describe('parseSwapsCsv', () => {
   })
 
   it('names the row when a number is mistyped', () => {
-    expect(() => parseSwapsCsv(`${HEADER}\ncups,0.1O,a,2,1.5,0.03,0.2,x`)).toThrow(/row 2.*unit_cost/)
+    expect(() => parseSwapsCsv(`${HEADER}\ncups,0.1O,a,2,1.5,0.03,0.2,easy,10,x`)).toThrow(/row 2.*unit_cost/)
+  })
+
+  it('reads effort and hand-wash seconds', () => {
+    const [item] = parseSwapsCsv(`${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,easy,12,x`)
+    expect(item.swaps[0]).toMatchObject({ effort: 'easy', handWashSeconds: 12 })
+  })
+
+  it('rejects an unknown effort level', () => {
+    expect(() => parseSwapsCsv(`${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,esay,10,x`)).toThrow(/row 2.*effort/)
   })
 
   it('rejects two different prices for the same item', () => {
     expect(() =>
-      parseSwapsCsv(`${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,x\ncups,0.12,b,2,1.5,0.03,0.2,x`),
+      parseSwapsCsv(`${HEADER}\ncups,0.10,a,2,1.5,0.03,0.2,easy,10,x\ncups,0.12,b,2,1.5,0.03,0.2,easy,10,x`),
     ).toThrow(/row 3.*differs/)
   })
 })

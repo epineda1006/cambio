@@ -1,0 +1,5 @@
+key,value,notes
+hand_wash_hourly_wage,16.90,PLACEHOLDER: dollars per hour of dishwashing labor; set near California's 2026 minimum wage; replace with what owners actually pay
+extras_request_share,0.30,PLACEHOLDER: share of takeout customers who actually want forks or sauce when asked; replace with interview answers
+sauce_per_order,1,PLACEHOLDER: sauce cups or packets put in each takeout order; replace with interview answers
+sauce_unit_cost,0.04,PLACEHOLDER: price of one sauce cup or packet in dollars; replace with a distributor quote
