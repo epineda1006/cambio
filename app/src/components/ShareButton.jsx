@@ -54,7 +54,7 @@ export default function ShareButton({ title, text }) {
 
   return (
     <div className="share">
-      <button type="button" className="button" onClick={handleClick}>
+      <button type="button" className="button button-secondary" onClick={handleClick}>
         {t('share.button')}
       </button>
 

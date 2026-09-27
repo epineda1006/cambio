@@ -42,6 +42,11 @@
         "label": "Mostly here",
         "hint": "About {pct} eaten here"
       }
+    },
+    "washLegend": "How do you wash dishes?",
+    "wash": {
+      "dishwasher": "Dishwasher",
+      "hand": "By hand"
     }
   },
   "usage": {
@@ -83,7 +88,11 @@
     "takeout": "Takeout ({pct}): compostable options coming soon.",
     "howTitle": "How we calculated this",
     "howBasis": "Based on {weekly} a week, {pct} eaten here, open {days} days a week.",
-    "startOver": "Start over"
+    "startOver": "Start over",
+    "continue": "See my first switch"
+  },
+  "firstSwitch": {
+    "title": "Your first switch"
   },
   "share": {
     "title": "My Cambio plan",
@@ -105,7 +114,8 @@
     "daysRequired": "Select how many days a week you are open",
     "dineInRequired": "Select whether most orders are for here or to go",
     "weeklyInvalid": "Enter a whole number, like 400",
-    "weeklyTooHigh": "Enter {max} or fewer"
+    "weeklyTooHigh": "Enter {max} or fewer",
+    "washRequired": "Select how you wash dishes"
   },
   "swap": {
     "replacedPerWeek": "Items replaced per week",

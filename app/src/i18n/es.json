@@ -42,6 +42,11 @@
         "label": "Casi todo para aquí",
         "hint": "Cerca del {pct} se come aquí"
       }
+    },
+    "washLegend": "¿Cómo lava los platos?",
+    "wash": {
+      "dishwasher": "Lavaplatos",
+      "hand": "A mano"
     }
   },
   "usage": {
@@ -83,7 +88,11 @@
     "takeout": "Para llevar ({pct}): opciones compostables próximamente.",
     "howTitle": "Cómo lo calculamos",
     "howBasis": "Con {weekly} a la semana, {pct} para comer aquí y {days} días abiertos a la semana.",
-    "startOver": "Empezar de nuevo"
+    "startOver": "Empezar de nuevo",
+    "continue": "Ver mi primer cambio"
+  },
+  "firstSwitch": {
+    "title": "Su primer cambio"
   },
   "share": {
     "title": "Mi plan de Cambio",
@@ -105,7 +114,8 @@
     "daysRequired": "Elija cuántos días a la semana abre",
     "dineInRequired": "Elija si la mayoría de los pedidos son para aquí o para llevar",
     "weeklyInvalid": "Escriba un número entero, por ejemplo 400",
-    "weeklyTooHigh": "Escriba {max} o menos"
+    "weeklyTooHigh": "Escriba {max} o menos",
+    "washRequired": "Elija cómo lava los platos"
   },
   "swap": {
     "replacedPerWeek": "Artículos reemplazados por semana",

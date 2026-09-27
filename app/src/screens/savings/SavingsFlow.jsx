@@ -1,8 +1,9 @@
-// SavingsFlow.jsx: the Savings tab, a 3-step flow.
+// SavingsFlow.jsx: the Savings tab, a 4-step flow.
 //
 //   Step 1  Your business           (StepBusiness.jsx)
 //   Step 2  What you use each week  (StepUsage.jsx)
 //   Step 3  Your savings            (StepResults.jsx)
+//   Step 4  Your first switch       (StepFirstSwitch.jsx)
 //
 // Which step is showing, and every answer, live in App (the `flow` prop),
 // so switching steps or tabs never loses anything. This component just
@@ -12,10 +13,11 @@ import { useEffect, useRef } from 'react'
 import { useLanguage } from '../../i18n/languageContext.js'
 import { INITIAL_FLOW } from '../../lib/flow.js'
 import StepBusiness from './StepBusiness.jsx'
+import StepFirstSwitch from './StepFirstSwitch.jsx'
 import StepResults from './StepResults.jsx'
 import StepUsage from './StepUsage.jsx'
 
-const TOTAL_STEPS = 3
+const TOTAL_STEPS = 4
 
 /**
  * Props:
@@ -62,8 +64,14 @@ export default function SavingsFlow({ flow, onChange }) {
         />
       )}
       {flow.step === 3 && (
-        <StepResults flow={flow} onBack={() => goTo(2)} onReset={() => onChange(INITIAL_FLOW)} />
+        <StepResults
+          flow={flow}
+          onBack={() => goTo(2)}
+          onContinue={() => goTo(4)}
+          onReset={() => onChange(INITIAL_FLOW)}
+        />
       )}
+      {flow.step === 4 && <StepFirstSwitch onBack={() => goTo(3)} />}
     </section>
   )
 }

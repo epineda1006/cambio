@@ -403,6 +403,18 @@ textarea {
   background: var(--accent-hover);
 }
 
+/* Secondary button: same size, outlined instead of filled, for an action
+   that sits below the main one (e.g. Share under Continue). */
+.button.button-secondary {
+  background: transparent;
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 2px var(--accent-text); /* a border that doesn't change the size */
+}
+
+.button.button-secondary:hover {
+  background: var(--surface);
+}
+
 /* Secondary actions (Back, Change, Start over) look like links but are real
    <button>s, because they do something on this page instead of going to
    another address. */
@@ -793,7 +805,7 @@ fieldset.field {
 
 /* Share my plan */
 .share {
-  margin: 0 0 1rem;
+  margin: 0.75rem 0 1rem;
 }
 
 .share-status {

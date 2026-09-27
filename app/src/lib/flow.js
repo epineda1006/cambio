@@ -3,10 +3,15 @@
 //
 // The flow's state (held in App.jsx) looks like:
 //   {
-//     step: 1 | 2 | 3,
+//     step: 1 | 2 | 3 | 4,
 //     customersPerDay: '120',   text exactly as typed
 //     daysOpen: 6,              1 to 7, or null = not answered yet
 //     dineInPct: 50,            20, 50, 80, or null = not answered yet
+//     washMethod: 'hand',       'dishwasher', 'hand', or null (step 1)
+//     extrasAuto: 'yes',        forks/sauce in every bag: 'yes', 'ifAsked',
+//                               or null (step 4)
+//     deliveryApps: 'no',       on DoorDash/Uber Eats etc.: 'yes', 'no',
+//                               or null (step 4)
 //     overrides: { plastic_cups: '400' }   weekly numbers the owner typed
 //   }                                      over our estimate (step 2)
 
@@ -23,6 +28,13 @@ export const DINE_IN_CHOICES = [
   { pct: 80, key: 'mostlyHere' },
 ]
 
+// "How do you wash dishes?" Hand washing adds staff time (see washing.js).
+export const WASH_CHOICES = ['dishwasher', 'hand']
+
+// Step 4's two takeout questions.
+export const EXTRAS_CHOICES = ['yes', 'ifAsked']
+export const DELIVERY_CHOICES = ['yes', 'no']
+
 export const MAX_CUSTOMERS = 5000
 export const MAX_WEEKLY = 100000
 
@@ -32,7 +44,10 @@ export const INITIAL_FLOW = Object.freeze({
   customersPerDay: '',
   daysOpen: null,
   dineInPct: null,
+  washMethod: null,
   overrides: Object.freeze({}),
+  extrasAuto: null,
+  deliveryApps: null,
 })
 
 /**
@@ -58,7 +73,7 @@ export const parseCustomers = parseWholeNumber
  *
  * `field` is the id of the input to jump to; `key` is the i18n text.
  */
-export function validateBusiness({ customersPerDay, daysOpen, dineInPct }) {
+export function validateBusiness({ customersPerDay, daysOpen, dineInPct, washMethod }) {
   const errors = []
 
   if (String(customersPerDay).trim() === '') {
@@ -78,6 +93,10 @@ export function validateBusiness({ customersPerDay, daysOpen, dineInPct }) {
 
   if (!DINE_IN_CHOICES.some((c) => c.pct === dineInPct)) {
     errors.push({ field: `dinein-${DINE_IN_CHOICES[0].pct}`, key: 'errors.dineInRequired' })
+  }
+
+  if (!WASH_CHOICES.includes(washMethod)) {
+    errors.push({ field: `wash-${WASH_CHOICES[0]}`, key: 'errors.washRequired' })
   }
 
   return errors
